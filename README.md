@@ -97,8 +97,6 @@ https://<jouwgebruikersnaam>.github.io/henk-dashboard/
 
 Ontwikkeld vanuit de praktijkervaring van een voormalig apartment hotel manager. Het platform richt zich op independent hotels van 20–100 kamers die draaien op meerdere losse systemen zonder centrale bestuurslaag.
 
-Het concept is ontstaan naast [GuestCompass](https://guestcompass.app) — een hotel guest webapp met domotica en deur-toegang — en wordt ontwikkeld als aanvullend manager-gericht platform.
-
 ---
 
 *Versie 0.1 — concept fase*
