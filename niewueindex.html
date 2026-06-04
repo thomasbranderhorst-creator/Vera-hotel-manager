@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vera — Hotel operatie op één plek</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117; --bg2: #181b24; --bg3: #1e2230;
+    --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+    --text: #e8eaf0; --text2: #8b90a0; --text3: #555c70;
+    --purple: #7c6ff7; --purple-bg: rgba(124,111,247,0.12); --purple-border: rgba(124,111,247,0.3);
+    --teal: #2dd4a0; --teal-bg: rgba(45,212,160,0.1); --teal-border: rgba(45,212,160,0.28);
+    --blue: #4a9eff; --blue-bg: rgba(74,158,255,0.1); --blue-border: rgba(74,158,255,0.28);
+    --amber: #f5a623; --amber-bg: rgba(245,166,35,0.1); --amber-border: rgba(245,166,35,0.28);
+    --coral: #ff7060; --coral-bg: rgba(255,112,96,0.1); --coral-border: rgba(255,112,96,0.28);
+    --green: #5ec96e; --green-bg: rgba(94,201,110,0.1); --green-border: rgba(94,201,110,0.28);
+    --pink: #e879a0; --pink-bg: rgba(232,121,160,0.1); --pink-border: rgba(232,121,160,0.28);
+    --gray: #6b7280; --gray-bg: rgba(107,114,128,0.1); --gray-border: rgba(107,114,128,0.25);
+  }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; padding:40px 24px 80px; }
+  header { max-width:900px; margin:0 auto 32px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-mark { width:36px; height:36px; background:var(--purple-bg); border:1px solid var(--purple-border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:13px; font-weight:500; color:var(--purple); letter-spacing:-0.5px; }
+  .logo-text { font-size:15px; font-weight:500; color:var(--text); letter-spacing:-0.2px; }
+  .logo-sub { font-size:12px; color:var(--text3); margin-top:1px; }
+  .badge { font-size:11px; font-weight:500; color:var(--text3); background:var(--bg3); border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-family:'DM Mono',monospace; }
+
+  /* Tabs */
+  .tabs-wrapper { max-width:900px; margin:0 auto 28px; }
+  .tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); }
+  .tab-btn { background:none; border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; color:var(--text3); padding:10px 16px; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s,border-color .15s; white-space:nowrap; }
+  .tab-btn:hover { color:var(--text2); }
+  .tab-btn.active { color:var(--text); border-bottom-color:var(--purple); }
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* Container */
+  .container { max-width:900px; margin:0 auto; display:flex; flex-direction:column; gap:6px; }
+  .section-label { font-size:10px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:1.2px; padding:20px 0 8px; }
+
+  /* Core card */
+  .core-card { background:var(--purple-bg); border:1px solid var(--purple-border); border-radius:12px; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; transition:border-color .2s,background .2s; }
+  .core-card:hover { border-color:var(--purple); background:rgba(124,111,247,0.18); }
+  .core-card-left { display:flex; align-items:center; gap:14px; }
+  .core-icon { width:38px; height:38px; border-radius:8px; background:rgba(124,111,247,0.2); border:1px solid var(--purple-border); display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .core-title { font-size:15px; font-weight:600; color:var(--text); }
+  .core-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+  .core-tag { font-size:10px; font-family:'DM Mono',monospace; color:var(--purple); background:rgba(124,111,247,0.15); border:1px solid var(--purple-border); border-radius:20px; padding:3px 9px; white-space:nowrap; }
+
+  /* Modules */
+  .modules-row { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .module-card { border-radius:10px; padding:14px 14px 12px; cursor:pointer; transition:transform .15s,border-color .2s; position:relative; overflow:hidden; }
+  .module-card:hover { transform:translateY(-2px); }
+  .module-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; border-radius:10px 10px 0 0; }
+  .module-card.teal  { background:var(--teal-bg);  border:1px solid var(--teal-border);  } .module-card.teal::before  { background:var(--teal);  }
+  .module-card.amber { background:var(--amber-bg); border:1px solid var(--amber-border); } .module-card.amber::before { background:var(--amber); }
+  .module-card.coral { background:var(--coral-bg); border:1px solid var(--coral-border); } .module-card.coral::before { background:var(--coral); }
+  .module-card.green { background:var(--green-bg); border:1px solid var(--green-border); } .module-card.green::before { background:var(--green); }
+  .module-card.pink  { background:var(--pink-bg);  border:1px solid var(--pink-border);  } .module-card.pink::before  { background:var(--pink);  }
+  .module-title { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .module-card.teal  .module-title { color:var(--teal);  }
+  .module-card.amber .module-title { color:var(--amber); }
+  .module-card.coral .module-title { color:var(--coral); }
+  .module-card.green .module-title { color:var(--green); }
+  .module-card.pink  .module-title { color:var(--pink);  }
+  .module-sub { font-size:11px; color:var(--text2); line-height:1.5; }
+
+  /* Sub-modules */
+  .submods-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; }
+  .sub-col { display:flex; flex-direction:column; gap:6px; }
+  .sub-card { border-radius:8px; padding:10px 12px; cursor:pointer; transition:border-color .2s,background .2s; border:1px solid transparent; }
+  .sub-card.blue  { background:var(--blue-bg);  border-color:var(--blue-border);  } .sub-card.blue:hover  { border-color:var(--blue);  }
+  .sub-card.amber { background:var(--amber-bg); border-color:var(--amber-border); } .sub-card.amber:hover { border-color:var(--amber); }
+  .sub-card.coral { background:var(--coral-bg); border-color:var(--coral-border); } .sub-card.coral:hover { border-color:var(--coral); }
+  .sub-card.green { background:var(--green-bg); border-color:var(--green-border); } .sub-card.green:hover { border-color:var(--green); }
+  .sub-card.pink  { background:var(--pink-bg);  border-color:var(--pink-border);  } .sub-card.pink:hover  { border-color:var(--pink);  }
+  .sub-title { font-size:12px; font-weight:500; margin-bottom:2px; }
+  .sub-card.blue  .sub-title { color:var(--blue);  }
+  .sub-card.amber .sub-title { color:var(--amber); }
+  .sub-card.coral .sub-title { color:var(--coral); }
+  .sub-card.green .sub-title { color:var(--green); }
+  .sub-card.pink  .sub-title { color:var(--pink);  }
+  .sub-sub { font-size:10.5px; color:var(--text3); line-height:1.4; }
+
+  /* Horizontal */
+  .horiz-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; }
+  .horiz-card { background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:12px 14px; cursor:pointer; transition:border-color .2s; }
+  .horiz-card:hover { border-color:rgba(255,255,255,0.28); }
+  .horiz-title { font-size:12px; font-weight:500; color:var(--text); margin-bottom:3px; }
+  .horiz-sub { font-size:11px; color:var(--text3); }
+  .bottom-row { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .ai-row { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .ai-card { background:var(--purple-bg); border:1px solid var(--purple-border); border-radius:8px; padding:14px 16px; cursor:pointer; transition:border-color .2s,background .2s; }
+  .ai-card:hover { border-color:var(--purple); background:rgba(124,111,247,0.18); }
+  .ai-title { font-size:12px; font-weight:500; color:var(--purple); margin-bottom:3px; }
+  .ai-sub { font-size:11px; color:var(--text3); }
+  .divider { border:none; border-top:1px solid var(--border); margin:4px 0; }
+  .legend { display:flex; flex-wrap:wrap; gap:16px; padding-top:8px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text3); }
+  .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+  /* HOE HET WERKT */
+  .how-intro { background:var(--purple-bg); border:1px solid var(--purple-border); border-radius:12px; padding:24px 28px; margin-bottom:6px; }
+  .how-intro-title { font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px; }
+  .how-intro-text { font-size:13px; color:var(--text2); line-height:1.7; }
+  .flow-steps { display:flex; flex-direction:column; gap:6px; }
+  .flow-step { display:flex; gap:16px; align-items:flex-start; background:var(--bg3); border:1px solid var(--border2); border-radius:10px; padding:16px 20px; transition:border-color .2s; }
+  .flow-step:hover { border-color:rgba(255,255,255,0.22); }
+  .step-num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'DM Mono',monospace; font-size:11px; font-weight:500; flex-shrink:0; margin-top:1px; }
+  .step-num.purple { background:var(--purple-bg); border:1px solid var(--purple-border); color:var(--purple); }
+  .step-num.teal   { background:var(--teal-bg);   border:1px solid var(--teal-border);   color:var(--teal);   }
+  .step-num.amber  { background:var(--amber-bg);  border:1px solid var(--amber-border);  color:var(--amber);  }
+  .step-num.green  { background:var(--green-bg);  border:1px solid var(--green-border);  color:var(--green);  }
+  .step-num.blue   { background:var(--blue-bg);   border:1px solid var(--blue-border);   color:var(--blue);   }
+  .step-num.coral  { background:var(--coral-bg);  border:1px solid var(--coral-border);  color:var(--coral);  }
+  .step-body { flex:1; }
+  .step-title { font-size:13px; font-weight:500; color:var(--text); margin-bottom:4px; }
+  .step-desc { font-size:12px; color:var(--text2); line-height:1.6; }
+  .step-examples { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .step-example { font-size:11px; font-family:'DM Mono',monospace; background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:3px 9px; color:var(--text3); }
+  .how-section-label { font-size:10px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:1.2px; padding:24px 0 10px; }
+  .principle-row { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .principle-card { background:var(--bg3); border:1px solid var(--border2); border-radius:10px; padding:16px; }
+  .principle-icon { font-size:20px; margin-bottom:10px; }
+  .principle-title { font-size:12px; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .principle-text { font-size:11px; color:var(--text3); line-height:1.6; }
+
+  /* INTEGRATIES */
+  .integrations-grid { display:flex; flex-direction:column; gap:6px; }
+  .int-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:6px; align-items:center; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:12px 16px; transition:border-color .2s; }
+  .int-row:hover { border-color:rgba(255,255,255,0.2); }
+  .int-header { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:6px; padding:6px 16px 10px; }
+  .int-header-label { font-size:10px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:1px; }
+  .int-name { font-size:13px; font-weight:500; color:var(--text); }
+  .int-category { font-size:11px; color:var(--text3); margin-top:2px; }
+  .int-type { font-size:11px; font-family:'DM Mono',monospace; color:var(--text3); }
+  .int-priority { font-size:10px; font-weight:500; font-family:'DM Mono',monospace; padding:3px 8px; border-radius:20px; display:inline-block; }
+  .int-priority.must   { background:rgba(255,112,96,0.15);  color:var(--coral); border:1px solid var(--coral-border); }
+  .int-priority.should { background:rgba(245,166,35,0.12);  color:var(--amber); border:1px solid var(--amber-border); }
+  .int-priority.could  { background:rgba(107,114,128,0.12); color:var(--gray);  border:1px solid var(--gray-border);  }
+  .int-status { font-size:10px; font-family:'DM Mono',monospace; padding:3px 8px; border-radius:20px; display:inline-block; }
+  .int-status.api     { background:var(--green-bg);  color:var(--green);  border:1px solid var(--green-border);  }
+  .int-status.webhook { background:var(--blue-bg);   color:var(--blue);   border:1px solid var(--blue-border);   }
+  .int-status.export  { background:var(--amber-bg);  color:var(--amber);  border:1px solid var(--amber-border);  }
+  .int-status.custom  { background:var(--purple-bg); color:var(--purple); border:1px solid var(--purple-border); }
+  .int-status.tbd     { background:var(--gray-bg);   color:var(--gray);   border:1px solid var(--gray-border);   }
+  .int-group-label { font-size:10px; font-weight:500; color:var(--text3); text-transform:uppercase; letter-spacing:1.2px; padding:20px 0 8px; }
+  .int-note { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:14px 18px; margin-top:8px; font-size:12px; color:var(--text3); line-height:1.6; }
+  .int-note strong { color:var(--text2); font-weight:500; }
+
+  /* Tooltip */
+  .tooltip { position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:8px 16px; font-size:12px; color:var(--text2); pointer-events:none; opacity:0; transition:opacity .2s; white-space:nowrap; z-index:100; font-family:'DM Mono',monospace; }
+  .tooltip.show { opacity:1; }
+
+  @media (max-width:700px) {
+    .modules-row,.submods-grid,.horiz-row,.ai-row,.bottom-row,.principle-row { grid-template-columns:1fr 1fr; }
+    .sub-col { gap:4px; }
+    .int-row,.int-header { grid-template-columns:1fr 1fr; }
+    .int-header-label:nth-child(n+3),.int-row>*:nth-child(n+3) { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">V</div>
+    <div>
+      <div class="logo-text">Vera</div>
+      <div class="logo-sub">Hotel operatie op één plek</div>
+    </div>
+  </div>
+  <div class="badge">concept v0.1</div>
+</header>
+
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('structuur',this)">Structuur</button>
+    <button class="tab-btn" onclick="switchTab('hoehetwerkt',this)">Hoe het werkt</button>
+    <button class="tab-btn" onclick="switchTab('integraties',this)">Integraties</button>
+  </div>
+</div>
+
+<!-- TAB 1: STRUCTUUR -->
+<div id="tab-structuur" class="tab-panel active">
+<div class="container">
+  <div class="section-label">Centrale hub</div>
+  <div class="core-card" onclick="tip('Ochtendblik — dagelijks startpunt voor de manager')">
+    <div class="core-card-left">
+      <div class="core-icon">&#127749;</div>
+      <div><div class="core-title">Ochtendblik</div><div class="core-sub">Dagelijks overzicht &middot; nachtrapport &middot; aankomsten &middot; openstaande taken &middot; bemanning &middot; beslissingen</div></div>
+    </div>
+    <div class="core-tag">Hub</div>
+  </div>
+  <div class="section-label">Hoofdmodules</div>
+  <div class="modules-row">
+    <div class="module-card teal"  onclick="tip('Operatie')"><div class="module-title">Operatie</div><div class="module-sub">Boekingen &middot; kanalen &middot; in-house</div></div>
+    <div class="module-card amber" onclick="tip('Financien')"><div class="module-title">Financi&euml;n</div><div class="module-sub">KPI&apos;s &middot; resultaat &middot; cashflow</div></div>
+    <div class="module-card coral" onclick="tip('Personeel')"><div class="module-title">Personeel</div><div class="module-sub">Rooster &middot; HR &middot; BHV &middot; verzuim</div></div>
+    <div class="module-card green" onclick="tip('Compliance')"><div class="module-title">Compliance</div><div class="module-sub">Vergunningen &middot; veiligheid &middot; HACCP</div></div>
+    <div class="module-card pink"  onclick="tip('Reputatie')"><div class="module-title">Reputatie</div><div class="module-sub">Reviews &middot; sentiment &middot; klachten</div></div>
+  </div>
+  <div class="section-label">Sub-modules</div>
+  <div class="submods-grid">
+    <div class="sub-col">
+      <div class="sub-card blue"  onclick="tip('PMS Mews')"><div class="sub-title">PMS &middot; Mews</div><div class="sub-sub">Boekingen &middot; check-in/out</div></div>
+      <div class="sub-card blue"  onclick="tip('Kanaalbeheer')"><div class="sub-title">Kanaalbeheer</div><div class="sub-sub">OTA&apos;s &middot; tarieven</div></div>
+      <div class="sub-card blue"  onclick="tip('Housekeeping')"><div class="sub-title">Housekeeping</div><div class="sub-sub">Taken &middot; kamerstatus</div></div>
+      <div class="sub-card blue"  onclick="tip('Maintenance')"><div class="sub-title">Maintenance</div><div class="sub-sub">Meldingen &middot; opvolging</div></div>
+      <div class="sub-card blue"  onclick="tip('Sleutelbeheer')"><div class="sub-title">Sleutelbeheer</div><div class="sub-sub">Uitgifte &middot; retour &middot; log</div></div>
+    </div>
+    <div class="sub-col">
+      <div class="sub-card amber" onclick="tip('Dagdashboard')"><div class="sub-title">Dagdashboard</div><div class="sub-sub">RevPAR &middot; ADR &middot; bezetting</div></div>
+      <div class="sub-card amber" onclick="tip('Netto resultaat')"><div class="sub-title">Netto resultaat</div><div class="sub-sub">Dag &middot; week &middot; maand</div></div>
+      <div class="sub-card amber" onclick="tip('Kostenbewaking')"><div class="sub-title">Kostenbewaking</div><div class="sub-sub">Personeel % &middot; inkoop</div></div>
+      <div class="sub-card amber" onclick="tip('Cashflow')"><div class="sub-title">Cashflow</div><div class="sub-sub">Openstaand &middot; vooruitbetaald</div></div>
+      <div class="sub-card amber" onclick="tip('Exact Online')"><div class="sub-title">Exact Online</div><div class="sub-sub">Facturatie &middot; boekhouding</div></div>
+    </div>
+    <div class="sub-col">
+      <div class="sub-card coral" onclick="tip('Shiftbase')"><div class="sub-title">Rooster &middot; Shiftbase</div><div class="sub-sub">Diensten &middot; bezetting</div></div>
+      <div class="sub-card coral" onclick="tip('Verzuim HR')"><div class="sub-title">Verzuim &amp; HR</div><div class="sub-sub">Ziekmelding &middot; re-integratie</div></div>
+      <div class="sub-card coral" onclick="tip('BHV')"><div class="sub-title">BHV &amp; certificaten</div><div class="sub-sub">Verloopdatums &middot; training</div></div>
+      <div class="sub-card coral" onclick="tip('Onboarding')"><div class="sub-title">Onboarding</div><div class="sub-sub">Checklist nieuw personeel</div></div>
+      <div class="sub-card coral" onclick="tip('Gesprekken')"><div class="sub-title">Gesprekken</div><div class="sub-sub">Functionering &middot; contracten</div></div>
+    </div>
+    <div class="sub-col">
+      <div class="sub-card green" onclick="tip('Vergunningen')"><div class="sub-title">Vergunningenregister</div><div class="sub-sub">Vervaldatums &middot; herinneringen</div></div>
+      <div class="sub-card green" onclick="tip('Inspectielogboek')"><div class="sub-title">Inspectielogboek</div><div class="sub-sub">NVWA &middot; brandweer &middot; gemeente</div></div>
+      <div class="sub-card green" onclick="tip('HACCP Legionella')"><div class="sub-title">HACCP &middot; Legionella</div><div class="sub-sub">Periodieke taken &middot; bewijslast</div></div>
+      <div class="sub-card green" onclick="tip('Incidentenlog')"><div class="sub-title">Incidentenlog</div><div class="sub-sub">RI&amp;E &middot; bijna-incidenten</div></div>
+      <div class="sub-card green" onclick="tip('Brandveiligheid')"><div class="sub-title">Brandveiligheid</div><div class="sub-sub">Maandronde &middot; ontruimingsplan</div></div>
+    </div>
+    <div class="sub-col">
+      <div class="sub-card pink" onclick="tip('Review aggregator')"><div class="sub-title">Review aggregator</div><div class="sub-sub">Google &middot; Booking &middot; TripAdvisor</div></div>
+      <div class="sub-card pink" onclick="tip('Antwoord-status')"><div class="sub-title">Antwoord-status</div><div class="sub-sub">Openstaand &middot; reactietijd</div></div>
+      <div class="sub-card pink" onclick="tip('Sentimenttrend')"><div class="sub-title">Sentimenttrend</div><div class="sub-sub">Score per categorie &middot; trend</div></div>
+      <div class="sub-card pink" onclick="tip('Klachtenregistratie')"><div class="sub-title">Klachtenregistratie</div><div class="sub-sub">Intern &middot; oorzaak &middot; opvolging</div></div>
+    </div>
+  </div>
+  <hr class="divider">
+  <div class="section-label">Horizontale modules</div>
+  <div class="horiz-row">
+    <div class="horiz-card" onclick="tip('Inkoop')"><div class="horiz-title">Inkoop &amp; leveranciers</div><div class="horiz-sub">Contracten &middot; bestellingen &middot; prijsafspraken</div></div>
+    <div class="horiz-card" onclick="tip('Communicatie')"><div class="horiz-title">Communicatie &amp; overdracht</div><div class="horiz-sub">Berichten &middot; dienstoverdracht &middot; e-mail</div></div>
+    <div class="horiz-card" onclick="tip('Sales')"><div class="horiz-title">Sales &amp; relatiebeheer</div><div class="horiz-sub">Leads &middot; groepen &middot; zakelijke klanten</div></div>
+  </div>
+  <div class="bottom-row">
+    <div class="horiz-card" onclick="tip('Rapportage')"><div class="horiz-title">Rapportage &amp; management</div><div class="horiz-sub">Periodiek &middot; export &middot; benchmarks &middot; STR</div></div>
+    <div class="horiz-card" onclick="tip('Instellingen')"><div class="horiz-title">Instellingen &amp; beheer</div><div class="horiz-sub">Gebruikers &middot; rechten &middot; integraties</div></div>
+  </div>
+  <hr class="divider">
+  <div class="section-label">AI-laag — Vera</div>
+  <div class="ai-row">
+    <div class="ai-card" onclick="tip('Nachtassistent')"><div class="ai-title">Vera — nachtassistent</div><div class="ai-sub">Escalatie &middot; gast &middot; noodprotocol &middot; rapportage</div></div>
+    <div class="ai-card" onclick="tip('Proactieve signalen')"><div class="ai-title">Proactieve signalen</div><div class="ai-sub">Afwijkingen &middot; vervaldatums &middot; gaps</div></div>
+    <div class="ai-card" onclick="tip('Manager briefing')"><div class="ai-title">Manager briefing</div><div class="ai-sub">Samenvatting &middot; prioriteiten &middot; beslissingen</div></div>
+  </div>
+  <hr class="divider">
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Operatie</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Financi&euml;n</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--coral)"></div> Personeel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Compliance</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--pink)"></div> Reputatie</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> Operatie subs</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gray)"></div> Horizontaal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div> AI-laag</div>
+  </div>
+</div>
+</div>
+
+<!-- TAB 2: HOE HET WERKT -->
+<div id="tab-hoehetwerkt" class="tab-panel">
+<div class="container">
+  <div class="section-label">Het centrale idee</div>
+  <div class="how-intro">
+    <div class="how-intro-title">Vera onthoudt. Jij bestuurt.</div>
+    <div class="how-intro-text">De manager van een independent hotel speelt vijf rollen tegelijk: operationeel manager, HR-manager, compliance officer, financieel controller en verkoper. Vera neemt het geheugenwerk over. Elke vervaldatum, elke openstaande actie, elke afwijking van budget &mdash; het systeem signaleert, jij besluit.</div>
+  </div>
+
+  <div class="section-label">Document intelligence &mdash; upload &amp; vergeet</div>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-num purple">1</div>
+      <div class="step-body">
+        <div class="step-title">Manager uploadt een document</div>
+        <div class="step-desc">Sleep of upload een PDF, foto of scan. Vera verwerkt het direct &mdash; geen categorie&euml;n kiezen, geen mappen aanwijzen.</div>
+        <div class="step-examples">
+          <span class="step-example">nieuw contract.pdf</span>
+          <span class="step-example">vergunning 2025.pdf</span>
+          <span class="step-example">arbeidsovereenkomst_jan.pdf</span>
+          <span class="step-example">HACCP-rapport.pdf</span>
+          <span class="step-example">factuur_linnengoed.pdf</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num teal">2</div>
+      <div class="step-body">
+        <div class="step-title">Vera herkent het document</div>
+        <div class="step-desc">AI analyseert het type document, de betrokken partijen, relevante datums en de module waar het bij hoort. Geen handmatige invoer nodig.</div>
+        <div class="step-examples">
+          <span class="step-example">Type: exploitatievergunning</span>
+          <span class="step-example">Vervaldatum: 14 maart 2026</span>
+          <span class="step-example">Module: Compliance</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num amber">3</div>
+      <div class="step-body">
+        <div class="step-title">Opslag op de juiste plek</div>
+        <div class="step-desc">Het document wordt automatisch geplaatst in de bijbehorende module en gekoppeld aan het juiste record &mdash; een personeelslid, een leverancier, een vergunning.</div>
+        <div class="step-examples">
+          <span class="step-example">&rarr; Compliance / Vergunningen</span>
+          <span class="step-example">&rarr; Personeel / Jan de Vries</span>
+          <span class="step-example">&rarr; Inkoop / Blycolin</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num green">4</div>
+      <div class="step-body">
+        <div class="step-title">Acties worden automatisch aangemaakt</div>
+        <div class="step-desc">Op basis van het document stelt Vera één of meerdere acties voor &mdash; of maakt ze direct aan. De manager keurt goed of past aan.</div>
+        <div class="step-examples">
+          <span class="step-example">Herinnering 8 weken voor verloopdatum</span>
+          <span class="step-example">Taak: aanvraag verlenging inplannen</span>
+          <span class="step-example">Nieuw personeelslid: onboarding starten</span>
+          <span class="step-example">Factuur: ter goedkeuring naar Exact</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num blue">5</div>
+      <div class="step-body">
+        <div class="step-title">Terug te vinden via &eacute;&eacute;n zoekbalk</div>
+        <div class="step-desc">Alles is doorzoekbaar. &ldquo;Vergunning&rdquo;, &ldquo;contract Marek&rdquo;, &ldquo;legionella 2024&rdquo; &mdash; Vera vindt het direct, ongeacht waar het is opgeslagen.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section-label">Meer manieren waarop Vera werkt</div>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="step-num coral">&rarr;</div>
+      <div class="step-body">
+        <div class="step-title">Proactieve signalen &mdash; zonder dat je ernaar vraagt</div>
+        <div class="step-desc">Vera bewaakt vervaldatums, budget-afwijkingen, personeelsgaten en compliance-taken. Als er iets dreigt mis te gaan, verschijnt het in de Ochtendblik &mdash; voordat het een probleem wordt.</div>
+        <div class="step-examples">
+          <span class="step-example">BHV Sandra verloopt over 6 weken</span>
+          <span class="step-example">Personeelskosten +12% vs budget</span>
+          <span class="step-example">Kamer 204 leeg &mdash; legionella spoelronde</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num purple">&rarr;</div>
+      <div class="step-body">
+        <div class="step-title">Nachtassistent &mdash; terwijl jij slaapt</div>
+        <div class="step-desc">Buiten kantooruren handelt Vera gastenverzoeken en operationele meldingen af op basis van ingestelde protocollen. Escalatie naar de juiste persoon als het nodig is. Alles gelogd voor het ochtendrapport.</div>
+        <div class="step-examples">
+          <span class="step-example">Lekkage kamer 204 &rarr; noodprotocol</span>
+          <span class="step-example">Late check-in &rarr; digitale sleutel verstuurd</span>
+          <span class="step-example">Airco klacht &rarr; gelogd voor TD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section-label">Drie leidende principes</div>
+  <div class="principle-row">
+    <div class="principle-card">
+      <div class="principle-icon">&#129504;</div>
+      <div class="principle-title">Geen manager hoeft iets te onthouden</div>
+      <div class="principle-text">Vervaldatums, deadlines, protocollen &mdash; het systeem bewaakt alles. De manager handelt, het systeem herinnert.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">&#128229;</div>
+      <div class="principle-title">E&eacute;n invoer, meerdere acties</div>
+      <div class="principle-text">Een document uploaden, een melding bevestigen of een beslissing nemen &mdash; Vera vertaalt dat automatisch naar vervolgstappen in de juiste modules.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-icon">&#128268;</div>
+      <div class="principle-title">Geen vervanger, een bestuurslaag</div>
+      <div class="principle-text">Vera vervangt Mews, Shiftbase of Exact Online niet. Het zit eroverheen als intelligentielaag die alle systemen samenbrengt voor de manager.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TAB 3: INTEGRATIES -->
+<div id="tab-integraties" class="tab-panel">
+<div class="container">
+  <div class="section-label">Leeswijzer</div>
+  <div class="int-note">
+    <strong>Must have</strong> &mdash; kernfunctionaliteit werkt hier van af. &nbsp;<strong>Should have</strong> &mdash; sterk verhoogt de waarde, fase 2. &nbsp;<strong>Could have</strong> &mdash; nice-to-have, afhankelijk van klant.
+  </div>
+
+  <div class="int-group-label">Operationeel &mdash; PMS &amp; kanalen</div>
+  <div class="int-header">
+    <div class="int-header-label">Systeem</div>
+    <div class="int-header-label">Type</div>
+    <div class="int-header-label">Prioriteit</div>
+    <div class="int-header-label">Status</div>
+  </div>
+  <div class="integrations-grid">
+    <div class="int-row"><div><div class="int-name">Mews PMS</div><div class="int-category">Boekingen &middot; check-in/out &middot; kamerstatus &middot; housekeeping</div></div><div class="int-type">REST API</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Booking.com</div><div class="int-category">OTA &middot; reserveringen &middot; reviews &middot; beschikbaarheid</div></div><div class="int-type">REST API</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Google Reviews + Hotel Ads</div><div class="int-category">Reviews &middot; Google My Business &middot; Hotel Ads</div></div><div class="int-type">REST API</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Expedia / Hotels.com</div><div class="int-category">OTA &middot; reserveringen &middot; tarieven</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+  </div>
+
+  <div class="int-group-label">Financi&euml;el &amp; boekhouding</div>
+  <div class="integrations-grid">
+    <div class="int-row"><div><div class="int-name">Exact Online</div><div class="int-category">Boekhouding &middot; facturen &middot; debiteuren &middot; crediteuren</div></div><div class="int-type">REST API</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Omniboost</div><div class="int-category">Financi&euml;le data-brug PMS &harr; boekhoudpakket</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">STR / AirDNA</div><div class="int-category">Marktbenchmark &middot; RevPAR vs comp-set</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+  </div>
+
+  <div class="int-group-label">Personeel &amp; HR</div>
+  <div class="integrations-grid">
+    <div class="int-row"><div><div class="int-name">Shiftbase</div><div class="int-category">Roosterplanning &middot; diensten &middot; urenregistratie &middot; verlof</div></div><div class="int-type">REST API</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">AFAS / Loket.nl</div><div class="int-category">HR &middot; salarissen &middot; contracten &middot; verlof</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+  </div>
+
+  <div class="int-group-label">Compliance &amp; veiligheid</div>
+  <div class="integrations-grid">
+    <div class="int-row"><div><div class="int-name">Vergunningenregister</div><div class="int-category">Zelf te bouwen &mdash; geen bestaand systeem voor NL hotels</div></div><div class="int-type">Custom</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status custom">Zelf bouwen</span></div></div>
+    <div class="int-row"><div><div class="int-name">UCare4</div><div class="int-category">Legionella &middot; brandveiligheid &middot; HACCP &middot; gebouwcompliance</div></div><div class="int-type">Export</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status export">Onderzoek</span></div></div>
+    <div class="int-row"><div><div class="int-name">FoodDocs</div><div class="int-category">HACCP-plan &middot; monitoring &middot; traceerbaarheid</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Incidentenlog / RI&amp;E</div><div class="int-category">Zelf te bouwen &mdash; formulier + opslag + rapportage</div></div><div class="int-type">Custom</div><div><span class="int-priority must">Must have</span></div><div><span class="int-status custom">Zelf bouwen</span></div></div>
+  </div>
+
+  <div class="int-group-label">Communicatie &amp; automatisering</div>
+  <div class="integrations-grid">
+    <div class="int-row"><div><div class="int-name">E-mail (Gmail / Outlook)</div><div class="int-category">Inkomende mail &middot; notificaties &middot; overdrachtsberichten</div></div><div class="int-type">REST API</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+    <div class="int-row"><div><div class="int-name">Make.com</div><div class="int-category">Visuele workflows voor systemen zonder directe API</div></div><div class="int-type">Webhook</div><div><span class="int-priority should">Should have</span></div><div><span class="int-status webhook">Webhook</span></div></div>
+    <div class="int-row"><div><div class="int-name">WhatsApp Business API</div><div class="int-category">Gastcommunicatie &middot; nachtmeldingen &middot; escalaties</div></div><div class="int-type">REST API</div><div><span class="int-priority could">Could have</span></div><div><span class="int-status api">API beschikbaar</span></div></div>
+  </div>
+
+  <div class="int-note" style="margin-top:20px">
+    <strong>Bouwadvies:</strong> Start met Mews + Shiftbase + Exact Online &mdash; drie systemen die samen 80% van de dagelijkse operatie dekken. Vergunningenregister en incidentenlog zijn kleine eigen modules (formulier + database + notificaties) die een week bouwen kosten maar nergens anders bestaan. Make.com als vangnet voor systemen zonder goede API.
+  </div>
+</div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+  let tipTimer;
+  function tip(msg) {
+    const el = document.getElementById('tooltip');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(tipTimer);
+    tipTimer = setTimeout(() => el.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
