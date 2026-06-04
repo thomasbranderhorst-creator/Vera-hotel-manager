@@ -1,4 +1,4 @@
-# Henk Dashboard
+# Vera Dashboard
 ### Hotel operatie op één plek
 
 Een standalone dashboard-structuur voor independent hotelmanagers. Gebouwd als interactief HTML-prototype — geen server, geen dependencies, direct te openen in elke browser.
@@ -7,7 +7,7 @@ Een standalone dashboard-structuur voor independent hotelmanagers. Gebouwd als i
 
 ## Wat is dit?
 
-Henk Dashboard is een concept voor een hotel operatie platform dat de manager centraal stelt in plaats van de receptie of het revenue team. Het brengt alle operationele, financiële, personele en compliance-taken samen in één interface.
+Vera Dashboard is een concept voor een hotel operatie platform dat de manager centraal stelt in plaats van de receptie of het revenue team. Het brengt alle operationele, financiële, personele en compliance-taken samen in één interface.
 
 Het huidige bestand (`index.html`) is een **klikbaar structuurdiagram** van het volledige platform — bedoeld als werkinstrument voor gesprekken met compagnons, investeerders en ontwikkelaars.
 
@@ -64,7 +64,7 @@ Activeer GitHub Pages onder **Settings → Pages → Branch: main → / (root)**
 
 Na ~1 minuut bereikbaar op:
 ```
-https://<jouwgebruikersnaam>.github.io/henk-dashboard/
+https://<jouwgebruikersnaam>.github.io/Vera-dashboard/
 ```
 
 ---
