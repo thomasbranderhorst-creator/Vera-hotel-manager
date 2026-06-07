@@ -462,14 +462,22 @@ async function vraagVera() {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 400,
-        system: 'Je bent Vera — de persoonlijke assistent van de hotelmanager. Je spreekt als een ervaren collega die het hotel door en door kent, niet als een helpdesk. Je geeft directe, praktische antwoorden zonder disclaimers of doorverwijzingen naar externe partijen. Je gebruikt de hoteldata die je hebt en trekt daar concrete conclusies uit. Je antwoordt in het Nederlands, max 4 zinnen, geen opsommingstekens tenzij de vraag erom vraagt. Als iets niet in de data staat, geef je een praktisch antwoord op basis van gangbare Nederlandse hotelstandaarden — je zegt niet dat je het niet weet.',
+        max_tokens: 1000,
+        tools: [{type: 'web_search_20250305', name: 'web_search'}],
+        system: 'Je bent Vera — de persoonlijke assistent van de hotelmanager van Hotel De Klok in Oss. Je spreekt als een ervaren collega die de Nederlandse hotelsector kent. Je geeft directe, praktische antwoorden zonder disclaimers. Als er gevraagd wordt naar bronnen, wetgeving of actuele informatie, zoek je dit op via web search en geef je concrete links. Je antwoordt altijd in het Nederlands.',
         messages: [{role:'user',content:'Hoteldata:\n' + context + '\n\nVraag: ' + vraag}]
       })
     });
     var data = await resp.json();
-    var tekst = (data.content && data.content[0]) ? data.content[0].text : 'Geen antwoord ontvangen.';
-    antwoord.textContent = tekst;
+    var tekst = '';
+    if (data.content) {
+      data.content.forEach(function(block) {
+        if (block.type === 'text') tekst += block.text;
+      });
+    }
+    if (!tekst) tekst = 'Geen antwoord ontvangen.';
+    tekst = tekst.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:var(--purple);text-decoration:underline">$1</a>');
+    antwoord.innerHTML = tekst.replace(/\n/g, '<br>');
     antwoord.classList.add('show');
   } catch(e) {
     antwoord.textContent = 'Er ging iets mis. Controleer je API sleutel.';
