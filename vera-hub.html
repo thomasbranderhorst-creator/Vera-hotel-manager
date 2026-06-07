@@ -321,6 +321,9 @@ function updateApiStatus() {
 }
 
 // Init
+// Globale data containers
+var mewsData = [], shiftbaseData = [], exactData = null, documentenData = [];
+
 async function init() {
   updateApiStatus();
   setDatum();
@@ -331,8 +334,92 @@ async function init() {
     document.getElementById('hotel-sub').textContent = hotel.data.naam;
   }
 
-  await Promise.all([laadCompliance(), laadActies(), laadMedewerkers()]);
+  await Promise.all([laadCompliance(), laadActies(), laadMedewerkers(), laadSystemData()]);
   updateSignalen();
+}
+
+async function laadSystemData() {
+  // Laad gesimuleerde data van alle systemen
+  var [mews, shift, exact, docs] = await Promise.all([
+    sb.from('mews_bezetting').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(7),
+    sb.from('shiftbase_rooster').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(10),
+    sb.from('exact_financials').select('*').eq('hotel_id', HOTEL_ID).order('periode', {ascending:false}).limit(1),
+    sb.from('documenten').select('*').eq('hotel_id', HOTEL_ID).order('created_at', {ascending:false}).limit(10)
+  ]);
+  mewsData = mews.data || [];
+  shiftbaseData = shift.data || [];
+  exactData = exact.data && exact.data[0] ? exact.data[0] : null;
+  documentenData = docs.data || [];
+}
+
+function bouwRijkeContext() {
+  var ctx = 'HOTEL: Hotel De Klok, Oss, 45 kamers.\n\n';
+
+  // Mews bezetting
+  if (mewsData.length > 0) {
+    var vandaag = mewsData[0];
+    ctx += 'MEWS (bezetting):\n';
+    ctx += '- Vandaag: ' + vandaag.bezettingsgraad + '% bezet, ' + vandaag.kamers_bezet + ' kamers\n';
+    ctx += '- Aankomsten vandaag: ' + vandaag.aankomsten + ', vertrekken: ' + vandaag.vertrekken + '\n';
+    ctx += '- Forecast komende week: ' + mewsData.map(function(d){
+      return new Date(d.datum).toLocaleDateString('nl-NL',{weekday:'short'}) + ' ' + d.bezettingsgraad + '%';
+    }).join(', ') + '\n\n';
+  }
+
+  // Shiftbase rooster
+  var vandaagRooster = shiftbaseData.filter(function(s){ return s.datum === new Date().toISOString().split('T')[0]; });
+  if (vandaagRooster.length > 0) {
+    ctx += 'SHIFTBASE (rooster vandaag):\n';
+    vandaagRooster.forEach(function(s){
+      ctx += '- ' + s.medewerker_naam + ' (' + s.functie + ') ' + s.dienst_start + '-' + s.dienst_eind + (s.bhv_gecertificeerd ? ' [BHV]' : '') + '\n';
+    });
+    var bhvVandaag = vandaagRooster.filter(function(s){return s.bhv_gecertificeerd;});
+    ctx += '- BHV dekking vandaag: ' + (bhvVandaag.length > 0 ? 'JA (' + bhvVandaag[0].medewerker_naam + ')' : 'NIET GEDEKT') + '\n\n';
+  }
+
+  // Exact Online
+  if (exactData) {
+    var budgetPct = Math.round(exactData.omzet_mtd / exactData.omzet_budget * 100);
+    ctx += 'EXACT ONLINE (financiën deze maand):\n';
+    ctx += '- Omzet MTD: €' + exactData.omzet_mtd.toLocaleString('nl-NL') + ' van budget €' + exactData.omzet_budget.toLocaleString('nl-NL') + ' (' + budgetPct + '%)\n';
+    ctx += '- OTA-commissie: ' + exactData.ota_commissie_pct + '%\n';
+    ctx += '- Personeelskosten: ' + exactData.personeelskosten_pct + '% van omzet\n';
+    ctx += '- Openstaande facturen: ' + exactData.openstaande_facturen + '\n';
+    ctx += '- Cashflow 30 dagen: €' + exactData.cashflow_30d.toLocaleString('nl-NL') + '\n\n';
+  }
+
+  // Compliance
+  ctx += 'COMPLIANCE (' + complianceData.length + ' items):\n';
+  var groen = complianceData.filter(function(i){return i.status==='groen';});
+  var open = complianceData.filter(function(i){return i.status==='geen_document'||i.status==='rood';});
+  ctx += '- In orde: ' + groen.length + ' items\n';
+  ctx += '- Aandacht nodig: ' + open.length + ' items: ' + open.slice(0,5).map(function(i){return i.naam;}).join(', ') + (open.length>5?'...':'') + '\n\n';
+
+  // Medewerkers
+  ctx += 'MEDEWERKERS (' + medewData.length + ' actief):\n';
+  medewData.forEach(function(m){
+    ctx += '- ' + m.naam + ' (' + (m.functie||'onbekend') + ')';
+    if (m.bhv_geldig_tot) ctx += ', BHV geldig t/m ' + new Date(m.bhv_geldig_tot).toLocaleDateString('nl-NL');
+    ctx += '\n';
+  });
+  ctx += '\n';
+
+  // Open acties
+  if (actiesData.length > 0) {
+    ctx += 'OPEN ACTIES (' + actiesData.length + '):\n';
+    actiesData.slice(0,5).forEach(function(a){ ctx += '- ' + a.titel + '\n'; });
+    ctx += '\n';
+  }
+
+  // Geüploade documenten
+  if (documentenData.length > 0) {
+    ctx += 'GEÜPLOADE DOCUMENTEN:\n';
+    documentenData.forEach(function(d){
+      ctx += '- ' + d.bestandsnaam + ': ' + (d.vera_type||'onbekend') + (d.vera_samenvatting ? ' — ' + d.vera_samenvatting : '') + (d.vera_vervaldatum ? ' (geldig t/m ' + new Date(d.vera_vervaldatum).toLocaleDateString('nl-NL') + ')' : '') + '\n';
+    });
+  }
+
+  return ctx;
 }
 
 function setDatum() {
@@ -444,12 +531,7 @@ async function vraagVera() {
   btn.disabled = true;
   antwoord.classList.remove('show');
 
-  var context = 'Hotel: Hotel De Klok, Oss, 45 kamers.\n' +
-    'Compliance: ' + complianceData.length + ' items totaal, ' +
-    complianceData.filter(function(i){return i.status==='groen';}).length + ' groen, ' +
-    complianceData.filter(function(i){return i.status==='geen_document';}).length + ' zonder document.\n' +
-    'Open acties: ' + actiesData.length + '\n' +
-    'Medewerkers: ' + medewData.map(function(m){return m.naam + ' (' + (m.functie||'') + ', BHV: ' + (m.bhv_geldig_tot||'geen') + ')';}).join(', ');
+  var context = bouwRijkeContext();
 
   try {
     var resp = await fetch('https://api.anthropic.com/v1/messages', {
