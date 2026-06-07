@@ -30,39 +30,59 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(94,201,110,0.5)}
 .api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
-.main{max-width:960px;margin:0 auto;padding:32px 24px 80px}
-.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:24px}
+.nav-tabs{display:flex;gap:4px;margin-left:20px}
+.nav-tab{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:var(--text3);padding:6px 14px;border-radius:6px;transition:all .15s}
+.nav-tab:hover{color:var(--text2);background:var(--bg3)}
+.nav-tab.active{color:var(--text);background:var(--purple-bg);border:1px solid var(--purple-border)}
+.main{max-width:960px;margin:0 auto;padding:24px 24px 80px}
+.view{display:none}
+.view.active{display:block}
+
+/* Summary */
+.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:20px}
 .summary-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:14px 16px}
 .summary-val{font-size:28px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);margin-bottom:3px}
 .summary-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
 .summary-card.groen{border-color:var(--green-border)}.summary-card.groen .summary-val{color:var(--green)}
 .summary-card.oranje{border-color:var(--amber-border)}.summary-card.oranje .summary-val{color:var(--amber)}
 .summary-card.rood{border-color:var(--coral-border)}.summary-card.rood .summary-val{color:var(--coral)}
-.upload-panel{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:12px;padding:20px 24px;margin-bottom:20px}
-.upload-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px}
-.upload-sub{font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6}
-.upload-zone{border:2px dashed var(--purple-border);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all .2s}
+
+/* Upload */
+.upload-panel{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:12px;padding:18px 22px;margin-bottom:18px}
+.upload-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px}
+.upload-sub{font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.6}
+.upload-zone{border:2px dashed var(--purple-border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;transition:all .2s}
 .upload-zone:hover,.upload-zone.dragover{border-color:var(--purple);background:rgba(124,111,247,0.08)}
-.upload-icon{font-size:26px;margin-bottom:8px}
+.upload-icon{font-size:24px;margin-bottom:7px}
 .upload-text{font-size:12px;color:var(--text2)}
 .upload-link{color:var(--purple);cursor:pointer}
 input[type="file"]{display:none}
-.vera-result{background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:8px;padding:16px 18px;margin-top:12px;display:none}
+.vera-result{background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:8px;padding:14px 16px;margin-top:10px;display:none}
 .vera-result.show{display:block}
-.vera-result-title{font-size:12px;font-weight:500;color:var(--teal);margin-bottom:10px}
-.vera-field{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(45,212,160,0.15);font-size:12px}
+.vera-result-title{font-size:12px;font-weight:500;color:var(--teal);margin-bottom:8px}
+.vera-field{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(45,212,160,0.15);font-size:12px}
 .vera-field:last-of-type{border-bottom:none}
 .vera-field-lbl{color:var(--text3)}
 .vera-field-val{color:var(--text);font-family:'DM Mono',monospace;font-size:11px}
 .vera-field-val.editable{background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:3px 8px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;min-width:160px}
-.btn-row{display:flex;gap:8px;margin-top:14px}
+.vera-field-val.editable:focus{border-color:var(--teal)}
+.btn-row{display:flex;gap:8px;margin-top:12px}
 .btn-primary{background:var(--purple);border:none;border-radius:7px;padding:9px 18px;font-size:12px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',sans-serif}
 .btn-secondary{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 18px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif}
-.filter-row{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+
+/* Medewerker select */
+.vera-field select.editable{background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;min-width:160px}
+
+/* Filter */
+.filter-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
 .filter-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer;transition:all .15s}
 .filter-btn:hover{color:var(--text2);border-color:var(--border2)}
 .filter-btn.active{background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple)}
-.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:16px 0 10px}
+
+/* Section */
+.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:14px 0 8px}
+
+/* Items */
 .compliance-grid{display:flex;flex-direction:column;gap:5px}
 .item-row{display:grid;grid-template-columns:24px 1fr 130px 110px 90px;gap:12px;align-items:center;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 16px;transition:border-color .2s;cursor:pointer}
 .item-row:hover{border-color:rgba(255,255,255,0.2)}
@@ -90,24 +110,51 @@ input[type="file"]{display:none}
 .tag-oranje{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
 .tag-rood{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
 .tag-geen_document{background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)}
+
+/* Acties */
+.actie-row{display:grid;grid-template-columns:24px 1fr 90px 80px 80px;gap:12px;align-items:center;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 16px;transition:border-color .2s}
+.actie-row:hover{border-color:rgba(255,255,255,0.2)}
+.actie-prio{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.actie-prio.urgent{background:var(--coral);box-shadow:0 0 6px rgba(255,112,96,0.5)}
+.actie-prio.normaal{background:var(--amber)}
+.actie-prio.laag{background:var(--gray)}
+.actie-titel{font-size:13px;font-weight:500;color:var(--text)}
+.actie-omschrijving{font-size:11px;color:var(--text3);margin-top:2px}
+.actie-deadline{font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-align:right}
+.actie-deadline.verlopen{color:var(--coral)}
+.actie-deadline.binnenkort{color:var(--amber)}
+.actie-status-tag{font-size:10px;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:20px;text-align:center;cursor:pointer}
+.tag-open{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.tag-in_behandeling{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.tag-afgerond{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.actie-bron{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+
+/* Medewerkers */
+.medew-row{display:grid;grid-template-columns:1fr 100px 130px 80px;gap:12px;align-items:center;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:11px 16px}
+.medew-naam{font-size:13px;font-weight:500;color:var(--text)}
+.medew-functie{font-size:11px;color:var(--text3);margin-top:2px}
+.medew-bhv{font-size:11px;font-family:'DM Mono',monospace}
+.medew-bhv.geldig{color:var(--green)}
+.medew-bhv.binnenkort{color:var(--amber)}
+.medew-bhv.verlopen{color:var(--coral)}
+
+/* Detail panel */
 .detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none}
 .detail-overlay.open{display:block}
-.detail-panel{position:fixed;right:0;top:0;bottom:0;width:400px;background:var(--bg2);border-left:1px solid var(--border2);z-index:201;overflow-y:auto;padding:24px;transform:translateX(100%);transition:transform .25s}
+.detail-panel{position:fixed;right:0;top:0;bottom:0;width:420px;background:var(--bg2);border-left:1px solid var(--border2);z-index:201;overflow-y:auto;padding:24px;transform:translateX(100%);transition:transform .25s}
 .detail-panel.open{transform:translateX(0)}
 .detail-close{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--text2);cursor:pointer;margin-bottom:20px;font-family:'DM Sans',sans-serif}
 .detail-naam{font-size:17px;font-weight:600;color:var(--text);margin-bottom:4px}
-.detail-basis{font-size:11px;color:var(--text3);margin-bottom:18px}
+.detail-basis{font-size:11px;color:var(--text3);margin-bottom:16px}
 .detail-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
 .detail-row:last-child{border-bottom:none}
 .detail-lbl{color:var(--text3)}
 .detail-val{color:var(--text2);font-family:'DM Mono',monospace;font-size:11px}
 .detail-edit{background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:4px 8px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text);outline:none}
+.detail-edit:focus{border-color:var(--purple)}
 .detail-save-btn{background:var(--purple);border:none;border-radius:6px;padding:8px 16px;font-size:12px;font-weight:500;color:white;cursor:pointer;margin-top:16px;font-family:'DM Sans',sans-serif;width:100%}
-.loading{text-align:center;padding:48px 0;color:var(--text3);font-size:13px}
-.spinner{width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
-.toast.show{opacity:1}
+
+/* API Modal */
 #api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
 #api-modal.open{display:flex}
 .api-box{background:#1e2230;border:1px solid rgba(124,111,247,0.3);border-radius:12px;padding:28px 32px;max-width:420px;width:90%}
@@ -118,7 +165,19 @@ input[type="file"]{display:none}
 #btn-save-key{flex:1;background:#7c6ff7;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
 #btn-skip-key{background:#1e2230;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 16px;font-size:12px;color:#8b90a0;cursor:pointer}
 .api-note{font-size:10px;color:#555c70;margin-top:10px;text-align:center}
-@media(max-width:700px){.summary-strip{grid-template-columns:1fr 1fr}.item-row{grid-template-columns:18px 1fr 80px}.item-cat,.item-datum{display:none}.detail-panel{width:100%}}
+
+/* Loading/toast */
+.loading{text-align:center;padding:40px 0;color:var(--text3);font-size:13px}
+.spinner{width:22px;height:22px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.toast.show{opacity:1}
+@media(max-width:700px){
+  .summary-strip{grid-template-columns:1fr 1fr}
+  .item-row{grid-template-columns:18px 1fr 80px}
+  .item-cat,.item-datum{display:none}
+  .detail-panel{width:100%}
+}
 </style>
 </head>
 <body>
@@ -128,6 +187,11 @@ input[type="file"]{display:none}
   <div class="logo-name">Vera</div>
   <div class="topbar-div"></div>
   <div class="topbar-page">Compliance Cockpit</div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-view="compliance">Compliance</button>
+    <button class="nav-tab" data-view="acties">Acties</button>
+    <button class="nav-tab" data-view="medewerkers">Medewerkers</button>
+  </nav>
   <div class="topbar-right">
     <div class="status-dot"></div>
     <div class="hotel-badge" id="hotel-naam">Laden...</div>
@@ -139,7 +203,7 @@ input[type="file"]{display:none}
 <div id="api-modal">
   <div class="api-box">
     <h3>&#128274; Anthropic API sleutel</h3>
-    <p>Vul je API sleutel in om Vera documenten te laten uitlezen. Wordt alleen in je browser opgeslagen, nooit op GitHub.</p>
+    <p>Vul je API sleutel in om Vera documenten te laten uitlezen. Wordt alleen in je browser opgeslagen.</p>
     <input id="api-input" type="password" placeholder="sk-ant-api03-...">
     <div class="api-btns">
       <button id="btn-save-key">Opslaan in browser</button>
@@ -150,49 +214,82 @@ input[type="file"]{display:none}
 </div>
 
 <div class="main">
-  <div class="summary-strip">
-    <div class="summary-card groen"><div class="summary-val" id="cnt-groen">—</div><div class="summary-lbl">In orde</div></div>
-    <div class="summary-card oranje"><div class="summary-val" id="cnt-oranje">—</div><div class="summary-lbl">Let op</div></div>
-    <div class="summary-card rood"><div class="summary-val" id="cnt-rood">—</div><div class="summary-lbl">Kritiek</div></div>
-    <div class="summary-card"><div class="summary-val" id="cnt-geen">—</div><div class="summary-lbl">Geen document</div></div>
-  </div>
 
-  <div class="upload-panel">
-    <div class="upload-title">&#128441;&#65039; Document uploaden</div>
-    <div class="upload-sub">Sleep een vergunning, certificaat of rapport hierin. Vera herkent het type en koppelt het aan het juiste compliance-item.</div>
-    <div class="upload-zone" id="upload-zone">
-      <div class="upload-icon">&#128229;</div>
-      <div class="upload-text">Sleep een bestand hierin of <span class="upload-link" id="upload-link">klik om te uploaden</span></div>
+  <!-- ── VIEW: COMPLIANCE ── -->
+  <div class="view active" id="view-compliance">
+    <div class="summary-strip">
+      <div class="summary-card groen"><div class="summary-val" id="cnt-groen">—</div><div class="summary-lbl">In orde</div></div>
+      <div class="summary-card oranje"><div class="summary-val" id="cnt-oranje">—</div><div class="summary-lbl">Let op</div></div>
+      <div class="summary-card rood"><div class="summary-val" id="cnt-rood">—</div><div class="summary-lbl">Kritiek</div></div>
+      <div class="summary-card"><div class="summary-val" id="cnt-geen">—</div><div class="summary-lbl">Geen document</div></div>
     </div>
-    <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png">
-    <div class="vera-result" id="vera-result">
-      <div class="vera-result-title">&#10024; Vera heeft het document herkend</div>
-      <div class="vera-field"><span class="vera-field-lbl">Type</span><span class="vera-field-val" id="vr-type">—</span></div>
-      <div class="vera-field"><span class="vera-field-lbl">Naam</span><input class="vera-field-val editable" id="vr-naam" placeholder="Naam persoon of object"></div>
-      <div class="vera-field"><span class="vera-field-lbl">Vervaldatum</span><input class="vera-field-val editable" id="vr-datum" type="date"></div>
-      <div class="vera-field"><span class="vera-field-lbl">Categorie</span><span class="vera-field-val" id="vr-cat">—</span></div>
-      <div class="vera-field"><span class="vera-field-lbl">Actie</span><span class="vera-field-val" id="vr-actie" style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);max-width:220px;text-align:right">—</span></div>
-      <div class="btn-row">
-        <button class="btn-primary" id="btn-opslaan">&#10003; Bevestigen</button>
-        <button class="btn-secondary" id="btn-afwijzen">Afwijzen</button>
+
+    <div class="upload-panel">
+      <div class="upload-title">&#128441;&#65039; Document uploaden</div>
+      <div class="upload-sub">Sleep een vergunning, certificaat of rapport hierin. Vera herkent het type en koppelt het aan het juiste item.</div>
+      <div class="upload-zone" id="upload-zone">
+        <div class="upload-icon">&#128229;</div>
+        <div class="upload-text">Sleep een bestand hierin of <span class="upload-link" id="upload-link">klik om te uploaden</span></div>
+      </div>
+      <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png">
+      <div class="vera-result" id="vera-result">
+        <div class="vera-result-title">&#10024; Vera heeft het document herkend</div>
+        <div class="vera-field"><span class="vera-field-lbl">Type</span><span class="vera-field-val" id="vr-type">—</span></div>
+        <div class="vera-field">
+          <span class="vera-field-lbl">Medewerker</span>
+          <select class="vera-field-val editable" id="vr-medewerker">
+            <option value="">— Niet van toepassing —</option>
+          </select>
+        </div>
+        <div class="vera-field"><span class="vera-field-lbl">Vervaldatum</span><input class="vera-field-val editable" id="vr-datum" type="date"></div>
+        <div class="vera-field"><span class="vera-field-lbl">Categorie</span><span class="vera-field-val" id="vr-cat">—</span></div>
+        <div class="vera-field"><span class="vera-field-lbl">Actie</span><span class="vera-field-val" id="vr-actie" style="font-family:'DM Sans',sans-serif;font-size:11px;color:var(--text2);max-width:220px;text-align:right">—</span></div>
+        <div class="btn-row">
+          <button class="btn-primary" id="btn-opslaan">&#10003; Bevestigen</button>
+          <button class="btn-secondary" id="btn-afwijzen">Afwijzen</button>
+        </div>
       </div>
     </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="alle">Alle</button>
+      <button class="filter-btn" data-filter="geen_document">Geen document</button>
+      <button class="filter-btn" data-filter="rood">Kritiek</button>
+      <button class="filter-btn" data-filter="oranje">Let op</button>
+      <button class="filter-btn" data-filter="groen">In orde</button>
+    </div>
+
+    <div class="section-label">Compliance items</div>
+    <div class="compliance-grid" id="grid">
+      <div class="loading"><div class="spinner"></div>Laden...</div>
+    </div>
   </div>
 
-  <div class="filter-row">
-    <button class="filter-btn active" data-filter="alle">Alle</button>
-    <button class="filter-btn" data-filter="geen_document">Geen document</button>
-    <button class="filter-btn" data-filter="rood">Kritiek</button>
-    <button class="filter-btn" data-filter="oranje">Let op</button>
-    <button class="filter-btn" data-filter="groen">In orde</button>
+  <!-- ── VIEW: ACTIES ── -->
+  <div class="view" id="view-acties">
+    <div class="filter-row">
+      <button class="filter-btn active" data-actie-filter="alle">Alle</button>
+      <button class="filter-btn" data-actie-filter="open">Open</button>
+      <button class="filter-btn" data-actie-filter="in_behandeling">In behandeling</button>
+      <button class="filter-btn" data-actie-filter="afgerond">Afgerond</button>
+    </div>
+    <div class="section-label">Acties</div>
+    <div id="acties-grid">
+      <div class="loading"><div class="spinner"></div>Laden...</div>
+    </div>
   </div>
 
-  <div class="section-label">Compliance items</div>
-  <div class="compliance-grid" id="grid">
-    <div class="loading"><div class="spinner"></div>Vera laadt compliance items...</div>
+  <!-- ── VIEW: MEDEWERKERS ── -->
+  <div class="view" id="view-medewerkers">
+    <div class="section-label">Medewerkers &amp; certificaten</div>
+    <div id="medew-grid">
+      <div class="loading"><div class="spinner"></div>Laden...</div>
+    </div>
   </div>
+
 </div>
 
+<!-- Detail panel -->
 <div class="detail-overlay" id="overlay"></div>
 <div class="detail-panel" id="panel">
   <button class="detail-close" id="detail-close">&#8592; Sluiten</button>
@@ -212,17 +309,28 @@ const sb = createClient(
 );
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
 let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
-let allItems = [];
-let activeItem = null;
-let pendingDoc = null;
+let allItems = [], allActies = [], allMedewerkers = [];
+let activeItem = null, pendingDoc = null;
 
-// API modal
+// ── Nav tabs ──
+document.querySelectorAll('.nav-tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.nav-tab').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+    this.classList.add('active');
+    document.getElementById('view-' + this.dataset.view).classList.add('active');
+    if (this.dataset.view === 'acties') laadActies();
+    if (this.dataset.view === 'medewerkers') laadMedewerkers();
+  });
+});
+
+// ── API Modal ──
 document.getElementById('api-status-btn').addEventListener('click', function() {
   document.getElementById('api-modal').classList.add('open');
   document.getElementById('api-input').value = ANTHROPIC_KEY;
 });
 document.getElementById('btn-save-key').addEventListener('click', function() {
-  const key = document.getElementById('api-input').value.trim();
+  var key = document.getElementById('api-input').value.trim();
   if (!key) { showToast('Vul een sleutel in'); return; }
   ANTHROPIC_KEY = key;
   localStorage.setItem('vera_anthropic_key', key);
@@ -233,43 +341,30 @@ document.getElementById('btn-save-key').addEventListener('click', function() {
 document.getElementById('btn-skip-key').addEventListener('click', function() {
   document.getElementById('api-modal').classList.remove('open');
 });
-
 function updateApiStatus() {
-  const btn = document.getElementById('api-status-btn');
-  if (ANTHROPIC_KEY) {
-    btn.textContent = 'API: actief';
-    btn.style.color = 'var(--green)';
-  } else {
-    btn.textContent = 'API: niet ingesteld';
-    btn.style.color = '';
-  }
+  var btn = document.getElementById('api-status-btn');
+  btn.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
+  btn.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
 }
 
-// Init
+// ── Init ──
 async function init() {
   updateApiStatus();
-  const { data: hotel } = await sb.from('hotels').select('naam').eq('id', HOTEL_ID).single();
-  if (hotel) document.getElementById('hotel-naam').textContent = hotel.naam;
+  var hotelResult = await sb.from('hotels').select('naam').eq('id', HOTEL_ID).single();
+  if (hotelResult.data) document.getElementById('hotel-naam').textContent = hotelResult.data.naam;
   await laadItems();
+  await laadMedewerkersVoorSelect();
   setupUpload();
   setupFilters();
   setupDetail();
-  if (!ANTHROPIC_KEY) {
-    setTimeout(function() {
-      document.getElementById('api-modal').classList.add('open');
-    }, 1000);
-  }
+  if (!ANTHROPIC_KEY) setTimeout(function() { document.getElementById('api-modal').classList.add('open'); }, 800);
 }
 
-// Items
+// ── Compliance items ──
 async function laadItems() {
-  const { data, error } = await sb.from('compliance_items')
-    .select('*').eq('hotel_id', HOTEL_ID).order('categorie');
-  if (error) {
-    document.getElementById('grid').innerHTML = '<div class="loading" style="color:var(--coral)">Fout: ' + error.message + '</div>';
-    return;
-  }
-  allItems = data || [];
+  var result = await sb.from('compliance_items').select('*').eq('hotel_id', HOTEL_ID).order('categorie');
+  if (result.error) { document.getElementById('grid').innerHTML = '<div class="loading" style="color:var(--coral)">Fout: ' + result.error.message + '</div>'; return; }
+  allItems = result.data || [];
   updateCounts();
   renderItems(allItems);
 }
@@ -300,19 +395,211 @@ function renderItems(items) {
   });
 }
 
-// Filters
-function setupFilters() {
-  document.querySelectorAll('.filter-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-      this.classList.add('active');
-      var f = this.dataset.filter;
-      renderItems(f === 'alle' ? allItems : allItems.filter(function(i) { return i.status === f; }));
-    });
+// ── Acties ──
+async function laadActies() {
+  var result = await sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id', HOTEL_ID).order('created_at', {ascending: false});
+  if (result.error) { document.getElementById('acties-grid').innerHTML = '<div class="loading" style="color:var(--coral)">Fout: ' + result.error.message + '</div>'; return; }
+  allActies = result.data || [];
+  renderActies(allActies);
+}
+
+function renderActies(acties) {
+  var g = document.getElementById('acties-grid');
+  if (!acties.length) { g.innerHTML = '<div class="loading">Geen acties</div>'; return; }
+  g.innerHTML = acties.map(function(a) {
+    return '<div class="actie-row">' +
+      '<div class="actie-prio ' + (a.prioriteit||'normaal') + '"></div>' +
+      '<div><div class="actie-titel">' + a.titel + '</div><div class="actie-omschrijving">' + (a.compliance_items ? a.compliance_items.naam : '') + (a.omschrijving ? ' &mdash; ' + a.omschrijving.substring(0,60) : '') + '</div></div>' +
+      '<div class="actie-deadline ' + datumKlasse(a.deadline) + '">' + (a.deadline ? fmtDatum(a.deadline) : '—') + '</div>' +
+      '<div class="actie-bron">' + (a.aangemaakt_door === 'vera' ? '&#10024; Vera' : '&#128100; Manager') + '</div>' +
+      '<div class="actie-status-tag tag-' + (a.status||'open') + '" data-id="' + a.id + '">' + actieLbl(a.status) + '</div>' +
+      '</div>';
+  }).join('');
+  document.querySelectorAll('.actie-status-tag').forEach(function(tag) {
+    tag.addEventListener('click', function(e) { toggleActieStatus(this.dataset.id, this); });
   });
 }
 
-// Detail panel
+async function toggleActieStatus(id, el) {
+  var actie = allActies.find(function(a) { return a.id === id; });
+  if (!actie) return;
+  var volgend = {open:'in_behandeling', in_behandeling:'afgerond', afgerond:'open'}[actie.status||'open'];
+  var updates = {status: volgend};
+  if (volgend === 'afgerond') updates.afgerond_op = new Date().toISOString();
+  await sb.from('acties').update(updates).eq('id', id);
+  showToast('Status gewijzigd naar ' + actieLbl(volgend));
+  await laadActies();
+}
+
+// Filter acties
+document.querySelectorAll('[data-actie-filter]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('[data-actie-filter]').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+    var f = this.dataset.actieFilter;
+    renderActies(f === 'alle' ? allActies : allActies.filter(function(a) { return a.status === f; }));
+  });
+});
+
+// ── Medewerkers ──
+async function laadMedewerkers() {
+  var result = await sb.from('medewerkers').select('*').eq('hotel_id', HOTEL_ID).eq('actief', true).order('naam');
+  if (result.error) return;
+  allMedewerkers = result.data || [];
+  renderMedewerkers(allMedewerkers);
+}
+
+async function laadMedewerkersVoorSelect() {
+  var result = await sb.from('medewerkers').select('id,naam').eq('hotel_id', HOTEL_ID).eq('actief', true).order('naam');
+  if (result.error || !result.data) return;
+  allMedewerkers = result.data;
+  var sel = document.getElementById('vr-medewerker');
+  result.data.forEach(function(m) {
+    var opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.naam;
+    sel.appendChild(opt);
+  });
+}
+
+function renderMedewerkers(medewerkers) {
+  var g = document.getElementById('medew-grid');
+  if (!medewerkers.length) { g.innerHTML = '<div class="loading">Geen medewerkers</div>'; return; }
+  g.innerHTML = medewerkers.map(function(m) {
+    var bhvKlasse = m.bhv_geldig_tot ? datumKlasse(m.bhv_geldig_tot) || 'geldig' : 'verlopen';
+    var bhvTekst = m.bhv_geldig_tot ? 'BHV geldig t/m ' + fmtDatum(m.bhv_geldig_tot) : 'Geen BHV';
+    return '<div class="medew-row">' +
+      '<div><div class="medew-naam">' + m.naam + '</div><div class="medew-functie">' + (m.functie||'') + '</div></div>' +
+      '<div class="medew-bhv ' + bhvKlasse + '">' + (m.bhv_type||'BHV') + '</div>' +
+      '<div class="medew-bhv ' + bhvKlasse + '">' + bhvTekst + '</div>' +
+      '<div class="item-tag tag-' + (bhvKlasse === 'verlopen' ? 'rood' : bhvKlasse === 'binnenkort' ? 'oranje' : 'groen') + '">' + (bhvKlasse === 'verlopen' ? 'Verlopen' : bhvKlasse === 'binnenkort' ? 'Binnenkort' : 'Geldig') + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+// ── Upload ──
+function setupUpload() {
+  var zone = document.getElementById('upload-zone');
+  var input = document.getElementById('file-input');
+  var link = document.getElementById('upload-link');
+  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+  zone.addEventListener('drop', function(e) { e.preventDefault(); zone.classList.remove('dragover'); if (e.dataTransfer.files[0]) verwerkBestand(e.dataTransfer.files[0]); });
+  zone.addEventListener('click', function() { input.click(); });
+  link.addEventListener('click', function(e) { e.stopPropagation(); input.click(); });
+  input.addEventListener('change', function() { if (input.files[0]) verwerkBestand(input.files[0]); });
+  document.getElementById('btn-opslaan').addEventListener('click', slaOp);
+  document.getElementById('btn-afwijzen').addEventListener('click', function() {
+    document.getElementById('vera-result').classList.remove('show');
+    pendingDoc = null; resetZone(); showToast('Afgewezen');
+  });
+}
+
+async function verwerkBestand(file) {
+  showToast('Uploaden...');
+  var pad = HOTEL_ID + '/' + Date.now() + '_' + file.name;
+  var uploadResult = await sb.storage.from('vera-documenten').upload(pad, file, {upsert:true});
+  if (uploadResult.error) { showToast('Upload mislukt: ' + uploadResult.error.message); return; }
+  var parsed;
+  if (ANTHROPIC_KEY) {
+    showToast('Vera analyseert...');
+    try {
+      var base64 = await fileToBase64(file);
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 500,
+          system: 'Analyseer het document. Geef ALLEEN geldig JSON terug: {"type":"string","naam_persoon":"string of null","vervaldatum":"YYYY-MM-DD of null","uitvoerder":"string of null","categorie":"legionella of bhv of brand of haccp of vergunning of rie of installatie of energie","actie":"string"}',
+          messages: [{role:'user',content:[{type:'document',source:{type:'base64',media_type:file.type||'application/pdf',data:base64}},{type:'text',text:'Analyseer dit document.'}]}]
+        })
+      });
+      var data = await resp.json();
+      var tekst = (data.content && data.content[0]) ? data.content[0].text : '';
+      parsed = JSON.parse(tekst.replace(/```json|```/g,'').trim());
+      showToast('Vera heeft het document uitgelezen');
+    } catch(e) { parsed = herkenBestandsnaam(file.name); }
+  } else { parsed = herkenBestandsnaam(file.name); }
+  pendingDoc = {parsed:parsed, pad:pad, naam:file.name, type:file.type};
+  document.getElementById('vr-type').textContent = parsed.type || '—';
+  // Selecteer medewerker als naam gevonden
+  if (parsed.naam_persoon) {
+    var sel = document.getElementById('vr-medewerker');
+    for (var i=0; i<sel.options.length; i++) {
+      if (sel.options[i].text.toLowerCase().includes(parsed.naam_persoon.toLowerCase())) {
+        sel.selectedIndex = i; break;
+      }
+    }
+  }
+  document.getElementById('vr-datum').value = parsed.vervaldatum || '';
+  document.getElementById('vr-cat').textContent = parsed.categorie || '—';
+  document.getElementById('vr-actie').textContent = parsed.actie || '—';
+  document.getElementById('vera-result').classList.add('show');
+  resetZone();
+}
+
+function herkenBestandsnaam(naam) {
+  var n = naam.toLowerCase();
+  if (n.includes('bhv') || n.includes('bedrijfshulp')) return {type:'BHV-certificaat',naam_persoon:'Sandra Pietersen',vervaldatum:'2027-03-14',categorie:'bhv',actie:'Koppelen aan medewerker'};
+  if (n.includes('legionella') || n.includes('spoel')) return {type:'Legionella spoelrapport',naam_persoon:null,vervaldatum:null,categorie:'legionella',actie:'Toevoegen aan spoellogboek'};
+  if (n.includes('vergunning')) return {type:'Exploitatievergunning',naam_persoon:null,vervaldatum:null,categorie:'vergunning',actie:'Vervaldatum instellen'};
+  if (n.includes('haccp')) return {type:'HACCP-rapport',naam_persoon:null,vervaldatum:null,categorie:'haccp',actie:'Koppelen aan HACCP-plan'};
+  if (n.includes('brand')) return {type:'Brandveiligheidskeuring',naam_persoon:null,vervaldatum:null,categorie:'brand',actie:'Vervaldatum controleren'};
+  return {type:'Onbekend document',naam_persoon:null,vervaldatum:null,categorie:null,actie:'Handmatig categoriseren'};
+}
+
+async function slaOp() {
+  if (!pendingDoc) return;
+  var p = pendingDoc;
+  var medewId = document.getElementById('vr-medewerker').value || null;
+  var datum = document.getElementById('vr-datum').value || null;
+  var cat = p.parsed.categorie;
+
+  // Document opslaan
+  var docResult = await sb.from('documenten').insert({
+    hotel_id: HOTEL_ID, bestandsnaam: p.naam, opslag_pad: p.pad,
+    bestandstype: p.type||'application/octet-stream',
+    vera_type: p.parsed.type||null, vera_samenvatting: p.parsed.actie||null,
+    vera_vervaldatum: datum, vera_uitvoerder: p.parsed.naam_persoon||null,
+    status: 'goedgekeurd', goedgekeurd_door: 'manager', goedgekeurd_op: new Date().toISOString()
+  });
+  if (docResult.error) { showToast('Fout: ' + docResult.error.message); return; }
+
+  // Compliance item bijwerken
+  if (cat) {
+    var item = allItems.find(function(i) { return i.categorie === cat; });
+    if (item) {
+      var upd = {status:'groen', laatste_update: new Date().toISOString().split('T')[0]};
+      if (datum) upd.vervaldatum = datum;
+      await sb.from('compliance_items').update(upd).eq('id', item.id);
+    }
+  }
+
+  // Medewerker BHV bijwerken
+  if (medewId && datum && cat === 'bhv') {
+    await sb.from('medewerkers').update({bhv_geldig_tot: datum, bhv_type: p.parsed.type||'BHV'}).eq('id', medewId);
+    showToast('BHV-certificaat gekoppeld aan medewerker');
+  }
+
+  // Actie aanmaken
+  if (p.parsed.actie) {
+    var compItem = allItems.find(function(i) { return i.categorie === cat; });
+    await sb.from('acties').insert({
+      hotel_id: HOTEL_ID, compliance_id: compItem ? compItem.id : null,
+      titel: p.parsed.actie,
+      omschrijving: 'Vera — ' + p.naam,
+      deadline: datum||null, aangemaakt_door: 'vera', status: 'open'
+    });
+  }
+
+  document.getElementById('vera-result').classList.remove('show');
+  pendingDoc = null;
+  showToast('Opgeslagen');
+  await laadItems();
+}
+
+// ── Detail panel ──
 function setupDetail() {
   document.getElementById('overlay').addEventListener('click', closeDetail);
   document.getElementById('detail-close').addEventListener('click', closeDetail);
@@ -329,12 +616,10 @@ function openDetail(id) {
     '<div class="detail-row"><span class="detail-lbl">Categorie</span><span class="detail-val">' + activeItem.categorie + '</span></div>' +
     '<div class="detail-row"><span class="detail-lbl">Frequentie</span><span class="detail-val">' + (activeItem.frequentie||'—') + '</span></div>' +
     '<div class="detail-row"><span class="detail-lbl">Vervaldatum</span><input class="detail-edit" id="edit-datum" type="date" value="' + (activeItem.vervaldatum||'') + '"></div>' +
-    '<div class="detail-row"><span class="detail-lbl">Status</span><select class="detail-edit" id="edit-status">' +
-      ['geen_document','groen','oranje','rood'].map(function(s) {
-        return '<option value="' + s + '"' + (activeItem.status===s?' selected':'') + '>' + statusLbl(s) + '</option>';
-      }).join('') +
+    '<div class="detail-row"><span class="detail-lbl">Status wijzigen</span><select class="detail-edit" id="edit-status">' +
+    ['geen_document','groen','oranje','rood'].map(function(s){return '<option value="'+s+'"'+(activeItem.status===s?' selected':'')+'>'+statusLbl(s)+'</option>';}).join('') +
     '</select></div>' +
-    '<div style="padding:9px 0"><span class="detail-lbl" style="font-size:12px;color:var(--text3)">Notities</span></div>' +
+    '<div style="padding:9px 0"><span style="font-size:12px;color:var(--text3)">Notities</span></div>' +
     '<textarea class="detail-edit" id="edit-notities" style="width:100%;min-height:70px;margin-top:4px;resize:vertical">' + (activeItem.notities||'') + '</textarea>';
   document.getElementById('overlay').classList.add('open');
   document.getElementById('panel').classList.add('open');
@@ -343,13 +628,13 @@ function openDetail(id) {
 async function saveDetail() {
   if (!activeItem) return;
   var updates = {
-    vervaldatum: document.getElementById('edit-datum').value || null,
+    vervaldatum: document.getElementById('edit-datum').value||null,
     status: document.getElementById('edit-status').value,
-    notities: document.getElementById('edit-notities').value || null,
+    notities: document.getElementById('edit-notities').value||null,
     laatste_update: new Date().toISOString().split('T')[0]
   };
-  var result = await sb.from('compliance_items').update(updates).eq('id', activeItem.id);
-  if (result.error) { showToast('Fout: ' + result.error.message); return; }
+  var r = await sb.from('compliance_items').update(updates).eq('id', activeItem.id);
+  if (r.error) { showToast('Fout: ' + r.error.message); return; }
   showToast('Opgeslagen');
   closeDetail();
   await laadItems();
@@ -361,170 +646,39 @@ function closeDetail() {
   activeItem = null;
 }
 
-// Upload
-function setupUpload() {
-  var zone = document.getElementById('upload-zone');
-  var input = document.getElementById('file-input');
-  var link = document.getElementById('upload-link');
-
-  zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
-  zone.addEventListener('drop', function(e) {
-    e.preventDefault(); zone.classList.remove('dragover');
-    if (e.dataTransfer.files[0]) verwerkBestand(e.dataTransfer.files[0]);
-  });
-  zone.addEventListener('click', function() { input.click(); });
-  link.addEventListener('click', function(e) { e.stopPropagation(); input.click(); });
-  input.addEventListener('change', function() { if (input.files[0]) verwerkBestand(input.files[0]); });
-
-  document.getElementById('btn-opslaan').addEventListener('click', slaOp);
-  document.getElementById('btn-afwijzen').addEventListener('click', function() {
-    document.getElementById('vera-result').classList.remove('show');
-    pendingDoc = null;
-    resetZone();
-    showToast('Afgewezen');
+// ── Filters ──
+function setupFilters() {
+  document.querySelectorAll('[data-filter]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('[data-filter]').forEach(function(b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      var f = this.dataset.filter;
+      renderItems(f === 'alle' ? allItems : allItems.filter(function(i) { return i.status === f; }));
+    });
   });
 }
 
-async function verwerkBestand(file) {
-  showToast('Uploaden...');
-  var pad = HOTEL_ID + '/' + Date.now() + '_' + file.name;
-  var uploadResult = await sb.storage.from('vera-documenten').upload(pad, file, {upsert: true});
-  if (uploadResult.error) { showToast('Upload mislukt: ' + uploadResult.error.message); return; }
-
-  var parsed;
-  if (ANTHROPIC_KEY) {
-    showToast('Vera analyseert document...');
-    try {
-      var base64 = await fileToBase64(file);
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 500,
-          system: 'Analyseer het document. Geef ALLEEN geldig JSON terug: {"type":"string","naam_persoon":"string of null","vervaldatum":"YYYY-MM-DD of null","uitvoerder":"string of null","categorie":"legionella of bhv of brand of haccp of vergunning of rie of installatie of energie","actie":"string"}',
-          messages: [{role:'user',content:[{type:'document',source:{type:'base64',media_type:file.type||'application/pdf',data:base64}},{type:'text',text:'Analyseer dit document.'}]}]
-        })
-      });
-      var data = await resp.json();
-      var tekst = (data.content && data.content[0]) ? data.content[0].text : '';
-      parsed = JSON.parse(tekst.replace(/```json|```/g,'').trim());
-      showToast('Vera heeft het document uitgelezen');
-    } catch(e) {
-      console.log('API fallback:', e);
-      parsed = herkenBestandsnaam(file.name);
-    }
-  } else {
-    parsed = herkenBestandsnaam(file.name);
-  }
-
-  pendingDoc = {parsed:parsed, pad:pad, naam:file.name, type:file.type};
-  document.getElementById('vr-type').textContent = parsed.type || '—';
-  document.getElementById('vr-naam').value = parsed.naam_persoon || '';
-  document.getElementById('vr-datum').value = parsed.vervaldatum || '';
-  document.getElementById('vr-cat').textContent = parsed.categorie || '—';
-  document.getElementById('vr-actie').textContent = parsed.actie || '—';
-  document.getElementById('vera-result').classList.add('show');
-  resetZone();
-}
-
-function herkenBestandsnaam(naam) {
-  var n = naam.toLowerCase();
-  if (n.includes('bhv') || n.includes('bedrijfshulp'))
-    return {type:'BHV-certificaat',naam_persoon:'Sandra Pietersen',vervaldatum:'2027-03-14',categorie:'bhv',actie:'Koppelen aan medewerker'};
-  if (n.includes('legionella') || n.includes('spoel'))
-    return {type:'Legionella spoelrapport',naam_persoon:null,vervaldatum:null,categorie:'legionella',actie:'Toevoegen aan spoellogboek'};
-  if (n.includes('vergunning') || n.includes('exploitatie'))
-    return {type:'Exploitatievergunning',naam_persoon:null,vervaldatum:null,categorie:'vergunning',actie:'Vervaldatum instellen'};
-  if (n.includes('haccp') || n.includes('hygiene'))
-    return {type:'HACCP-rapport',naam_persoon:null,vervaldatum:null,categorie:'haccp',actie:'Koppelen aan HACCP-plan'};
-  if (n.includes('brand') || n.includes('brandweer'))
-    return {type:'Brandveiligheidskeuring',naam_persoon:null,vervaldatum:null,categorie:'brand',actie:'Vervaldatum controleren'};
-  return {type:'Onbekend document',naam_persoon:null,vervaldatum:null,categorie:null,actie:'Handmatig categoriseren'};
-}
-
-async function slaOp() {
-  if (!pendingDoc) return;
-  var p = pendingDoc;
-  var naam = document.getElementById('vr-naam').value || null;
-  var datum = document.getElementById('vr-datum').value || null;
-  var cat = p.parsed.categorie;
-
-  var docResult = await sb.from('documenten').insert({
-    hotel_id: HOTEL_ID,
-    bestandsnaam: p.naam,
-    opslag_pad: p.pad,
-    bestandstype: p.type || 'application/octet-stream',
-    vera_type: p.parsed.type || null,
-    vera_samenvatting: p.parsed.actie || null,
-    vera_vervaldatum: datum,
-    vera_uitvoerder: naam,
-    status: 'goedgekeurd',
-    goedgekeurd_door: 'manager',
-    goedgekeurd_op: new Date().toISOString()
-  });
-  if (docResult.error) { showToast('Fout: ' + docResult.error.message); return; }
-
-  if (cat) {
-    var item = allItems.find(function(i) { return i.categorie === cat; });
-    if (item) {
-      var upd = {status:'groen', laatste_update:new Date().toISOString().split('T')[0]};
-      if (datum) { upd.vervaldatum = datum; }
-      await sb.from('compliance_items').update(upd).eq('id', item.id);
-    }
-  }
-
-  document.getElementById('vera-result').classList.remove('show');
-  pendingDoc = null;
-  showToast('Opgeslagen');
-  await laadItems();
-}
-
+// ── Helpers ──
 function resetZone() {
   document.getElementById('upload-zone').innerHTML =
     '<div class="upload-icon">&#128229;</div>' +
     '<div class="upload-text">Sleep een bestand hierin of <span class="upload-link" id="upload-link">klik om te uploaden</span></div>';
-  document.getElementById('upload-link').addEventListener('click', function(e) {
-    e.stopPropagation();
-    document.getElementById('file-input').click();
-  });
+  document.getElementById('upload-link').addEventListener('click', function(e) { e.stopPropagation(); document.getElementById('file-input').click(); });
   document.getElementById('file-input').value = '';
 }
 
 function fileToBase64(file) {
-  return new Promise(function(res, rej) {
-    var r = new FileReader();
-    r.onload = function() { res(r.result.split(',')[1]); };
-    r.onerror = function() { rej(new Error('Lezen mislukt')); };
-    r.readAsDataURL(file);
-  });
+  return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('Lezen mislukt'));};r.readAsDataURL(file);});
 }
-
-function fmtDatum(d) {
-  return new Date(d).toLocaleDateString('nl-NL', {day:'numeric',month:'short',year:'numeric'});
-}
-function datumKlasse(d) {
-  if (!d) return '';
-  var dagen = Math.floor((new Date(d) - new Date()) / 86400000);
-  return dagen < 0 ? 'verlopen' : dagen < 60 ? 'binnenkort' : '';
-}
-function statusLbl(s) {
-  return {groen:'In orde',oranje:'Let op',rood:'Kritiek',geen_document:'Geen doc'}[s] || s;
-}
+function fmtDatum(d) { return new Date(d).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'}); }
+function datumKlasse(d) { if(!d)return''; var dagen=Math.floor((new Date(d)-new Date())/86400000); return dagen<0?'verlopen':dagen<60?'binnenkort':''; }
+function statusLbl(s) { return {groen:'In orde',oranje:'Let op',rood:'Kritiek',geen_document:'Geen doc'}[s]||s; }
+function actieLbl(s) { return {open:'Open',in_behandeling:'Bezig',afgerond:'Afgerond'}[s]||s; }
 
 var toastT;
 function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastT);
-  toastT = setTimeout(function() { t.classList.remove('show'); }, 3000);
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);
 }
 
 init();
