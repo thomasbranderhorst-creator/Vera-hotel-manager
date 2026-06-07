@@ -164,7 +164,7 @@
   }
 
 
-  /* Dagkaart specifieke stijlen */
+  /* Real-time Financials specifieke stijlen */
   .dk-tabs { display:flex; gap:4px; margin-bottom:20px; }
   .dk-tab { background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:7px 14px; font-size:12px; font-weight:500; color:var(--text3); cursor:pointer; transition:all .15s; font-family:'DM Sans',sans-serif; }
   .dk-tab:hover { color:var(--text2); border-color:var(--border2); }
@@ -666,7 +666,7 @@
     }
   
 
-  /* Dagkaart specifieke stijlen */
+  /* Real-time Financials specifieke stijlen */
   .dk-tabs { display:flex; gap:4px; margin-bottom:20px; }
   .dk-tab { background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:7px 14px; font-size:12px; font-weight:500; color:var(--text3); cursor:pointer; transition:all .15s; font-family:'DM Sans',sans-serif; }
   .dk-tab:hover { color:var(--text2); border-color:var(--border2); }
@@ -969,7 +969,7 @@
 
   <div class="home-hero">
     <div class="home-hero-title">Vera</div>
-    <div class="home-hero-sub">Vera wordt gebouwd als de bestuurslaag bovenop alle hotelsystemen &mdash; één interface voor de manager die alles overziet. Van centrale-hub tot compliance, van dagkaart tot nachtassistent.<br><br><span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:0.5px;">Voor hotelmanagers, door hotelmanagers</span></div>
+    <div class="home-hero-sub">Vera wordt gebouwd als de bestuurslaag bovenop alle hotelsystemen &mdash; één interface voor de manager die alles overziet. Van dagstart tot compliance, van dagkaart tot nachtassistent.<br><br><span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:0.5px;">Voor hotelmanagers, door hotelmanagers</span></div>
   </div>
 
   <!-- ── Dagelijkse besturing ── -->
@@ -979,14 +979,14 @@
     <div class="home-card c-purple" onclick="location.href='vera-hub.html'">
       <div class="home-card-tag">Hub</div>
       <div class="home-card-icon">&#127749;</div>
-      <div class="home-card-title">Centrale Hub</div>
-      <div class="home-card-sub">Dagstart, nachtrapport, aankomsten, bemanning, beslissingen</div>
+      <div class="home-card-title">Dagstart</div>
+      <div class="home-card-sub">Jouw dagelijkse vertrekpunt — overzicht, acties &amp; navigatie</div>
       <div class="home-card-arrow">&#8594;</div>
     </div>
 
-    <div class="home-card c-amber" onclick="goTo('tab-dagkaart','Dagkaart')">
+    <div class="home-card c-amber" onclick="goTo('tab-financials','Real-time Financials')">
       <div class="home-card-icon">&#128200;</div>
-      <div class="home-card-title">Dagkaart</div>
+      <div class="home-card-title">Real-time Financials</div>
       <div class="home-card-sub">KPI&apos;s, netto resultaat, P&amp;L, eigenaar-view</div>
       <div class="home-card-arrow">&#8594;</div>
     </div>
@@ -1110,7 +1110,7 @@
     <div class="home-card c-gray" onclick="goTo('tab-onboarding','Onboarding')">
       <div class="home-card-icon">&#128640;</div>
       <div class="home-card-title">Onboarding</div>
-      <div class="home-card-sub">Van aanmelding tot eerste Centrale Hub in &lt; 2 uur</div>
+      <div class="home-card-sub">Van aanmelding tot eerste Dagstart in &lt; 2 uur</div>
       <div class="home-card-arrow">&#8594;</div>
     </div>
 
@@ -1130,7 +1130,7 @@
   <div class="core-card" onclick="location.href='vera-hub.html'">
     <div class="core-card-left">
       <div class="core-icon">&#127749;</div>
-      <div><div class="core-title">Centrale Hub</div><div class="core-sub">Dagelijks overzicht &middot; nachtrapport &middot; aankomsten &middot; openstaande taken &middot; bemanning &middot; beslissingen</div></div>
+      <div><div class="core-title">Dagstart</div><div class="core-sub">Dagelijks overzicht &middot; nachtrapport &middot; aankomsten &middot; openstaande taken &middot; bemanning &middot; beslissingen</div></div>
     </div>
     <div class="core-tag">&#8594; Open</div>
   </div>
@@ -1292,7 +1292,7 @@
       <div class="step-num coral">&rarr;</div>
       <div class="step-body">
         <div class="step-title">Proactieve signalen &mdash; zonder dat je ernaar vraagt</div>
-        <div class="step-desc">Vera is bedoeld om vervaldatums, budget-afwijkingen, personeelsgaten en compliance-taken te bewaken. Als er iets dreigt mis te gaan, moet het verschijnen in de Centrale Hub &mdash; voordat het een probleem wordt.</div>
+        <div class="step-desc">Vera is bedoeld om vervaldatums, budget-afwijkingen, personeelsgaten en compliance-taken te bewaken. Als er iets dreigt mis te gaan, moet het verschijnen in de Dagstart &mdash; voordat het een probleem wordt.</div>
         <div class="step-examples">
           <span class="step-example">BHV Sandra verloopt over 6 weken</span>
           <span class="step-example">Personeelskosten +12% vs budget</span>
@@ -1367,10 +1367,10 @@
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--teal)"></div>Wat Vera gebruikt</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Live bezettingsdata &amp; kamerstatus</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Aankomsten &amp; vertrekken voor Centrale Hub</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Aankomsten &amp; vertrekken voor Dagstart</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Reserveringsdata voor bezettingsforecast</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Kamerhistorie voor reputatiekoppeling</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Dagomzet voor Dagkaart KPI&apos;s</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Dagomzet voor Real-time Financials KPI&apos;s</div>
       </div>
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--purple)"></div>Vera-laag</div>
@@ -1408,7 +1408,7 @@
     <div class="int2-body">
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--coral)"></div>Wat Vera gebruikt</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Huidig rooster voor Centrale Hub bemanning</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Huidig rooster voor Dagstart bemanning</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Dienstplanning komende 7 dagen</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Medewerkerprofielen &amp; functies</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Urenregistratie voor kostenbewaking</div>
@@ -1450,7 +1450,7 @@
     <div class="int2-body">
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--amber)"></div>Wat Vera gebruikt</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Kostenposten voor P&amp;L in Dagkaart</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Kostenposten voor P&amp;L in Real-time Financials</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Openstaande debiteuren &amp; crediteuren</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>OTA-commissiekosten (grootboek)</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Budgetvergelijking maand-to-date</div>
@@ -1500,7 +1500,7 @@
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--purple)"></div>Vera-laag</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Hoge vraag + onderbezet rooster &rarr; alert</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Parity-schending &rarr; direct in Centrale Hub</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Parity-schending &rarr; direct in Dagstart</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Lage bezetting + lege bar &rarr; pakketvoorstel</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>OTA-commissie stijgt &times; direct aandeel daalt &rarr; actie</div>
       </div>
@@ -1532,7 +1532,7 @@
     <div class="int2-body">
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--amber)"></div>Wat Vera gebruikt</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>F&amp;B dagomzet per shift voor Dagkaart</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>F&amp;B dagomzet per shift voor Real-time Financials</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Populairste items voor trend-analyse</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Bezettingsgraad restaurant vs kamer</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Charge-to-room totalen per gast</div>
@@ -1580,7 +1580,7 @@
       <div>
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--purple)"></div>Vera-laag</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Review netheid kamer 14 &rarr; HK-signaal aanmaken</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Dalende score &rarr; melding Centrale Hub + oorzaak</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Dalende score &rarr; melding Dagstart + oorzaak</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Onbeantwoord &gt;7 dagen &rarr; beslissingenlijst</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Positief ontbijt &rarr; doorgeven aan F&amp;B-team</div>
       </div>
@@ -1620,7 +1620,7 @@
         <div class="int2-col-title"><div class="int2-col-dot" style="background:var(--purple)"></div>Vera-laag</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Camera-event &times; sleutelsysteem &rarr; gast identificeren</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Onverklaard &rarr; escalatie nachtassistent</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>Nacht-events samengevat in Centrale Hub</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>Nacht-events samengevat in Dagstart</div>
       </div>
     </div>
     <div class="int2-vera-note"><strong>Vera mag geen videobeelden opslaan.</strong> Alleen event-metadata &mdash; tijd, locatie, type. ONVIF maakt Vera merkonafhankelijk.</div>
@@ -1692,7 +1692,7 @@
         <div class="int2-feature"><div class="int2-feature-dot"></div>Energieverbruik &times; bezetting &rarr; kostenanalyse via Vera AI</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Piek verbruik &rarr; vergelijking met branchenorm</div>
         <div class="int2-feature"><div class="int2-feature-dot"></div>Waterinactiviteit &rarr; legionella spoelplicht triggeren</div>
-        <div class="int2-feature"><div class="int2-feature-dot"></div>GBS-storing &rarr; TD-ticket &amp; melding Centrale Hub</div>
+        <div class="int2-feature"><div class="int2-feature-dot"></div>GBS-storing &rarr; TD-ticket &amp; melding Dagstart</div>
       </div>
     </div>
     <div class="int2-vera-note"><strong>GBS is de databron voor alle energieanalyses in Vera AI.</strong> Zonder GBS-koppeling werkt energieanalyse alleen op basis van facturen &mdash; met GBS is het real-time en per kamer nauwkeurig.</div>
@@ -2278,7 +2278,7 @@
 </div>
 </div>
 
-<div id="tab-dagkaart" class="page-panel">
+<div id="tab-financials" class="page-panel">
 <div class="page-content">
   <button class="back-btn" onclick="goHome()">&#8592; Terug naar overzicht</button>
 
@@ -2288,7 +2288,7 @@
 
   <div class="section-label">Financieel overzicht</div>
   <div class="how-intro" style="margin-bottom:16px;">
-    <div class="how-intro-title">Dagkaart &mdash; &eacute;&eacute;n scherm voor iedereen die het hotel bestuurt</div>
+    <div class="how-intro-title">Real-time Financials &mdash; &eacute;&eacute;n scherm voor iedereen die het hotel bestuurt</div>
     <div class="how-intro-text">De operationele laag geeft de manager grip op de dag — bezetting, omzet per afdeling, kostenbewaking, signalen. De investeerders- of directieview toont het resultaat zonder operationele ruis — netto, maand-to-date, trend. Zelfde data, andere lens. Real-time beschikbaar, voor iedereen die er iets mee moet.</div>
   </div>
 
@@ -2576,7 +2576,7 @@
 </div>
 </div>
 
-<div id="tab-centrale-hub" class="page-panel">
+<div id="tab-dagstart" class="page-panel">
 <div class="page-content">
   <button class="back-btn" onclick="goHome()">&#8592; Terug naar overzicht</button>
 
@@ -2989,7 +2989,7 @@
 
   <div class="section-label">Het idee</div>
   <div class="how-intro">
-    <div class="how-intro-title">Van aanmelding tot eerste Centrale Hub &mdash; zo is het bedoeld: in &lt; 2 uur</div>
+    <div class="how-intro-title">Van aanmelding tot eerste Dagstart &mdash; zo is het bedoeld: in &lt; 2 uur</div>
     <div class="how-intro-text">Vera moet zo worden ontworpen dat een hotelmanager zonder IT-afdeling het zelf kan opzetten. De onboarding bestaat uit vier fases: account &amp; contract, systeemkoppelingen, cloudfolder-koppeling (AVG-compliant), en de eerste Vera-configuratie. Alles begeleidt door een stap-voor-stap wizard.</div>
   </div>
 
@@ -3119,7 +3119,7 @@
   <div class="ob2-phase">
     <div class="ob2-phase-header">
       <div class="ob2-phase-num" style="background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);">4</div>
-      <div class="ob2-phase-title">Vera configureren &amp; eerste Centrale Hub</div>
+      <div class="ob2-phase-title">Vera configureren &amp; eerste Dagstart</div>
       <div class="ob2-phase-time">~20 min</div>
     </div>
     <div class="ob2-steps">
@@ -3127,7 +3127,7 @@
         <div class="ob2-step-icon">&#128100;</div>
         <div class="ob2-step-body">
           <div class="ob2-step-title">Gebruikers &amp; rollen instellen</div>
-          <div class="ob2-step-desc">Manager nodigt collega&apos;s uit. Per gebruiker stel je in welke modules zichtbaar zijn: receptie ziet operatie, boekhouder ziet alleen Dagkaart, eigenaar krijgt de investeerdersview.</div>
+          <div class="ob2-step-desc">Manager nodigt collega&apos;s uit. Per gebruiker stel je in welke modules zichtbaar zijn: receptie ziet operatie, boekhouder ziet alleen Real-time Financials, eigenaar krijgt de investeerdersview.</div>
         </div>
         <div class="ob2-who manager">Manager</div>
       </div>
@@ -3143,8 +3143,8 @@
       <div class="ob2-step">
         <div class="ob2-step-icon">&#127749;</div>
         <div class="ob2-step-body">
-          <div class="ob2-step-title">Eerste Centrale Hub gegenereerd</div>
-          <div class="ob2-step-desc">Vera genereert automatisch de eerste Centrale Hub op basis van de gekoppelde systemen. Aankomsten uit Mews, bemanning uit Shiftbase, compliance-status uit de geüploade documenten, financiën uit Exact Online. Alles samengevat in één scherm.</div>
+          <div class="ob2-step-title">Eerste Dagstart gegenereerd</div>
+          <div class="ob2-step-desc">Vera genereert automatisch de eerste Dagstart op basis van de gekoppelde systemen. Aankomsten uit Mews, bemanning uit Shiftbase, compliance-status uit de geüploade documenten, financiën uit Exact Online. Alles samengevat in één scherm.</div>
         </div>
         <div class="ob2-who auto">Automatisch</div>
       </div>
@@ -3194,7 +3194,7 @@
       <div class="ps-item"><div class="ps-item-icon">📈</div><div class="ps-item-text">Personeelskosten % van dagomzet — live bijhouden</div><div class="ps-item-tag vera">Vera</div></div>
       <div class="ps-item"><div class="ps-item-icon">🎓</div><div class="ps-item-text">Certificaatvervaldatums koppelen aan ingeroosterde functie</div><div class="ps-item-tag vera">Vera</div></div>
       <div class="ps-item"><div class="ps-item-icon">📥</div><div class="ps-item-text">Contracten uitlezen via cloudfolder → acties aanmaken</div><div class="ps-item-tag vera">Vera</div></div>
-      <div class="ps-item"><div class="ps-item-icon">🌅</div><div class="ps-item-text">Bemanningsoverzicht in de Centrale Hub</div><div class="ps-item-tag vera">Vera</div></div>
+      <div class="ps-item"><div class="ps-item-icon">🌅</div><div class="ps-item-text">Bemanningsoverzicht in de Dagstart</div><div class="ps-item-tag vera">Vera</div></div>
     </div>
   </div>
 
@@ -3300,7 +3300,7 @@
   <div class="section-label">Filosofie</div>
   <div class="rep-filosofie">
     <div class="rep-filosofie-title">Revinate verzamelt reviews. Vera vertaalt ze naar actie.</div>
-    <div class="rep-filosofie-text">Review aggregatie, sentiment-analyse, antwoord-workflows en gastcommunicatie — dat doet Revinate uitstekend. Vera integreert die data en voegt één laag toe die Revinate niet heeft: de koppeling naar operatie. Een negatieve review over schoonmaak wordt een signaal aan HK. Een dalende score triggert een melding in de Centrale Hub. Dat is de Vera-laag.</div>
+    <div class="rep-filosofie-text">Review aggregatie, sentiment-analyse, antwoord-workflows en gastcommunicatie — dat doet Revinate uitstekend. Vera integreert die data en voegt één laag toe die Revinate niet heeft: de koppeling naar operatie. Een negatieve review over schoonmaak wordt een signaal aan HK. Een dalende score triggert een melding in de Dagstart. Dat is de Vera-laag.</div>
   </div>
 
   <!-- Scores samenvatting -->
@@ -3342,10 +3342,10 @@
     <div class="rep-block">
       <div class="rep-block-title"><div class="rep-block-dot" style="background:var(--purple)"></div>Vera voegt dit toe</div>
       <div class="rep-item"><div class="rep-item-icon">🔗</div><div class="rep-item-text">Review over netheid → direct signaal naar HK voor die kamer</div><div class="rep-item-tag vera">Vera</div></div>
-      <div class="rep-item"><div class="rep-item-icon">📉</div><div class="rep-item-text">Dalende score → melding in Centrale Hub met oorzaakanalyse</div><div class="rep-item-tag vera">Vera</div></div>
+      <div class="rep-item"><div class="rep-item-icon">📉</div><div class="rep-item-text">Dalende score → melding in Dagstart met oorzaakanalyse</div><div class="rep-item-tag vera">Vera</div></div>
       <div class="rep-item"><div class="rep-item-icon">🏨</div><div class="rep-item-text">Review koppelen aan specifieke kamer — patroon herkennen</div><div class="rep-item-tag vera">Vera</div></div>
       <div class="rep-item"><div class="rep-item-icon">⏰</div><div class="rep-item-text">Onbeantwoorde reviews signaleren in beslissingen-lijst</div><div class="rep-item-tag vera">Vera</div></div>
-      <div class="rep-item"><div class="rep-item-icon">🌅</div><div class="rep-item-text">Reputatiesamenvatting in de Centrale Hub</div><div class="rep-item-tag vera">Vera</div></div>
+      <div class="rep-item"><div class="rep-item-icon">🌅</div><div class="rep-item-text">Reputatiesamenvatting in de Dagstart</div><div class="rep-item-tag vera">Vera</div></div>
     </div>
   </div>
 
@@ -3509,8 +3509,8 @@
     <div class="sal-signal-dot" style="background:var(--blue)"></div>
     <div class="sal-signal-body">
       <div class="sal-signal-title">Rate parity afwijking gesignaleerd &rarr; Vera escaleert naar manager</div>
-      <div class="sal-signal-desc">Lighthouse detecteert dat een OTA jouw kamer &euro;12 goedkoper aanbiedt dan je eigen website. Rate parity schending &mdash; dit kost directe boekingen en vertrouwen. Vera plaatst dit direct in de beslissingenlijst van de Centrale Hub met een link naar het parity-rapport in Lighthouse.</div>
-      <div class="sal-signal-systems"><span class="sal-signal-sys">Lighthouse</span><span class="sal-signal-sys">Vera &rarr; Centrale Hub</span></div>
+      <div class="sal-signal-desc">Lighthouse detecteert dat een OTA jouw kamer &euro;12 goedkoper aanbiedt dan je eigen website. Rate parity schending &mdash; dit kost directe boekingen en vertrouwen. Vera plaatst dit direct in de beslissingenlijst van de Dagstart met een link naar het parity-rapport in Lighthouse.</div>
+      <div class="sal-signal-systems"><span class="sal-signal-sys">Lighthouse</span><span class="sal-signal-sys">Vera &rarr; Dagstart</span></div>
     </div>
   </div>
 
@@ -3575,9 +3575,9 @@
       <div class="pr-plan-price">&euro;149 <span>/maand</span></div>
       <div class="pr-plan-equiv">= <strong>5 uur</strong> van een administratief medewerker</div>
       <div class="pr-divider"></div>
-      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Centrale Hub &amp; nachtrapport</div>
+      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Dagstart &amp; nachtrapport</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Compliance Cockpit (8 categorie&euml;n)</div>
-      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Basis Dagkaart (vandaag &amp; week)</div>
+      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Basis Real-time Financials (vandaag &amp; week)</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>1 PMS-koppeling (Mews of VIPS)</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Document upload &amp; AI-verwerking</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>E-mail notificaties</div>
@@ -3598,7 +3598,7 @@
       <div class="pr-divider"></div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Alles uit Starter</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Cross-discipline signalen</div>
-      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Volledige Dagkaart incl. P&amp;L</div>
+      <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Volledige Real-time Financials incl. P&amp;L</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Eigenaar &amp; investeerder-view</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Personeel-module (Shiftbase)</div>
       <div class="pr-feature"><div class="pr-feature-icon">&#10003;</div>Reputatie-module (Revinate)</div>
@@ -3803,7 +3803,7 @@
     <div style="background:var(--bg3);border:1px solid var(--purple-border);border-radius:10px;padding:16px 18px;">
       <div style="font-size:11px;font-weight:500;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">&#10024; Met Vera</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
-        <div style="font-size:12px;color:var(--text2);padding:7px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--purple);">07:30 &mdash; Centrale Hub open &mdash; alles samengevat in &eacute;&eacute;n scherm</div>
+        <div style="font-size:12px;color:var(--text2);padding:7px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--purple);">07:30 &mdash; Dagstart open &mdash; alles samengevat in &eacute;&eacute;n scherm</div>
         <div style="font-size:12px;color:var(--text2);padding:7px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--purple);">09:00 &mdash; Factuur automatisch uitgelezen &amp; gekoppeld aan leverancier</div>
         <div style="font-size:12px;color:var(--text2);padding:7px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--purple);">10:30 &mdash; BHV-verloopdatum stond al 6 weken in de beslissingenlijst</div>
         <div style="font-size:12px;color:var(--text2);padding:7px 10px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--purple);">14:00 &mdash; Eigenaar kijkt zelf mee via de investeerder-view</div>
@@ -4143,7 +4143,7 @@
     <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:10px;padding:14px 16px;">
       <div style="font-size:18px;margin-bottom:8px;">&#128276;</div>
       <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:4px;">Signaal bij actie vereist</div>
-      <div style="font-size:11px;color:var(--purple);line-height:1.6;">Als een wetswijziging of nieuwe regelgeving directe actie vereist, verschijnt het als beslissing in de Centrale Hub &mdash; niet alleen als nieuwsbericht.</div>
+      <div style="font-size:11px;color:var(--purple);line-height:1.6;">Als een wetswijziging of nieuwe regelgeving directe actie vereist, verschijnt het als beslissing in de Dagstart &mdash; niet alleen als nieuwsbericht.</div>
     </div>
   </div>
 
@@ -4302,7 +4302,7 @@
   </div>
 
   <div class="int-note">
-    <strong>Waarom dit een van de makkelijkste modules is om te bouwen:</strong> De kern is een RSS/API-aggregator die bronnen monitort, filtert op hotelrelevantie en berichten categoriseert. Vera AI leest elk bericht en beoordeelt of het actie vereist &mdash; zo ja, verschijnt het in de Centrale Hub. Geen complexe integraties, geen API-sleutels van derden nodig voor de basisfunctionaliteit.
+    <strong>Waarom dit een van de makkelijkste modules is om te bouwen:</strong> De kern is een RSS/API-aggregator die bronnen monitort, filtert op hotelrelevantie en berichten categoriseert. Vera AI leest elk bericht en beoordeelt of het actie vereist &mdash; zo ja, verschijnt het in de Dagstart. Geen complexe integraties, geen API-sleutels van derden nodig voor de basisfunctionaliteit.
   </div>
 
 </div>
@@ -4355,9 +4355,9 @@
     tipTimer = setTimeout(() => el.classList.remove('show'), 2800);
   }
 
-  // Centrale Hub kaart in structuur: ga naar centrale-hub page
+  // Dagstart kaart in structuur: ga naar dagstart page
   function openCentraleHub() {
-    goTo('tab-centrale-hub', 'Centrale Hub');
+    goTo('tab-dagstart', 'Dagstart');
   }
 </script>
 </body>
