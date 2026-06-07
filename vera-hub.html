@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vera — Centrale Hub</title>
+<title>Vera — Dagstart</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -22,7 +22,6 @@
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
 
-/* Topbar */
 .topbar{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px}
 .logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
 .logo-name{font-size:14px;font-weight:600;color:var(--text)}
@@ -34,90 +33,101 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-decoration:none;transition:all .15s}
 .back-link:hover{border-color:var(--border2);color:var(--text2)}
 
-/* Main */
-.main{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+.main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
 
 /* Hero */
-.hub-hero{margin-bottom:28px}
-.hub-hero-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px}
-.hub-hero-sub{font-size:13px;color:var(--text2);line-height:1.6}
-.hub-date{font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:4px}
+.dagstart-hero{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end}
+.dagstart-greeting{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.5px}
+.dagstart-date{font-size:12px;font-family:'DM Mono',monospace;color:var(--text3);text-align:right;line-height:1.8}
 
-/* KPI strip */
-.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:24px}
-.kpi-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
-.kpi-card:hover{border-color:rgba(255,255,255,0.2)}
-.kpi-val{font-size:32px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);margin-bottom:3px}
-.kpi-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.kpi-sub{font-size:11px;color:var(--text3)}
-.kpi-card.alert-rood{border-color:var(--coral-border)}.kpi-card.alert-rood .kpi-val{color:var(--coral)}
-.kpi-card.alert-amber{border-color:var(--amber-border)}.kpi-card.alert-amber .kpi-val{color:var(--amber)}
-.kpi-card.alert-groen{border-color:var(--green-border)}.kpi-card.alert-groen .kpi-val{color:var(--green)}
+/* Signalen banner */
+.signalen-banner{border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:12px}
+.signalen-banner.goed{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.signalen-banner.aandacht{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+.signalen-banner.kritiek{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.signalen-icon{font-size:18px;flex-shrink:0}
+.signalen-tekst{flex:1;line-height:1.6}
+.signalen-tekst strong{color:var(--text)}
 
-/* Sectie label */
-.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:20px 0 10px}
+/* Twee kolommen layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.full-col{margin-bottom:8px}
 
-/* Module grid */
-.module-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
-.module-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:20px;cursor:pointer;transition:all .2s;text-decoration:none;display:block;position:relative;overflow:hidden}
-.module-card:hover{border-color:rgba(255,255,255,0.25);transform:translateY(-1px)}
-.module-card.live::before{content:'LIVE';position:absolute;top:12px;right:12px;font-size:9px;font-family:'DM Mono',monospace;background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);border-radius:20px;padding:2px 7px}
-.module-card.binnenkort::before{content:'Binnenkort';position:absolute;top:12px;right:12px;font-size:9px;font-family:'DM Mono',monospace;background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border);border-radius:20px;padding:2px 7px}
-.module-icon{font-size:22px;margin-bottom:10px}
-.module-naam{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px}
-.module-sub{font-size:11px;color:var(--text3);line-height:1.5}
-.module-status{margin-top:12px;display:flex;gap:5px;flex-wrap:wrap}
-.module-badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px}
+/* Kaarten */
+.hub-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
+.hub-card-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.hub-card-title{font-size:12px;font-weight:500;color:var(--text)}
+.hub-card-link{font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);text-decoration:none;cursor:pointer;transition:opacity .15s}
+.hub-card-link:hover{opacity:.7}
+.hub-card-body{padding:0}
 
-/* Compliance preview */
-.compliance-preview{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden;margin-bottom:8px}
-.preview-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.preview-title{font-size:12px;font-weight:500;color:var(--text)}
-.preview-link{font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);text-decoration:none;cursor:pointer}
-.preview-link:hover{text-decoration:underline}
-.preview-row{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px}
-.preview-row:last-child{border-bottom:none}
-.preview-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.preview-dot.groen{background:var(--green)}
-.preview-dot.oranje{background:var(--amber)}
-.preview-dot.rood{background:var(--coral)}
-.preview-dot.geen_document{background:var(--gray)}
-.preview-naam{flex:1;color:var(--text2)}
-.preview-cat{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
-.preview-tag{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px}
+/* Compliance rijen */
+.hub-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px}
+.hub-row:last-child{border-bottom:none}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot.groen{background:var(--green)}
+.dot.oranje{background:var(--amber)}
+.dot.rood{background:var(--coral);box-shadow:0 0 5px rgba(255,112,96,0.5)}
+.dot.geen_document{background:var(--gray)}
+.dot.normaal{background:var(--amber)}
+.dot.urgent{background:var(--coral)}
+.hub-row-naam{flex:1;color:var(--text2)}
+.hub-row-meta{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.hub-row-tag{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px}
 .tag-groen{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
 .tag-oranje{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
 .tag-rood{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
 .tag-geen_document{background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)}
+.hub-empty{padding:16px;font-size:12px;color:var(--text3);text-align:center}
 
-/* Acties preview */
-.actie-preview-row{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px}
-.actie-preview-row:last-child{border-bottom:none}
-.actie-prio{width:8px;height:8px;border-radius:50%;flex-shrink:0;background:var(--amber)}
-.actie-preview-titel{flex:1;color:var(--text2)}
-.actie-preview-bron{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+/* Module navigatie */
+.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:16px 0 10px}
+.module-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
+.mod-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:12px}
+.mod-btn:hover{border-color:rgba(255,255,255,0.25);transform:translateY(-1px)}
+.mod-btn.live{border-color:var(--green-border)}
+.mod-btn.dim{opacity:0.5;cursor:default}
+.mod-btn-icon{font-size:18px;flex-shrink:0}
+.mod-btn-info{}
+.mod-btn-naam{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.mod-btn-sub{font-size:10px;color:var(--text3)}
 
-/* Medewerkers preview */
-.medew-preview-row{display:flex;align-items:center;gap:12px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px}
-.medew-preview-row:last-child{border-bottom:none}
-.medew-preview-naam{flex:1;color:var(--text2)}
-.medew-preview-bhv{font-size:11px;font-family:'DM Mono',monospace}
-.medew-preview-bhv.geldig{color:var(--green)}
-.medew-preview-bhv.binnenkort{color:var(--amber)}
-.medew-preview-bhv.verlopen{color:var(--coral)}
+/* Vera AI invoer */
+.vera-ai-panel{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:12px;padding:18px 20px;margin-bottom:8px}
+.vera-ai-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px}
+.vera-ai-sub{font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.5}
+.vera-ai-input-row{display:flex;gap:8px}
+#vera-vraag{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none}
+#vera-vraag:focus{border-color:var(--purple)}
+#vera-vraag::placeholder{color:var(--text3)}
+.vera-ai-btn{background:var(--purple);border:none;border-radius:7px;padding:9px 16px;font-size:12px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.vera-ai-antwoord{margin-top:12px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.7;display:none}
+.vera-ai-antwoord.show{display:block}
 
 /* Loading */
-.loading{text-align:center;padding:32px 0;color:var(--text3);font-size:12px}
-.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+.loading{text-align:center;padding:28px 0;color:var(--text3);font-size:12px}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Toast */
+/* API Modal */
+#api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
+#api-modal.open{display:flex}
+.api-box{background:#1e2230;border:1px solid rgba(124,111,247,0.3);border-radius:12px;padding:28px 32px;max-width:420px;width:90%}
+.api-box h3{font-size:16px;font-weight:600;color:#e8eaf0;margin-bottom:8px}
+.api-box p{font-size:12px;color:#8b90a0;line-height:1.6;margin-bottom:16px}
+#api-input{width:100%;background:#181b24;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:#e8eaf0;outline:none;margin-bottom:12px;box-sizing:border-box}
+.api-btns{display:flex;gap:8px}
+#btn-save-key{flex:1;background:#7c6ff7;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
+#btn-skip-key{background:#1e2230;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 16px;font-size:12px;color:#8b90a0;cursor:pointer}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
 .toast.show{opacity:1}
+.api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
 
 @media(max-width:700px){
-  .kpi-strip{grid-template-columns:1fr 1fr}
-  .module-grid{grid-template-columns:1fr 1fr}
+  .two-col{grid-template-columns:1fr}
+  .module-nav{grid-template-columns:1fr 1fr}
+  .dagstart-hero{flex-direction:column;gap:8px;align-items:flex-start}
 }
 </style>
 </head>
@@ -128,139 +138,139 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="logo-mark">V</div>
   <div class="logo-name">Vera</div>
   <div class="topbar-div"></div>
-  <div class="topbar-page">Centrale Hub</div>
+  <div class="topbar-page">Dagstart</div>
   <div class="topbar-right">
     <div class="status-dot"></div>
     <div class="hotel-badge" id="hotel-naam">Laden...</div>
+    <button class="api-btn" id="api-status-btn">API: —</button>
+  </div>
+</div>
+
+<!-- API Modal -->
+<div id="api-modal">
+  <div class="api-box">
+    <h3>&#128274; Anthropic API sleutel</h3>
+    <p>Vul je API sleutel in voor Vera AI. Wordt alleen in je browser opgeslagen.</p>
+    <input id="api-input" type="password" placeholder="sk-ant-api03-...">
+    <div class="api-btns">
+      <button id="btn-save-key">Opslaan</button>
+      <button id="btn-skip-key">Overslaan</button>
+    </div>
   </div>
 </div>
 
 <div class="main">
 
   <!-- Hero -->
-  <div class="hub-hero">
-    <div class="hub-hero-title">Centrale Hub</div>
-    <div class="hub-hero-sub">Overzicht van alle modules — klik op een module om er naartoe te gaan.</div>
-    <div class="hub-date" id="hub-date"></div>
+  <div class="dagstart-hero">
+    <div>
+      <div class="dagstart-greeting" id="greeting">Goedemorgen</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:3px" id="hotel-sub">Hotel De Klok</div>
+    </div>
+    <div class="dagstart-date" id="dagstart-date"></div>
   </div>
 
-  <!-- KPI strip -->
-  <div class="kpi-strip">
-    <div class="kpi-card" id="kpi-compliance" onclick="location.href='vera-compliance.html'">
-      <div class="kpi-lbl">Compliance</div>
-      <div class="kpi-val" id="kpi-compliance-val">—</div>
-      <div class="kpi-sub" id="kpi-compliance-sub">laden...</div>
+  <!-- Signalen banner -->
+  <div class="signalen-banner" id="signalen-banner">
+    <div class="signalen-icon">&#9203;</div>
+    <div class="signalen-tekst" id="signalen-tekst">Laden...</div>
+  </div>
+
+  <!-- Twee kolommen: Compliance + Acties -->
+  <div class="two-col">
+
+    <!-- Compliance -->
+    <div class="hub-card">
+      <div class="hub-card-header">
+        <div class="hub-card-title">&#9989; Compliance</div>
+        <a href="vera-compliance.html" class="hub-card-link">Beheren &rarr;</a>
+      </div>
+      <div id="compliance-list">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
     </div>
-    <div class="kpi-card" id="kpi-acties" onclick="location.href='vera-compliance.html'">
-      <div class="kpi-lbl">Open acties</div>
-      <div class="kpi-val" id="kpi-acties-val">—</div>
-      <div class="kpi-sub">door Vera aangemaakt</div>
+
+    <!-- Acties -->
+    <div class="hub-card">
+      <div class="hub-card-header">
+        <div class="hub-card-title">&#128203; Open acties</div>
+        <a href="vera-compliance.html" class="hub-card-link">Alle acties &rarr;</a>
+      </div>
+      <div id="acties-list">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
     </div>
-    <div class="kpi-card" id="kpi-medewerkers">
-      <div class="kpi-lbl">Medewerkers</div>
-      <div class="kpi-val" id="kpi-medewerkers-val">—</div>
-      <div class="kpi-sub" id="kpi-medewerkers-sub">actief</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-lbl">Proof of concept</div>
-      <div class="kpi-val" style="font-size:18px;margin-top:4px">v0.1</div>
-      <div class="kpi-sub">Hotel De Klok, Oss</div>
+
+  </div>
+
+  <!-- Medewerkers -->
+  <div class="full-col">
+    <div class="hub-card">
+      <div class="hub-card-header">
+        <div class="hub-card-title">&#128100; Medewerkers &amp; certificaten</div>
+        <a href="vera-compliance.html" class="hub-card-link">Beheren &rarr;</a>
+      </div>
+      <div id="medew-list">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
     </div>
   </div>
 
-  <!-- Modules -->
+  <!-- Vera AI -->
+  <div class="vera-ai-panel">
+    <div class="vera-ai-title">&#10024; Vera AI</div>
+    <div class="vera-ai-sub">Stel een vraag over jouw hotel. Vera analyseert op basis van de beschikbare data.</div>
+    <div class="vera-ai-input-row">
+      <input id="vera-vraag" type="text" placeholder="Bijv. &quot;Zijn we klaar voor een inspectie?&quot; of &quot;Wat vraagt vandaag aandacht?&quot;">
+      <button class="vera-ai-btn" id="vera-ai-btn">Vraag Vera</button>
+    </div>
+    <div class="vera-ai-antwoord" id="vera-antwoord"></div>
+  </div>
+
+  <!-- Module navigatie -->
   <div class="section-label">Modules</div>
-  <div class="module-grid">
-
-    <a href="vera-compliance.html" class="module-card live" style="border-color:var(--green-border)">
-      <div class="module-icon">&#9989;</div>
-      <div class="module-naam">Compliance &amp; Duurzaamheid</div>
-      <div class="module-sub">Vergunningen, HACCP, BHV, legionella — documenten uploaden, Vera leest ze uit</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)" id="mod-compliance-status">laden...</span>
+  <div class="module-nav">
+    <a href="vera-compliance.html" class="mod-btn live">
+      <div class="mod-btn-icon">&#9989;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Compliance &amp; Duurzaamheid</div>
+        <div class="mod-btn-sub">Documenten, certificaten, acties</div>
       </div>
     </a>
-
-    <div class="module-card binnenkort" style="opacity:0.6;cursor:default">
-      <div class="module-icon">&#127749;</div>
-      <div class="module-naam">Dagstart</div>
-      <div class="module-sub">Nachtrapport, aankomsten, bezetting, openstaande acties — alles in één ochtendoverzicht</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)">In ontwikkeling</span>
+    <div class="mod-btn dim">
+      <div class="mod-btn-icon">&#128200;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Real-time Financials</div>
+        <div class="mod-btn-sub">In ontwikkeling</div>
       </div>
     </div>
-
-    <div class="module-card binnenkort" style="opacity:0.6;cursor:default">
-      <div class="module-icon">&#128200;</div>
-      <div class="module-naam">Dagkaart</div>
-      <div class="module-sub">KPI's, omzet per afdeling, P&amp;L, eigenaar-view — real-time financieel overzicht</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)">In ontwikkeling</span>
+    <div class="mod-btn dim">
+      <div class="mod-btn-icon">&#128100;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Personeel</div>
+        <div class="mod-btn-sub">In ontwikkeling</div>
       </div>
     </div>
-
-    <div class="module-card binnenkort" style="opacity:0.6;cursor:default">
-      <div class="module-icon">&#128100;</div>
-      <div class="module-naam">Personeel</div>
-      <div class="module-sub">Rooster, BHV-bezetting, personeelskosten vs bezetting — Shiftbase koppeling</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)">In ontwikkeling</span>
+    <div class="mod-btn dim">
+      <div class="mod-btn-icon">&#11088;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Reputatie</div>
+        <div class="mod-btn-sub">In ontwikkeling</div>
       </div>
     </div>
-
-    <div class="module-card binnenkort" style="opacity:0.6;cursor:default">
-      <div class="module-icon">&#11088;</div>
-      <div class="module-naam">Reputatie</div>
-      <div class="module-sub">Reviews, sentiment per categorie, onbeantwoorde berichten — Revinate koppeling</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)">In ontwikkeling</span>
+    <div class="mod-btn dim">
+      <div class="mod-btn-icon">&#128176;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Sales &amp; Commercieel</div>
+        <div class="mod-btn-sub">In ontwikkeling</div>
       </div>
     </div>
-
-    <div class="module-card binnenkort" style="opacity:0.6;cursor:default">
-      <div class="module-icon">&#10024;</div>
-      <div class="module-naam">Vera AI</div>
-      <div class="module-sub">Analyseer, rapporteer, vraag advies — op basis van jouw hoteldata</div>
-      <div class="module-status">
-        <span class="module-badge" style="background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)">In ontwikkeling</span>
+    <div class="mod-btn dim">
+      <div class="mod-btn-icon">&#128240;</div>
+      <div class="mod-btn-info">
+        <div class="mod-btn-naam">Nieuws &amp; Wetgeving</div>
+        <div class="mod-btn-sub">In ontwikkeling</div>
       </div>
-    </div>
-
-  </div>
-
-  <!-- Compliance preview -->
-  <div class="section-label">Compliance — recent</div>
-  <div class="compliance-preview">
-    <div class="preview-header">
-      <div class="preview-title">Status compliance items</div>
-      <a href="vera-compliance.html" class="preview-link">Alles bekijken &rarr;</a>
-    </div>
-    <div id="compliance-preview-list">
-      <div class="loading"><div class="spinner"></div>Laden...</div>
-    </div>
-  </div>
-
-  <!-- Acties preview -->
-  <div class="section-label">Open acties</div>
-  <div class="compliance-preview">
-    <div class="preview-header">
-      <div class="preview-title">Door Vera aangemaakte acties</div>
-      <a href="vera-compliance.html" class="preview-link">Beheren &rarr;</a>
-    </div>
-    <div id="acties-preview-list">
-      <div class="loading"><div class="spinner"></div>Laden...</div>
-    </div>
-  </div>
-
-  <!-- Medewerkers preview -->
-  <div class="section-label">Medewerkers</div>
-  <div class="compliance-preview">
-    <div class="preview-header">
-      <div class="preview-title">BHV &amp; certificaten overzicht</div>
-      <a href="vera-compliance.html" class="preview-link">Beheren &rarr;</a>
-    </div>
-    <div id="medew-preview-list">
-      <div class="loading"><div class="spinner"></div>Laden...</div>
     </div>
   </div>
 
@@ -275,110 +285,194 @@ const sb = createClient(
   'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ'
 );
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
+let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
+let complianceData = [], actiesData = [], medewData = [];
 
+// API modal
+document.getElementById('api-status-btn').addEventListener('click', function() {
+  document.getElementById('api-modal').classList.add('open');
+  document.getElementById('api-input').value = ANTHROPIC_KEY;
+});
+document.getElementById('btn-save-key').addEventListener('click', function() {
+  var key = document.getElementById('api-input').value.trim();
+  if (!key) return;
+  ANTHROPIC_KEY = key;
+  localStorage.setItem('vera_anthropic_key', key);
+  document.getElementById('api-modal').classList.remove('open');
+  updateApiStatus();
+  showToast('API sleutel opgeslagen');
+});
+document.getElementById('btn-skip-key').addEventListener('click', function() {
+  document.getElementById('api-modal').classList.remove('open');
+});
+function updateApiStatus() {
+  var btn = document.getElementById('api-status-btn');
+  btn.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
+  btn.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
+}
+
+// Init
 async function init() {
-  // Datum
-  var nu = new Date();
-  document.getElementById('hub-date').textContent = nu.toLocaleDateString('nl-NL', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  updateApiStatus();
+  setDatum();
 
-  // Hotel naam
   var hotel = await sb.from('hotels').select('naam').eq('id', HOTEL_ID).single();
-  if (hotel.data) document.getElementById('hotel-naam').textContent = hotel.data.naam;
+  if (hotel.data) {
+    document.getElementById('hotel-naam').textContent = hotel.data.naam;
+    document.getElementById('hotel-sub').textContent = hotel.data.naam;
+  }
 
   await Promise.all([laadCompliance(), laadActies(), laadMedewerkers()]);
+  updateSignalen();
+}
+
+function setDatum() {
+  var nu = new Date();
+  var uur = nu.getHours();
+  var greeting = uur < 12 ? 'Goedemorgen' : uur < 18 ? 'Goedemiddag' : 'Goedenavond';
+  document.getElementById('greeting').textContent = greeting;
+  document.getElementById('dagstart-date').innerHTML =
+    nu.toLocaleDateString('nl-NL', {weekday:'long'}) + '<br>' +
+    nu.toLocaleDateString('nl-NL', {day:'numeric',month:'long',year:'numeric'});
 }
 
 async function laadCompliance() {
   var r = await sb.from('compliance_items').select('*').eq('hotel_id', HOTEL_ID).order('status');
   if (r.error || !r.data) return;
-  var items = r.data;
+  complianceData = r.data;
 
-  // KPI
-  var geen = items.filter(function(i){return i.status==='geen_document';}).length;
-  var rood = items.filter(function(i){return i.status==='rood';}).length;
-  var oranje = items.filter(function(i){return i.status==='oranje';}).length;
-  var groen = items.filter(function(i){return i.status==='groen';}).length;
-
-  document.getElementById('kpi-compliance-val').textContent = groen + '/' + items.length;
-  document.getElementById('kpi-compliance-sub').textContent = (rood+geen) + ' aandachtspunt' + ((rood+geen)!==1?'en':'');
-  document.getElementById('mod-compliance-status').textContent = groen + ' in orde · ' + geen + ' open';
-
-  var kpiCard = document.getElementById('kpi-compliance');
-  if (rood > 0) kpiCard.classList.add('alert-rood');
-  else if (geen > 5) kpiCard.classList.add('alert-amber');
-  else kpiCard.classList.add('alert-groen');
-
-  // Preview — toon max 6 items, rood/geen_document eerst
-  var sorted = items.slice().sort(function(a,b){
-    var prio = {rood:0,geen_document:1,oranje:2,groen:3};
-    return (prio[a.status]||9) - (prio[b.status]||9);
+  var sorted = r.data.slice().sort(function(a,b){
+    return ({rood:0,geen_document:1,oranje:2,groen:3}[a.status]||9) - ({rood:0,geen_document:1,oranje:2,groen:3}[b.status]||9);
   }).slice(0,6);
 
-  document.getElementById('compliance-preview-list').innerHTML = sorted.map(function(i){
-    return '<div class="preview-row">' +
-      '<div class="preview-dot ' + i.status + '"></div>' +
-      '<div class="preview-naam">' + i.naam + '</div>' +
-      '<div class="preview-cat">' + i.categorie + '</div>' +
-      '<div class="preview-tag tag-' + i.status + '">' + statusLbl(i.status) + '</div>' +
+  document.getElementById('compliance-list').innerHTML = sorted.map(function(i) {
+    return '<div class="hub-row">' +
+      '<div class="dot ' + i.status + '"></div>' +
+      '<div class="hub-row-naam">' + i.naam + '</div>' +
+      '<div class="hub-row-meta">' + i.categorie + '</div>' +
+      '<div class="hub-row-tag tag-' + i.status + '">' + statusLbl(i.status) + '</div>' +
       '</div>';
   }).join('');
 }
 
 async function laadActies() {
-  var r = await sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id', HOTEL_ID).eq('status', 'open').order('created_at', {ascending:false});
+  var r = await sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id', HOTEL_ID).eq('status','open').order('created_at',{ascending:false});
   if (r.error || !r.data) return;
-  var acties = r.data;
+  actiesData = r.data;
 
-  document.getElementById('kpi-acties-val').textContent = acties.length;
-  var kpiCard = document.getElementById('kpi-acties');
-  if (acties.length > 3) kpiCard.classList.add('alert-amber');
-  else if (acties.length === 0) kpiCard.classList.add('alert-groen');
-
-  if (!acties.length) {
-    document.getElementById('acties-preview-list').innerHTML = '<div style="padding:16px;font-size:12px;color:var(--text3);text-align:center">Geen open acties &#10003;</div>';
+  if (!r.data.length) {
+    document.getElementById('acties-list').innerHTML = '<div class="hub-empty">Geen open acties &#10003;</div>';
     return;
   }
-
-  document.getElementById('acties-preview-list').innerHTML = acties.slice(0,5).map(function(a){
-    return '<div class="actie-preview-row">' +
-      '<div class="actie-prio"></div>' +
-      '<div class="actie-preview-titel">' + a.titel + (a.compliance_items ? ' <span style="color:var(--text3);font-size:11px;">— ' + a.compliance_items.naam + '</span>' : '') + '</div>' +
-      '<div class="actie-preview-bron">' + (a.aangemaakt_door==='vera'?'&#10024; Vera':'&#128100; Manager') + '</div>' +
+  document.getElementById('acties-list').innerHTML = r.data.slice(0,5).map(function(a) {
+    return '<div class="hub-row">' +
+      '<div class="dot normaal"></div>' +
+      '<div class="hub-row-naam">' + a.titel + '</div>' +
+      '<div class="hub-row-meta">' + (a.aangemaakt_door==='vera'?'&#10024;':'&#128100;') + '</div>' +
       '</div>';
   }).join('');
 }
 
 async function laadMedewerkers() {
-  var r = await sb.from('medewerkers').select('*').eq('hotel_id', HOTEL_ID).eq('actief', true).order('naam');
+  var r = await sb.from('medewerkers').select('*').eq('hotel_id', HOTEL_ID).eq('actief',true).order('naam');
   if (r.error || !r.data) return;
-  var medewerkers = r.data;
+  medewData = r.data;
 
-  document.getElementById('kpi-medewerkers-val').textContent = medewerkers.length;
-
-  var bhvVerlopen = medewerkers.filter(function(m){
-    if (!m.bhv_geldig_tot) return true;
-    return new Date(m.bhv_geldig_tot) < new Date();
-  }).length;
-  if (bhvVerlopen > 0) {
-    document.getElementById('kpi-medewerkers-sub').textContent = bhvVerlopen + ' BHV verlopen';
-    document.getElementById('kpi-medewerkers').classList.add('alert-rood');
-  } else {
-    document.getElementById('kpi-medewerkers-sub').textContent = 'BHV up to date';
-    document.getElementById('kpi-medewerkers').classList.add('alert-groen');
-  }
-
-  document.getElementById('medew-preview-list').innerHTML = medewerkers.map(function(m){
-    var klasse = m.bhv_geldig_tot ? (new Date(m.bhv_geldig_tot) < new Date() ? 'verlopen' : datumKlasse(m.bhv_geldig_tot) || 'geldig') : 'verlopen';
+  document.getElementById('medew-list').innerHTML = r.data.map(function(m) {
+    var klasse = !m.bhv_geldig_tot ? 'verlopen' : (datumKlasse(m.bhv_geldig_tot) || 'geldig');
     var tekst = m.bhv_geldig_tot ? 'BHV t/m ' + fmtDatum(m.bhv_geldig_tot) : 'Geen BHV';
-    return '<div class="medew-preview-row">' +
-      '<div class="preview-dot ' + (klasse==='verlopen'?'rood':klasse==='binnenkort'?'oranje':'groen') + '"></div>' +
-      '<div class="medew-preview-naam">' + m.naam + ' <span style="color:var(--text3);font-size:11px;">' + (m.functie||'') + '</span></div>' +
-      '<div class="medew-preview-bhv ' + klasse + '">' + tekst + '</div>' +
+    return '<div class="hub-row">' +
+      '<div class="dot ' + (klasse==='verlopen'?'rood':klasse==='binnenkort'?'oranje':'groen') + '"></div>' +
+      '<div class="hub-row-naam">' + m.naam + ' <span style="color:var(--text3);font-size:11px;">' + (m.functie||'') + '</span></div>' +
+      '<div class="hub-row-meta">' + tekst + '</div>' +
+      '<div class="hub-row-tag tag-' + (klasse==='verlopen'?'rood':klasse==='binnenkort'?'oranje':'groen') + '">' + (klasse==='verlopen'?'Verlopen':klasse==='binnenkort'?'Binnenkort':'Geldig') + '</div>' +
       '</div>';
   }).join('');
 }
 
-function statusLbl(s){return {groen:'In orde',oranje:'Let op',rood:'Kritiek',geen_document:'Geen doc'}[s]||s;}
+function updateSignalen() {
+  var rood = complianceData.filter(function(i){return i.status==='rood';}).length;
+  var geen = complianceData.filter(function(i){return i.status==='geen_document';}).length;
+  var groen = complianceData.filter(function(i){return i.status==='groen';}).length;
+  var totaal = complianceData.length;
+  var acties = actiesData.length;
+
+  var banner = document.getElementById('signalen-banner');
+  var tekst = document.getElementById('signalen-tekst');
+
+  if (rood > 0) {
+    banner.className = 'signalen-banner kritiek';
+    tekst.innerHTML = '<strong>' + rood + ' kritieke compliance-items</strong> vragen direct aandacht.';
+  } else if (geen > 8) {
+    banner.className = 'signalen-banner aandacht';
+    tekst.innerHTML = '<strong>' + geen + ' compliance-items</strong> hebben nog geen document. ' + (acties > 0 ? acties + ' open acties.' : '');
+  } else if (groen === totaal) {
+    banner.className = 'signalen-banner goed';
+    tekst.innerHTML = '<strong>Alles in orde.</strong> Alle ' + totaal + ' compliance-items zijn gedekt.';
+  } else {
+    banner.className = 'signalen-banner aandacht';
+    tekst.innerHTML = '<strong>' + groen + ' van ' + totaal + ' compliance-items</strong> in orde. ' + geen + ' items wachten nog op een document.';
+  }
+}
+
+// Vera AI
+document.getElementById('vera-ai-btn').addEventListener('click', vraagVera);
+document.getElementById('vera-vraag').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') vraagVera();
+});
+
+async function vraagVera() {
+  var vraag = document.getElementById('vera-vraag').value.trim();
+  if (!vraag) return;
+  if (!ANTHROPIC_KEY) {
+    document.getElementById('api-modal').classList.add('open');
+    return;
+  }
+
+  var btn = document.getElementById('vera-ai-btn');
+  var antwoord = document.getElementById('vera-antwoord');
+  btn.textContent = 'Bezig...';
+  btn.disabled = true;
+  antwoord.classList.remove('show');
+
+  var context = 'Hotel: Hotel De Klok, Oss, 45 kamers.\n' +
+    'Compliance: ' + complianceData.length + ' items totaal, ' +
+    complianceData.filter(function(i){return i.status==='groen';}).length + ' groen, ' +
+    complianceData.filter(function(i){return i.status==='geen_document';}).length + ' zonder document.\n' +
+    'Open acties: ' + actiesData.length + '\n' +
+    'Medewerkers: ' + medewData.map(function(m){return m.naam + ' (' + (m.functie||'') + ', BHV: ' + (m.bhv_geldig_tot||'geen') + ')';}).join(', ');
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: 'Je bent Vera, een AI-assistent voor hotelmanagers. Antwoord kort, concreet en in het Nederlands. Gebruik de beschikbare hoteldata om relevante antwoorden te geven. Geen opsommingstekens tenzij nodig. Max 3-4 zinnen.',
+        messages: [{role:'user',content:'Hoteldata:\n' + context + '\n\nVraag: ' + vraag}]
+      })
+    });
+    var data = await resp.json();
+    var tekst = (data.content && data.content[0]) ? data.content[0].text : 'Geen antwoord ontvangen.';
+    antwoord.textContent = tekst;
+    antwoord.classList.add('show');
+  } catch(e) {
+    antwoord.textContent = 'Er ging iets mis. Controleer je API sleutel.';
+    antwoord.classList.add('show');
+  }
+
+  btn.textContent = 'Vraag Vera';
+  btn.disabled = false;
+  document.getElementById('vera-vraag').value = '';
+}
+
+function statusLbl(s){return{groen:'In orde',oranje:'Let op',rood:'Kritiek',geen_document:'Geen doc'}[s]||s;}
 function fmtDatum(d){return new Date(d).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'});}
 function datumKlasse(d){if(!d)return'';var dagen=Math.floor((new Date(d)-new Date())/86400000);return dagen<0?'verlopen':dagen<60?'binnenkort':'';}
 
