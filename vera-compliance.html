@@ -216,6 +216,11 @@ const sb = createClient(
 );
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
 
+// ── Anthropic API sleutel ──
+// Vul hier jouw eigen API sleutel in na het aanmaken
+// Maak een nieuwe aan op platform.anthropic.com/api-keys
+const ANTHROPIC_KEY = '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';
+
 let allItems = [];
 let activeItem = null;
 let pendingDoc = null;
@@ -362,8 +367,46 @@ async function verwerkBestand(file) {
 
   showToast('Document geüpload — Vera analyseert...');
 
-  // Stap 2: type herkennen op basis van bestandsnaam
-  const parsed = herkenBestandsnaam(file.name);
+  // Stap 2: probeer Claude API, val terug op bestandsnaam
+  let parsed;
+  if (ANTHROPIC_KEY && ANTHROPIC_KEY !== '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') {
+    showToast('Vera leest het document uit...');
+    try {
+      const base64 = await fileToBase64(file);
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 800,
+          system: 'Je bent Vera, een compliance-assistent voor hotels in Nederland. Analyseer het document en geef ALLEEN een JSON-object terug zonder markdown of uitleg:
+{"type":"documenttype","naam_persoon":"naam of null","vervaldatum":"YYYY-MM-DD of null","uitvoerder":"naam of null","categorie":"legionella|bhv|brand|haccp|vergunning|rie|installatie|energie","actie":"wat moet er nu gebeuren"}',
+          messages: [{
+            role: 'user',
+            content: [{
+              type: 'document',
+              source: { type: 'base64', media_type: file.type || 'application/pdf', data: base64 }
+            }, { type: 'text', text: 'Analyseer dit document.' }]
+          }]
+        })
+      });
+      const data = await resp.json();
+      const tekst = data.content?.[0]?.text || '';
+      const clean = tekst.replace(/```json|```/g, '').trim();
+      parsed = JSON.parse(clean);
+      showToast('Vera heeft het document uitgelezen');
+    } catch(e) {
+      console.log('Claude API fallback:', e);
+      parsed = herkenBestandsnaam(file.name);
+    }
+  } else {
+    parsed = herkenBestandsnaam(file.name);
+  }
   pendingDoc = { parsed, pad, naam: file.name, type: file.type };
 
   // Stap 3: resultaat tonen
@@ -457,6 +500,15 @@ async function slaOp() {
 }
 
 // ── Helpers ──
+function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('Lezen mislukt'));
+    r.readAsDataURL(file);
+  });
+}
+
 function resetZone() {
   const z = document.getElementById('upload-zone');
   z.innerHTML = '<div class="upload-icon">&#128229;</div><div class="upload-text">Sleep een bestand hierin of <span style="color:var(--purple);cursor:pointer" onclick="document.getElementById(\'file-input\').click()">klik om te uploaden</span></div>';
