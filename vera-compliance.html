@@ -251,11 +251,11 @@ let pendingDoc = null;
 // ── API Key beheer ──
 function toonApiSetup() {
   document.getElementById('api-setup').style.display = 'flex';
-  document.getElementById('api-key-input').value = ANTHROPIC_KEY || '';
+  document.getElementById('api-key-field').value = ANTHROPIC_KEY || '';
 }
 
 function slaanApiKey() {
-  const key = document.getElementById('api-key-input').value.trim();
+  const key = document.getElementById('api-key-field').value.trim();
   if (!key) { showToast('Vul een sleutel in'); return; }
   ANTHROPIC_KEY = key;
   localStorage.setItem('vera_anthropic_key', key);
