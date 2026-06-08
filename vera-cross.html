@@ -496,7 +496,7 @@ async function vraagVera(sigId) {
   btn.textContent = '...'; btn.disabled = true;
   ant.classList.remove('show');
 
-  var ctx = 'Hotel: Hotel De Klok, Amsterdam, 45 kamers.\n';
+  var ctx = 'Hotel: Hotel De Klok, Amsterdam, 60 kamers.\n';
   ctx += 'Gemiddelde bezetting: ' + Object.keys(avgPerMaand).map(function(m) { return MAANDEN[m-1] + ':' + Math.round(avgPerMaand[m]) + '%'; }).join(', ') + '\n';
   ctx += 'Compliance: ' + compData.filter(function(i) { return i.status !== 'groen'; }).length + ' items open\n';
 
