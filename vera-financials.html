@@ -137,6 +137,15 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
 .toast.show{opacity:1}
 @media(max-width:700px){.kpi-strip{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+
+/* Toggle */
+.weergave-toggle{display:flex;align-items:center;gap:10px;margin-bottom:20px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow)}
+.toggle-lbl{font-size:12px;color:var(--text2);flex-shrink:0}
+.toggle-opties{display:flex;gap:4px;background:var(--bg);border-radius:8px;padding:3px}
+.toggle-opt{padding:7px 16px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-radius:6px;transition:all .15s;white-space:nowrap}
+.toggle-opt.active{background:var(--bg3);color:var(--purple);box-shadow:var(--shadow);font-weight:600}
+.toggle-uitleg{font-size:11px;color:var(--text3);margin-left:auto;font-family:'DM Mono',monospace}
+.accrual-badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px;background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border);margin-left:6px}
 </style>
 </head>
 <body>
@@ -164,6 +173,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <div class="fin-sub">OTB revenue via Mews &middot; Uitgaven via Exact Online</div>
     </div>
     <div class="fin-datum" id="fin-datum"></div>
+  </div>
+
+  <!-- Weergave toggle -->
+  <div class="weergave-toggle">
+    <div class="toggle-lbl">Weergave:</div>
+    <div class="toggle-opties">
+      <div class="toggle-opt active" id="tog-kas" onclick="setWeergave('kas')">Kas-basis</div>
+      <div class="toggle-opt" id="tog-accrual" onclick="setWeergave('accrual')">Accrual <span class="accrual-badge">Daggemiddelde</span></div>
+    </div>
+    <div class="toggle-uitleg" id="toggle-uitleg">Facturen op boekingsdatum — zoals Exact aanlevert</div>
   </div>
 
   <!-- KPI strip -->
@@ -311,7 +330,7 @@ function renderKPIs() {
   var vandaag = new Date().toISOString().split('T')[0];
   var otbVandaag = otbData.find(function(d) { return d.datum.substring(0,10) === vandaag; });
   var totaalOTBWeek = otbData.reduce(function(s, d) { return s + parseFloat(d.kamer_revenue) + parseFloat(d.fb_revenue) + parseFloat(d.overig_revenue); }, 0);
-  var uitgavenVandaag = uitgavenData.filter(function(d) { return d.datum.substring(0,10) === vandaag; }).reduce(function(s, d) { return s + parseFloat(d.bedrag); }, 0);
+  var uitgavenVandaag = getUitgavenVandaag();
   var revVandaag = otbVandaag ? parseFloat(otbVandaag.kamer_revenue) + parseFloat(otbVandaag.fb_revenue) + parseFloat(otbVandaag.overig_revenue) : 0;
   var gopVandaag = revVandaag - uitgavenVandaag;
   var gopPct = revVandaag > 0 ? Math.round(gopVandaag / revVandaag * 100) : 0;
@@ -356,10 +375,18 @@ function renderVandaag() {
 
   // Uitgaven vandaag
   var uitgVandaag = uitgavenData.filter(function(d) { return d.datum.substring(0,10) === vandaag; });
-  var totaalUitg = uitgVandaag.reduce(function(s, d) { return s + parseFloat(d.bedrag); }, 0);
-  if (uitgVandaag.length) {
+  var accrualRijen = weergave === 'accrual' ? [
+    {omschrijving:'Huur (dagdeel)', categorie:'vaste_lasten', bedrag: (8500/30).toFixed(2)},
+    {omschrijving:'Verzekering (dagdeel)', categorie:'vaste_lasten', bedrag: (1240/365).toFixed(2)},
+    {omschrijving:'Software abonnementen (dagdeel)', categorie:'vaste_lasten', bedrag: (3240/30).toFixed(2)},
+    {omschrijving:'Marketing vast (dagdeel)', categorie:'marketing', bedrag: (380/30).toFixed(2)},
+  ] : [];
+  var alleUitgaven = uitgVandaag.concat(accrualRijen);
+  var totaalUitg = getUitgavenVandaag();
+  if (alleUitgaven.length) {
     document.getElementById('uitgaven-vandaag').innerHTML =
-      uitgVandaag.map(function(u) {
+      (weergave === 'accrual' ? '<div style="padding:8px 16px;font-size:10px;font-family:\'DM Mono\',monospace;color:var(--amber);background:var(--amber-bg);border-bottom:1px solid var(--amber-border)">&#9660; Accrual: vaste lasten uitgesmeerd per dag</div>' : '') +
+      alleUitgaven.map(function(u) {
         return '<div class="uitgave-row">' +
           '<div class="uitgave-cat-dot dot-' + u.categorie + '"></div>' +
           '<div class="uitgave-omschrijving">' + u.omschrijving + '</div>' +
@@ -500,6 +527,53 @@ var toastT;
 function showToast(msg) {
   var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
   clearTimeout(toastT); toastT = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// Weergave toggle
+var weergave = 'kas';
+
+// Vaste lasten per dag (accrual berekening)
+var vasteLastenPerDag = {
+  huur: 8500 / 30,           // €283/dag
+  verzekering: 1240 / 365,   // €3.40/dag
+  software: 3240 / 30,       // €108/dag
+  marketing_vast: 380 / 30   // €12.67/dag
+};
+var totaalVastPerDag = Object.values(vasteLastenPerDag).reduce(function(s,v){return s+v;},0);
+
+function setWeergave(mode) {
+  weergave = mode;
+  document.getElementById('tog-kas').classList.toggle('active', mode === 'kas');
+  document.getElementById('tog-accrual').classList.toggle('active', mode === 'accrual');
+  document.getElementById('toggle-uitleg').textContent = mode === 'kas'
+    ? 'Facturen op boekingsdatum — zoals Exact aanlevert'
+    : 'Vaste lasten uitgesmeerd per dag — eerlijk dagelijks beeld';
+
+  // Herbereken KPIs en views
+  renderKPIs();
+  renderVandaag();
+  renderMaand();
+  showToast(mode === 'kas' ? 'Kas-basis: facturen op boekingsdatum' : 'Accrual: vaste lasten uitgesmeerd over de periode');
+}
+
+function getUitgavenVandaag() {
+  var vandaag = new Date().toISOString().split('T')[0];
+  var directe = uitgavenData.filter(function(d){return d.datum.substring(0,10)===vandaag;})
+    .reduce(function(s,d){return s+parseFloat(d.bedrag);},0);
+  if (weergave === 'accrual') {
+    // Voeg daggemiddelde vaste lasten toe
+    return directe + totaalVastPerDag;
+  }
+  return directe;
+}
+
+function getUitgavenMTD() {
+  var totaal = uitgavenData.reduce(function(s,d){return s+parseFloat(d.bedrag);},0);
+  if (weergave === 'accrual') {
+    var dagVanMaand = new Date().getDate();
+    return totaal + (totaalVastPerDag * dagVanMaand);
+  }
+  return totaal;
 }
 
 init();
