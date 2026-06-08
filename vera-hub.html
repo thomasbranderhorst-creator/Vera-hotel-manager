@@ -129,6 +129,38 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   .module-nav{grid-template-columns:1fr 1fr}
   .dagstart-hero{flex-direction:column;gap:8px;align-items:flex-start}
 }
+
+/* Bezettingsgrafiek */
+.bez-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px}
+.bez-dag{display:flex;flex-direction:column;align-items:center;gap:3px}
+.bez-dag-balk-wrap{width:100%;height:48px;display:flex;align-items:flex-end}
+.bez-dag-balk{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height .4s}
+.bez-dag-balk.laag{background:var(--green)}
+.bez-dag-balk.midden{background:var(--amber)}
+.bez-dag-balk.hoog{background:var(--coral)}
+.bez-dag-balk.vandaag{background:var(--purple);box-shadow:0 0 8px rgba(124,111,247,0.5)}
+.bez-dag-label{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
+.bez-dag-pct{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
+/* Status pills */
+.status-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.status-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text2)}
+.status-pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-pill.groen-pill{border-color:var(--green-border);background:var(--green-bg)}
+.status-pill.groen-pill .dot{background:var(--green);box-shadow:0 0 5px rgba(94,201,110,0.5)}
+.status-pill.amber-pill{border-color:var(--amber-border);background:var(--amber-bg)}
+.status-pill.amber-pill .dot{background:var(--amber)}
+.status-pill.rood-pill{border-color:var(--coral-border);background:var(--coral-bg)}
+.status-pill.rood-pill .dot{background:var(--coral)}
+/* Vandaag kaart */
+.vandaag-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
+.vandaag-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.vandaag-title{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.vandaag-bezetting{font-size:30px;font-weight:600;font-family:'DM Mono',monospace;color:var(--purple)}
+.vandaag-sub{font-size:11px;color:var(--text3);margin-top:2px}
+/* Signaal items */
+.signaal-items{display:flex;flex-direction:column;gap:3px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.signaal-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--text2)}
+.signaal-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
