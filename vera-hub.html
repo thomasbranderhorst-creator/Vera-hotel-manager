@@ -161,6 +161,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .signaal-items{display:flex;flex-direction:column;gap:3px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
 .signaal-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--text2)}
 .signaal-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* Review trend */
+.review-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.review-scores{display:flex;gap:16px}
+.review-score-item{text-align:center}
+.review-score-val{font-size:24px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
+.review-score-val.stijgend{color:var(--green)}
+.review-score-val.dalend{color:var(--coral)}
+.review-score-platform{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:2px}
+.review-trend-chart{display:flex;gap:3px;align-items:flex-end;height:44px;margin-bottom:6px}
+.review-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.review-bar{width:100%;border-radius:2px 2px 0 0;min-height:3px;transition:height .3s}
+.review-bar.booking{background:var(--blue)}
+.review-bar.google{background:var(--amber)}
+.review-week-label{font-size:8px;font-family:'DM Mono',monospace;color:var(--text3)}
+.review-trend-delta{font-size:11px;font-family:'DM Mono',monospace;margin-top:4px}
+.review-trend-delta.up{color:var(--green)}
+.review-trend-delta.down{color:var(--coral)}
+.review-trend-delta.flat{color:var(--text3)}
+.review-legend{display:flex;gap:12px;margin-top:6px}
+.review-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.review-legend-dot{width:8px;height:8px;border-radius:2px}
 </style>
 </head>
 <body>
@@ -220,6 +243,22 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     </div>
     <div class="bez-week" id="bez-week"></div>
     <div class="signaal-items" id="vandaag-signalen"></div>
+  </div>
+
+  <!-- Review trend kaart -->
+  <div class="review-card" id="review-card" style="display:none">
+    <div class="review-header">
+      <div>
+        <div class="vandaag-title">&#11088; Review trend — 8 weken</div>
+      </div>
+      <div class="review-scores" id="review-scores"></div>
+    </div>
+    <div class="review-trend-chart" id="review-chart"></div>
+    <div class="review-legend">
+      <div class="review-legend-item"><div class="review-legend-dot" style="background:var(--blue)"></div>Booking.com</div>
+      <div class="review-legend-item"><div class="review-legend-dot" style="background:var(--amber)"></div>Google</div>
+    </div>
+    <div id="review-delta" style="margin-top:8px"></div>
   </div>
 
   <!-- Signalen banner -->
@@ -392,18 +431,82 @@ async function init() {
 
 async function laadSystemData() {
   // Laad gesimuleerde data van alle systemen
-  var [mews, shift, exact, docs] = await Promise.all([
+  var [mews, shift, exact, docs, reviews] = await Promise.all([
     sb.from('mews_bezetting').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(7),
     sb.from('shiftbase_rooster').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(10),
     sb.from('exact_financials').select('*').eq('hotel_id', HOTEL_ID).order('periode', {ascending:false}).limit(1),
-    sb.from('documenten').select('*').eq('hotel_id', HOTEL_ID).order('created_at', {ascending:false}).limit(10)
+    sb.from('documenten').select('*').eq('hotel_id', HOTEL_ID).order('created_at', {ascending:false}).limit(10),
+    sb.from('review_trend').select('*').eq('hotel_id', HOTEL_ID).order('datum').limit(20)
   ]);
   mewsData = mews.data || [];
   shiftbaseData = shift.data || [];
   exactData = exact.data && exact.data[0] ? exact.data[0] : null;
   documentenData = docs.data || [];
+  var reviewData = reviews.data || [];
+  if (reviewData.length) renderReviewTrend(reviewData);
 
   renderVandaagKaart();
+}
+
+function renderReviewTrend(data) {
+  var booking = data.filter(function(d){return d.platform==='booking';});
+  var google = data.filter(function(d){return d.platform==='google';});
+
+  if (!booking.length && !google.length) return;
+
+  // Huidige scores
+  var latestBooking = booking.length ? booking[booking.length-1].score : null;
+  var latestGoogle = google.length ? google[google.length-1].score : null;
+  var prevBooking = booking.length > 1 ? booking[booking.length-2].score : null;
+  var prevGoogle = google.length > 1 ? google[google.length-2].score : null;
+
+  var scoresHtml = '';
+  if (latestBooking) {
+    var deltaB = prevBooking ? latestBooking - prevBooking : 0;
+    var klasseB = deltaB > 0 ? 'stijgend' : deltaB < 0 ? 'dalend' : '';
+    scoresHtml += '<div class="review-score-item"><div class="review-score-val ' + klasseB + '">' + latestBooking.toFixed(1) + '</div><div class="review-score-platform">Booking.com</div></div>';
+  }
+  if (latestGoogle) {
+    var deltaG = prevGoogle ? latestGoogle - prevGoogle : 0;
+    var klasseG = deltaG > 0 ? 'stijgend' : deltaG < 0 ? 'dalend' : '';
+    scoresHtml += '<div class="review-score-item"><div class="review-score-val ' + klasseG + '">' + latestGoogle.toFixed(1) + '</div><div class="review-score-platform">Google</div></div>';
+  }
+  document.getElementById('review-scores').innerHTML = scoresHtml;
+
+  // Grafiek — combineer per datum
+  var datums = [...new Set(data.map(function(d){return d.datum.substring(0,10);}))].sort().slice(-8);
+  var maxScore = 10;
+
+  var chartHtml = datums.map(function(datum, i) {
+    var bItem = booking.find(function(d){return d.datum.substring(0,10)===datum;});
+    var gItem = google.find(function(d){return d.datum.substring(0,10)===datum;});
+    var weekLabel = 'W' + (i+1);
+    var isLatest = i === datums.length - 1;
+
+    var bHoogte = bItem ? Math.round((bItem.score / maxScore) * 40) : 0;
+    var gHoogte = gItem ? Math.round((gItem.score / 5) * 40) : 0; // Google is /5
+
+    return '<div class="review-bar-wrap">' +
+      '<div style="display:flex;gap:1px;align-items:flex-end;height:44px">' +
+        (bItem ? '<div class="review-bar booking" style="height:' + bHoogte + 'px;flex:1' + (isLatest?';box-shadow:0 0 6px rgba(74,158,255,0.5)':'') + '"></div>' : '<div style="flex:1"></div>') +
+        (gItem ? '<div class="review-bar google" style="height:' + gHoogte + 'px;flex:1' + (isLatest?';box-shadow:0 0 6px rgba(245,166,35,0.5)':'') + '"></div>' : '<div style="flex:1"></div>') +
+      '</div>' +
+      '<div class="review-week-label' + (isLatest?' style="color:var(--purple);font-weight:500"':'') + '">' + weekLabel + '</div>' +
+      '</div>';
+  }).join('');
+
+  document.getElementById('review-chart').innerHTML = chartHtml;
+
+  // Trend delta
+  var deltaHtml = '';
+  if (latestBooking && prevBooking) {
+    var d = (latestBooking - prevBooking).toFixed(1);
+    var klasse = d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
+    var pijl = d > 0 ? '&#8593;' : d < 0 ? '&#8595;' : '&#8594;';
+    deltaHtml += '<span class="review-trend-delta ' + klasse + '">' + pijl + ' Booking ' + (d > 0 ? '+' : '') + d + ' t.o.v. vorige week</span>';
+  }
+  document.getElementById('review-delta').innerHTML = deltaHtml;
+  document.getElementById('review-card').style.display = 'block';
 }
 
 function renderVandaagKaart() {
