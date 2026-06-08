@@ -349,13 +349,13 @@ function bouwSignalen() {
       icon: '&#128680;',
       typeLabel: 'BHV × Piekbezetting',
       titel: 'BHV-onderbezetting in piekperiode ' + MAANDEN[parseInt(piekMaand)-1] + '–aug',
-      subtitel: 'Slechts ' + bhvGeldig.length + ' BHV\'er voor ' + hoogBezetting.length + ' piekmaanden. Bij een bezetting van ' + Math.round(avgPerMaand[piekMaand]) + '%+ is meer BHV-dekking vereist.',
+      subtitel: 'Slechts ' + bhvGeldig.length + ' BHV-er voor ' + hoogBezetting.length + ' piekmaanden. Bij een bezetting van ' + Math.round(avgPerMaand[piekMaand]) + '%+ is meer BHV-dekking vereist.',
       bronnen: ['personeel', 'lighthouse', 'compliance'],
       bezettingChart: avgPerMaand,
       highlightMaand: parseInt(piekMaand),
-      insight: 'De Arbowet vereist voldoende BHV\'ers in verhouding tot het aantal aanwezige personen. In de zomerpiek (' + Math.round(avgPerMaand[piekMaand]) + '% bezetting = ~41 gasten + personeel) is <strong>minimaal 2 BHV\'ers per dienst</strong> noodzakelijk. Nu staat er slechts 1 BHV-gecertificeerde medewerker in het systeem.',
+      insight: 'De Arbowet vereist voldoende BHV-ers in verhouding tot het aantal aanwezige personen. In de zomerpiek (' + Math.round(avgPerMaand[piekMaand]) + '% bezetting = ~41 gasten + personeel) is <strong>minimaal 2 BHV-ers per dienst</strong> noodzakelijk. Nu staat er slechts 1 BHV-gecertificeerde medewerker in het systeem.',
       aanbeveling: 'Plan voor <strong>minimaal 1 extra medewerker een BHV-opleiding</strong> vóór de zomerpiek. BHV-opleidingen duren 1 dag en moeten minimaal 6 weken van tevoren geboekt worden. Vera adviseert: plan in <strong>april of mei</strong> — voor de piek, na het laagseizoen.',
-      veraVraag: 'Hoeveel BHV\'ers heb ik nodig en hoe plan ik dat voor de zomerpiek?',
+      veraVraag: 'Hoeveel BHV-ers heb ik nodig en hoe plan ik dat voor de zomerpiek?',
       acties: [
         {label: 'BHV opleiding plannen', primary: true, id: 'bhv-actie'},
         {label: 'Bekijk medewerkers', primary: false, href: 'vera-compliance.html'}
