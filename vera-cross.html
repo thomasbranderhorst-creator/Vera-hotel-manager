@@ -115,6 +115,18 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
 .toast.show{opacity:1}
+/* Weer widget */
+.weer-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
+.weer-dag{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 8px;text-align:center}
+.weer-dag.vandaag{border-color:var(--purple-border);background:var(--purple-bg)}
+.weer-icon{font-size:22px;margin-bottom:4px}
+.weer-dag-naam{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-bottom:3px}
+.weer-temp{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
+.weer-type{font-size:10px;color:var(--text3);margin-top:2px}
+.weer-impact{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:7px;font-size:12px;margin-top:6px}
+.weer-impact.positief{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.weer-impact.negatief{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.weer-impact.neutraal{background:var(--gray-bg);border:1px solid var(--gray-border);color:var(--gray)}
 
 /* API Modal */
 #api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
@@ -379,6 +391,85 @@ function bouwSignalen() {
   // Bind actie knoppen
   bindActieKnoppen();
   bindVeraAI();
+
+
+  // ── WEERSIGNAAL — via Open-Meteo (gratis, geen API key) ──
+  async function laadWeerSignaal() {
+    // Amsterdam coördinaten
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=4.90&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe%2FAmsterdam&forecast_days=5';
+    try {
+      var resp = await fetch(url);
+      var data = await resp.json();
+      if (!data.daily) return;
+
+      var dagen = ['zo','ma','di','wo','do','vr','za'];
+      var weerIcons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
+      var weerTypes = {0:'Zonnig',1:'Licht bewolkt',2:'Bewolkt',3:'Zwaar bewolkt',45:'Mist',51:'Lichte regen',61:'Regen',80:'Buien',95:'Onweer'};
+
+      var daily = data.daily;
+      var stripHtml = '<div class="weer-strip">';
+      var impacts = [];
+
+      for (var i = 0; i < 5; i++) {
+        var datum = new Date(daily.time[i]);
+        var code = daily.weathercode[i];
+        var tmax = Math.round(daily.temperature_2m_max[i]);
+        var tmin = Math.round(daily.temperature_2m_min[i]);
+        var neerslag = daily.precipitation_sum[i];
+        var icon = weerIcons[code] || '🌡️';
+        var type = weerTypes[Math.floor(code/10)*10] || weerTypes[code] || 'Wisselvallig';
+        var isVandaag = i === 0;
+
+        stripHtml += '<div class="weer-dag' + (isVandaag ? ' vandaag' : '') + '">' +
+          '<div class="weer-dag-naam">' + (isVandaag ? 'vandaag' : dagen[datum.getDay()]) + '</div>' +
+          '<div class="weer-icon">' + icon + '</div>' +
+          '<div class="weer-temp">' + tmax + '°</div>' +
+          '<div class="weer-type">' + (neerslag > 1 ? neerslag.toFixed(1) + 'mm' : '') + '</div>' +
+          '</div>';
+
+        // Bepaal impact op bezetting
+        if (tmax >= 22 && code <= 3) impacts.push({dag: isVandaag ? 'vandaag' : dagen[datum.getDay()], type:'positief', tekst: 'Mooi weer (' + tmax + '°) — verwacht hogere last-minute boekingen en terrasomzet'});
+        else if (code >= 61 || neerslag > 5) impacts.push({dag: isVandaag ? 'vandaag' : dagen[datum.getDay()], type:'negatief', tekst: 'Regen (' + neerslag.toFixed(1) + 'mm) — gasten blijven vaker binnen, hogere F&B vraag'});
+      }
+      stripHtml += '</div>';
+
+      var impactHtml = impacts.slice(0,2).map(function(imp) {
+        return '<div class="weer-impact ' + imp.type + '">' +
+          '<span style="font-size:14px">' + (imp.type==='positief'?'☀️':'🌧️') + '</span>' +
+          '<span><strong>' + imp.dag + ':</strong> ' + imp.tekst + '</span>' +
+          '</div>';
+      }).join('');
+
+      // Voeg signaalkaart toe
+      var weerKaart = bouwSignaalKaart({
+        type: impacts.length && impacts[0].type === 'negatief' ? 'aandacht' : 'info',
+        icon: impacts.length && impacts[0].type === 'negatief' ? '🌧️' : '☀️',
+        typeLabel: 'Weer × Bezetting × Omzet',
+        titel: impacts.length ? (impacts[0].type === 'positief' ? 'Mooi weer komende dagen — kans op extra omzet' : 'Regenachtig weer — anticipeer op gedragsverandering gasten') : 'Stabiel weer deze week',
+        subtitel: 'Weersvoorspelling Amsterdam 5 dagen — impact op bezetting, F&B en last-minute boekingen.',
+        bronnen: ['lighthouse'],
+        bezettingChart: null,
+        highlightMaand: null,
+        insight: stripHtml + (impacts.length ? impactHtml : '<div class="weer-impact neutraal"><span>→</span><span>Geen grote weersinvloeden verwacht de komende dagen.</span></div>'),
+        aanbeveling: impacts.length && impacts[0].type === 'positief'
+          ? 'Bij aanhoudend mooi weer in de zomer: activeer last-minute deals via OTA's, zorg voor extra terrasbestelling en overweeg dagrecreanten-pakket. Vera kan een revenue-actie aanmaken.'
+          : 'Bij regenachtig weer verhoogt de verblijfstijd in het hotel. Overweeg een in-room dining aanbieding en zorg voor voldoende F&B bezetting. Check of het wellnessdeel of de bar extra capaciteit aankan.',
+        veraVraag: 'Wat kan ik doen om de omzet te maximaliseren gezien het verwachte weer?',
+        acties: [{label:'Actie aanmaken', primary:true, id:'weer-actie'}],
+        id: 'signaal-weer'
+      });
+
+      var container = document.getElementById('signalen-container');
+      container.insertAdjacentHTML('afterbegin', weerKaart);
+      bindActieKnoppen();
+      bindVeraAI();
+
+    } catch(e) {
+      console.log('Weer API fout:', e);
+    }
+  }
+
+  laadWeerSignaal();
 }
 
 function bouwSignaalKaart(s) {
@@ -440,7 +531,8 @@ function bindActieKnoppen() {
     'haccp-actie': {titel:'HACCP-training inplannen', omschrijving:'Vera signaal: combineer met leveranciersaudit in laagseizoen'},
     'rie-actie': {titel:'RI&E-update plannen', omschrijving:'Vera signaal: adviseer RI&E-sessie met medewerkers in rustige periode'},
     'bhv-actie': {titel:'Extra BHV-opleiding plannen voor piekperiode', omschrijving:'Vera signaal: BHV-onderbezetting voor zomerpiek'},
-    'inst-actie': {titel:'Liftkeuring + CV-onderhoud combineren', omschrijving:'Vera signaal: combineer installatiekeuringen in laagseizoen'}
+    'inst-actie': {titel:'Liftkeuring + CV-onderhoud combineren',  omschrijving:'Vera signaal: combineer installatiekeuringen in laagseizoen'},
+    'weer-actie': {titel:'Revenue actie op basis van weersvoorspelling', omschrijving:'Vera weersignaal: anticipeer op verwacht mooi/slecht weer', omschrijving:'Vera signaal: combineer installatiekeuringen in laagseizoen'}
   };
 
   document.querySelectorAll('[data-actie-id]').forEach(function(btn) {
