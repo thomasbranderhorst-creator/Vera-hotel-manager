@@ -328,20 +328,25 @@ async function haalNieuws(categorie, zoekterm) {
       });
     }
 
-    // Parse JSON
+    // Parse JSON — robuust
     var items;
     try {
-      var clean = tekst.replace(/```json|```/g, '').trim();
+      // Strip markdown code blocks
+      var clean = tekst.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
       // Zoek de JSON array
       var start = clean.indexOf('[');
       var end = clean.lastIndexOf(']');
       if (start !== -1 && end !== -1) {
         clean = clean.substring(start, end + 1);
       }
+      // Fix eventuele control characters
+      clean = clean.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, '');
       items = JSON.parse(clean);
     } catch(e) {
-      console.error('Parse error:', e, tekst.substring(0, 500));
-      grid.innerHTML = '<div class="loading" style="color:var(--coral)">Kon resultaten niet verwerken. Probeer opnieuw.</div>';
+      console.error('Parse error:', e.message);
+      console.log('Raw tekst:', tekst.substring(0, 800));
+      // Fallback: toon de tekst als platte items
+      grid.innerHTML = '<div class="nieuws-item info"><div class="nieuws-header"><div class="nieuws-content"><div class="nieuws-titel">Resultaten ophalen</div><div class="nieuws-samenvatting" style="white-space:pre-wrap">' + tekst.substring(0, 1000) + '</div></div></div></div>';
       return;
     }
 
