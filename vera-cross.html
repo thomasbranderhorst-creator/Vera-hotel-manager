@@ -471,7 +471,8 @@ function bouwSignalen() {
     }
   }
 
-  laadWeerSignaal();
+  // Weersignaal na 50ms op achtergrond — blokkeert rendering niet
+  setTimeout(laadWeerSignaal, 50);
 }
 
 function bouwSignaalKaart(s) {
