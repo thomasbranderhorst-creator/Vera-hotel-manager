@@ -13,7 +13,6 @@
   --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);
   --text:#1a1814;--text2:#4a4640;--text3:#9a948c;
   --shadow:0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md:0 4px 12px rgba(0,0,0,0.08);
   --purple:#6355e0;--purple-bg:rgba(99,85,224,0.08);--purple-border:rgba(99,85,224,0.2);
   --teal:#1a8c7a;--teal-bg:rgba(26,140,122,0.08);--teal-border:rgba(26,140,122,0.2);
   --amber:#c47c0a;--amber-bg:rgba(196,124,10,0.08);--amber-border:rgba(196,124,10,0.2);
@@ -23,112 +22,99 @@
   --gray:#6b6560;--gray-bg:rgba(107,101,96,0.08);--gray-border:rgba(107,101,96,0.2);
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
-.topbar{position:sticky;top:0;z-index:100;background:rgba(244,241,236,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,241,236,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px;box-shadow:var(--shadow)}
 .logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
 .logo-name{font-size:14px;font-weight:600;color:var(--text)}
-.topbar-div{width:1px;height:18px;background:var(--border)}
+.topbar-div{width:1px;height:18px;background:var(--border2)}
 .topbar-page{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
-.hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace}
-.back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-decoration:none;transition:all .15s}
-.back-link:hover{border-color:var(--border2);color:var(--text2)}
-.api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
+.hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace;box-shadow:var(--shadow)}
+.back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);text-decoration:none;transition:all .15s;box-shadow:var(--shadow)}
+.back-link:hover{border-color:var(--purple-border);color:var(--purple)}
+.api-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer;box-shadow:var(--shadow)}
 
 .main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
-
-.page-hero{margin-bottom:24px}
 .page-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px}
-.page-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:640px}
+.page-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:640px;margin-bottom:24px}
 
 /* Signaal kaart */
-.signaal-card{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:10px}
-.signaal-card.urgent{border-color:var(--coral-border)}
-.signaal-card.aandacht{border-color:var(--amber-border)}
-.signaal-card.info{border-color:var(--blue-border)}
-.signaal-card.groen{border-color:var(--green-border)}
+.signaal{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow)}
+.signaal.urgent{border-color:var(--coral-border)}
+.signaal.aandacht{border-color:var(--amber-border)}
+.signaal.info{border-color:var(--blue-border)}
+.signaal.goed{border-color:var(--green-border)}
 
 .signaal-header{padding:16px 20px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border)}
-.signaal-indicator{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.signaal-ind{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .ind-urgent{background:var(--coral-bg);border:1px solid var(--coral-border)}
 .ind-aandacht{background:var(--amber-bg);border:1px solid var(--amber-border)}
 .ind-info{background:var(--blue-bg);border:1px solid var(--blue-border)}
-.ind-groen{background:var(--green-bg);border:1px solid var(--green-border)}
-
-.signaal-header-tekst{flex:1}
+.ind-goed{background:var(--green-bg);border:1px solid var(--green-border)}
 .signaal-type{font-size:10px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .signaal-type.urgent{color:var(--coral)}
 .signaal-type.aandacht{color:var(--amber)}
 .signaal-type.info{color:var(--blue)}
-.signaal-type.groen{color:var(--green)}
+.signaal-type.goed{color:var(--green)}
 .signaal-titel{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px}
-.signaal-subtitel{font-size:12px;color:var(--text2);line-height:1.5}
+.signaal-sub{font-size:12px;color:var(--text2);line-height:1.5}
 
 .signaal-body{padding:16px 20px}
-
-/* Data bronnen */
-.bronnen-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.bron-tag{font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px}
-.bron-tag.lighthouse{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
-.bron-tag.compliance{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
-.bron-tag.personeel{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
-.bron-tag.financials{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
-.bron-tag.pos{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)}
+.bronnen{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.bron{font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px}
+.bron-lighthouse{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.bron-compliance{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.bron-personeel{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.bron-weer{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
 
 /* Bezettingsbalk */
-.bezetting-chart{display:flex;gap:3px;align-items:flex-end;height:60px;margin-bottom:8px}
-.bez-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.bez-bar{width:100%;border-radius:3px 3px 0 0;transition:height .3s}
-.bez-bar.laag{background:var(--green)}
-.bez-bar.midden{background:var(--amber)}
-.bez-bar.hoog{background:var(--coral)}
-.bez-bar.highlight{box-shadow:0 0 8px rgba(124,111,247,0.6);border:1px solid var(--purple)}
+.bez-chart{display:flex;gap:3px;align-items:flex-end;height:56px;margin-bottom:8px}
+.bez-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bez-balk{width:100%;border-radius:3px 3px 0 0}
+.bez-balk.laag{background:var(--green)}
+.bez-balk.midden{background:var(--amber)}
+.bez-balk.hoog{background:var(--coral)}
+.bez-balk.hl{border:2px solid var(--purple);box-shadow:0 0 6px rgba(99,85,224,0.3)}
 .bez-maand{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
 
-/* Insight box */
-.insight-box{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 16px;margin-bottom:12px}
+/* Insight & aanbeveling */
+.insight{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:10px}
 .insight-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .insight-tekst{font-size:12px;color:var(--text2);line-height:1.6}
 .insight-tekst strong{color:var(--text)}
-
-/* Aanbeveling */
-.aanbeveling-box{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:8px;padding:12px 16px;margin-bottom:12px}
+.aanbeveling{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:8px;padding:12px 16px;margin-bottom:10px}
 .aanbeveling-label{font-size:10px;font-family:'DM Mono',monospace;color:var(--purple);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .aanbeveling-tekst{font-size:12px;color:var(--text2);line-height:1.6}
 .aanbeveling-tekst strong{color:var(--text)}
 
-/* Vera AI per signaal */
-.vera-signaal-ai{margin-top:10px}
-.vera-ai-row{display:flex;gap:8px}
-.vera-ai-input{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none}
-.vera-ai-input:focus{border-color:var(--purple)}
-.vera-ai-input::placeholder{color:var(--text3)}
-.vera-ai-btn{background:var(--purple);border:none;border-radius:7px;padding:8px 14px;font-size:11px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',monospace;white-space:nowrap}
-.vera-ai-antwoord{margin-top:10px;background:var(--bg2);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.7;display:none}
-.vera-ai-antwoord.show{display:block}
-
-/* Acties */
-.actie-btn{background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:7px 14px;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;margin-right:6px}
-.actie-btn:hover{border-color:var(--purple-border);color:var(--purple)}
-.actie-btn.primary{background:var(--purple);border-color:var(--purple);color:white}
-
-/* Loading / toast */
-.loading{text-align:center;padding:40px 0;color:var(--text3);font-size:13px}
-.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
-.toast.show{opacity:1}
-/* Weer widget */
-.weer-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:12px}
-.weer-dag{background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 8px;text-align:center}
+/* Weer strip */
+.weer-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+.weer-dag{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 6px;text-align:center}
 .weer-dag.vandaag{border-color:var(--purple-border);background:var(--purple-bg)}
-.weer-icon{font-size:22px;margin-bottom:4px}
-.weer-dag-naam{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-bottom:3px}
+.weer-icon{font-size:20px;margin-bottom:3px}
+.weer-naam{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-bottom:2px}
 .weer-temp{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
-.weer-type{font-size:10px;color:var(--text3);margin-top:2px}
-.weer-impact{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:7px;font-size:12px;margin-top:6px}
+.weer-neerslag{font-size:10px;color:var(--text3);margin-top:2px}
+.weer-impact{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:7px;font-size:12px;margin-bottom:6px}
 .weer-impact.positief{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
 .weer-impact.negatief{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
 .weer-impact.neutraal{background:var(--gray-bg);border:1px solid var(--gray-border);color:var(--gray)}
+
+/* Vera AI per signaal */
+.vera-row{display:flex;gap:8px;margin-top:10px}
+.vera-input{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none}
+.vera-input:focus{border-color:var(--purple)}
+.vera-input::placeholder{color:var(--text3)}
+.vera-btn{background:var(--purple);border:none;border-radius:7px;padding:8px 14px;font-size:11px;font-weight:500;color:white;cursor:pointer;white-space:nowrap}
+.vera-antwoord{margin-top:10px;background:var(--bg2);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.7;display:none}
+.vera-antwoord.show{display:block}
+
+/* Actie knoppen */
+.actie-rij{display:flex;gap:8px;margin-top:10px}
+.actie-btn{background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:7px 14px;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s}
+.actie-btn:hover{border-color:var(--purple-border);color:var(--purple)}
+.actie-btn.prim{background:var(--purple);border-color:var(--purple);color:white}
+.actie-btn.prim:hover{background:#5448c8}
+.actie-btn:disabled{opacity:0.6;cursor:default}
 
 /* API Modal */
 #api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:500;align-items:center;justify-content:center}
@@ -136,12 +122,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .api-box{background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:28px 32px;max-width:420px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
 .api-box h3{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
 .api-box p{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:16px}
-#api-input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:#e8eaf0;outline:none;margin-bottom:12px;box-sizing:border-box}
+#api-input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:var(--text);outline:none;margin-bottom:12px;box-sizing:border-box}
 .api-btns{display:flex;gap:8px}
 #btn-save-key{flex:1;background:var(--purple);border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
 #btn-skip-key{background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 16px;font-size:12px;color:var(--text2);cursor:pointer}
 
-.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:20px 0 12px}
+.loading{text-align:center;padding:40px 0;color:var(--text3);font-size:13px}
+.spinner{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
@@ -153,12 +143,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="topbar-div"></div>
   <div class="topbar-page">Cross-discipline signalen</div>
   <div class="topbar-right">
-    <div class="hotel-badge" id="hotel-naam">Laden...</div>
+    <div class="hotel-badge" id="hotel-naam">Hotel De Klok</div>
     <button class="api-btn" id="api-status-btn">API: —</button>
   </div>
 </div>
 
-<!-- API Modal -->
 <div id="api-modal">
   <div class="api-box">
     <h3>&#128274; Anthropic API sleutel</h3>
@@ -172,30 +161,20 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 </div>
 
 <div class="main">
-
-  <div class="page-hero">
-    <div class="page-title">Cross-discipline signalen</div>
-    <div class="page-sub">Vera kijkt niet per afdeling — Vera kijkt naar het hotel als systeem. Deze signalen ontstaan door data uit meerdere bronnen te combineren die normaal nooit met elkaar praten.</div>
-  </div>
-
-  <div id="signalen-container">
-    <div class="loading"><div class="spinner"></div>Signalen laden...</div>
-  </div>
-
+  <div class="page-title">Cross-discipline signalen</div>
+  <div class="page-sub">Vera kijkt niet per afdeling maar naar het hotel als systeem. Deze signalen ontstaan door data te combineren die normaal nooit met elkaar praten.</div>
+  <div id="container"><div class="loading"><div class="spinner"></div>Signalen laden...</div></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 const { createClient } = supabase;
-const sb = createClient(
-  'https://nznsimwgjwkdvudcdmup.supabase.co',
-  'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ'
-);
+const sb = createClient('https://nznsimwgjwkdvudcdmup.supabase.co', 'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ');
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
-let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
-let bezettingData = [], complianceData = [], medewData = [];
 const MAANDEN = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
+let bezData = [], compData = [], medewData = [], avgPerMaand = {};
 
 // API modal
 document.getElementById('api-status-btn').addEventListener('click', function() {
@@ -203,21 +182,21 @@ document.getElementById('api-status-btn').addEventListener('click', function() {
   document.getElementById('api-input').value = ANTHROPIC_KEY;
 });
 document.getElementById('btn-save-key').addEventListener('click', function() {
-  var key = document.getElementById('api-input').value.trim();
-  if (!key) return;
-  ANTHROPIC_KEY = key;
-  localStorage.setItem('vera_anthropic_key', key);
+  var k = document.getElementById('api-input').value.trim();
+  if (!k) return;
+  ANTHROPIC_KEY = k;
+  localStorage.setItem('vera_anthropic_key', k);
   document.getElementById('api-modal').classList.remove('open');
   updateApiStatus();
-  showToast('API sleutel opgeslagen');
+  showToast('Opgeslagen');
 });
 document.getElementById('btn-skip-key').addEventListener('click', function() {
   document.getElementById('api-modal').classList.remove('open');
 });
 function updateApiStatus() {
-  var btn = document.getElementById('api-status-btn');
-  btn.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
-  btn.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
+  var b = document.getElementById('api-status-btn');
+  b.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
+  b.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
 }
 
 async function init() {
@@ -225,399 +204,329 @@ async function init() {
   var hotel = await sb.from('hotels').select('naam').eq('id', HOTEL_ID).single();
   if (hotel.data) document.getElementById('hotel-naam').textContent = hotel.data.naam;
 
-  var [bez, comp, medew] = await Promise.all([
-    sb.from('bezetting_historisch').select('*').eq('hotel_id', HOTEL_ID).order('jaar').order('maand'),
-    sb.from('compliance_items').select('*').eq('hotel_id', HOTEL_ID),
-    sb.from('medewerkers').select('*').eq('hotel_id', HOTEL_ID).eq('actief', true)
+  var results = await Promise.all([
+    sb.from('bezetting_historisch').select('maand,jaar,bezettingsgraad').eq('hotel_id', HOTEL_ID).order('jaar').order('maand'),
+    sb.from('compliance_items').select('id,naam,categorie,status,vervaldatum').eq('hotel_id', HOTEL_ID),
+    sb.from('medewerkers').select('naam,bhv_geldig_tot').eq('hotel_id', HOTEL_ID).eq('actief', true)
   ]);
 
-  bezettingData = bez.data || [];
-  complianceData = comp.data || [];
-  medewData = medew.data || [];
+  bezData = results[0].data || [];
+  compData = results[1].data || [];
+  medewData = results[2].data || [];
+
+  // Bereken gemiddelde bezetting per maand
+  var perMaand = {};
+  bezData.forEach(function(b) {
+    if (!perMaand[b.maand]) perMaand[b.maand] = [];
+    perMaand[b.maand].push(b.bezettingsgraad);
+  });
+  for (var m in perMaand) {
+    var vals = perMaand[m];
+    avgPerMaand[m] = vals.reduce(function(a, b) { return a + b; }, 0) / vals.length;
+  }
 
   bouwSignalen();
+
+  // Weersignaal op achtergrond
+  setTimeout(laadWeer, 200);
 }
 
 function bouwSignalen() {
-  var container = document.getElementById('signalen-container');
-
-  // Bereken gemiddelde bezetting per maand (over beschikbare jaren)
-  var gemPerMaand = {};
-  bezettingData.forEach(function(b) {
-    if (!gemPerMaand[b.maand]) gemPerMaand[b.maand] = [];
-    gemPerMaand[b.maand].push(b.bezettingsgraad);
-  });
-  var avgPerMaand = {};
-  Object.keys(gemPerMaand).forEach(function(m) {
-    var vals = gemPerMaand[m];
-    avgPerMaand[m] = vals.reduce(function(a,b){return a+b;},0) / vals.length;
-  });
-
-  // Rustigste maanden (onder 55%)
-  var rustig = Object.keys(avgPerMaand).filter(function(m){return avgPerMaand[m] < 55;}).sort(function(a,b){return avgPerMaand[a]-avgPerMaand[b];});
-
-  // Compliance items zonder document
-  var openCompliance = complianceData.filter(function(i){return i.status==='geen_document'||i.status==='rood';});
-  var brandItems = complianceData.filter(function(i){return i.categorie==='brand' && (i.status==='geen_document'||i.status==='rood');});
-  var haccpItems = complianceData.filter(function(i){return i.categorie==='haccp' && (i.status==='geen_document'||i.status==='rood');});
-  var rieItems = complianceData.filter(function(i){return i.categorie==='rie' && (i.status==='geen_document'||i.status==='rood');});
-
-  // BHV medewerkers
-  var bhvGeldig = medewData.filter(function(m){
-    if (!m.bhv_geldig_tot) return false;
-    return new Date(m.bhv_geldig_tot) > new Date();
-  });
-
+  var container = document.getElementById('container');
   var html = '';
 
-  // ── SIGNAAL 1: Brandveiligheid × Rustige periode ──
+  // Rustige maanden
+  var rustig = Object.keys(avgPerMaand).filter(function(m) { return avgPerMaand[m] < 55; })
+    .sort(function(a, b) { return avgPerMaand[a] - avgPerMaand[b]; });
+
+  var brandItems = compData.filter(function(i) { return i.categorie === 'brand' && i.status !== 'groen'; });
+  var haccpItems = compData.filter(function(i) { return i.categorie === 'haccp' && i.status !== 'groen'; });
+  var rieItems = compData.filter(function(i) { return i.categorie === 'rie' && i.status !== 'groen'; });
+  var instItems = compData.filter(function(i) { return i.categorie === 'installatie' && i.status !== 'groen'; });
+
+  var bhvGeldig = medewData.filter(function(m) {
+    return m.bhv_geldig_tot && new Date(m.bhv_geldig_tot) > new Date();
+  });
+
+  var hoog = Object.keys(avgPerMaand).filter(function(m) { return avgPerMaand[m] > 80; });
+
+  // Signaal 1: Brand x Bezetting
   if (brandItems.length > 0 && rustig.length > 0) {
-    var rustigsteMaand = parseInt(rustig[0]);
-    var tweedeMaand = rustig.length > 1 ? parseInt(rustig[1]) : null;
-    html += bouwSignaalKaart({
-      type: 'aandacht',
-      icon: '&#128293;',
-      typeLabel: 'Brand × Bezetting',
-      titel: 'Plan brandveiligheidsoefening in ' + MAANDEN[rustigsteMaand-1] + (tweedeMaand ? ' of ' + MAANDEN[tweedeMaand-1] : ''),
-      subtitel: brandItems.length + ' brandveiligheidsitem' + (brandItems.length>1?'s':'') + ' staan open. Historisch is ' + MAANDEN[rustigsteMaand-1] + ' de rustigste maand (' + Math.round(avgPerMaand[rustigsteMaand]) + '% bezetting).',
+    var rm = parseInt(rustig[0]);
+    html += maakSignaal({
+      klasse: 'aandacht', icon: '&#128293;',
+      type: 'Brand x Bezetting',
+      titel: 'Plan brandveiligheidsoefening in ' + MAANDEN[rm - 1],
+      sub: brandItems.length + ' brandveiligheidsitems open. Gemiddeld ' + Math.round(avgPerMaand[rm]) + '% bezetting in ' + MAANDEN[rm - 1] + ' — laagste verstoring.',
       bronnen: ['lighthouse', 'compliance'],
-      bezettingChart: avgPerMaand,
-      highlightMaand: rustigsteMaand,
-      insight: 'Op basis van 2 jaar historische data is <strong>' + MAANDEN[rustigsteMaand-1] + ' de rustigste maand</strong> met gemiddeld ' + Math.round(avgPerMaand[rustigsteMaand]) + '% bezetting. ' + (tweedeMaand ? MAANDEN[tweedeMaand-1] + ' is een goede tweede optie (' + Math.round(avgPerMaand[tweedeMaand]) + '%).' : '') + ' Een brandveiligheidsoefening vereist dat alle medewerkers aanwezig zijn — dit verstoort de operatie minimaal als het hotel rustig is.',
-      aanbeveling: 'Plan de <strong>ontruimingsoefening</strong> en <strong>brandveiligheidskeuring</strong> in <strong>' + MAANDEN[rustigsteMaand-1] + '</strong>. Boek nu — een maand van tevoren is vereist voor externe partijen. Vera kan een actiepunt aanmaken met een herinnering voor ' + MAANDEN[rustigsteMaand > 1 ? rustigsteMaand-2 : 11] + '.',
-      veraVraag: 'Wanneer moet ik de brandveiligheidsoefening plannen en wat heb ik daarvoor nodig?',
-      acties: [
-        {label: 'Actiepunt aanmaken', primary: true, id: 'brand-actie'},
-        {label: 'Bekijk compliance', primary: false, href: 'vera-compliance.html'}
-      ],
-      id: 'signaal-brand'
+      chart: true, highlightMaand: rm,
+      insight: 'Op basis van 2 jaar historische data is <strong>' + MAANDEN[rm - 1] + ' de rustigste maand</strong> met gemiddeld ' + Math.round(avgPerMaand[rm]) + '% bezetting. Een brandveiligheidsoefening vereist dat alle medewerkers aanwezig zijn — dit verstoort de operatie minimaal als het hotel rustig is.',
+      aanbeveling: 'Plan de <strong>ontruimingsoefening</strong> en <strong>brandveiligheidskeuring</strong> in <strong>' + MAANDEN[rm - 1] + '</strong>. Boek nu — externe partijen vereisen minimaal een maand van tevoren.',
+      vraag: 'Wanneer moet ik de brandveiligheidsoefening plannen?',
+      actieId: 'brand', actieLabel: 'Actiepunt aanmaken'
     });
   }
 
-  // ── SIGNAAL 2: HACCP training × Rustige periode ──
+  // Signaal 2: HACCP x Bezetting
   if (haccpItems.length > 0 && rustig.length > 0) {
-    var rustigHaccp = parseInt(rustig[0]);
-    html += bouwSignaalKaart({
-      type: 'aandacht',
-      icon: '&#127869;&#65039;',
-      typeLabel: 'HACCP × Bezetting',
+    var rm2 = parseInt(rustig[0]);
+    html += maakSignaal({
+      klasse: 'aandacht', icon: '&#127869;&#65039;',
+      type: 'HACCP x Bezetting',
       titel: 'HACCP-training plannen in rustige periode',
-      subtitel: haccpItems.length + ' HACCP-item' + (haccpItems.length>1?'s':'') + ' open. Laagste verstoring in ' + MAANDEN[rustigHaccp-1] + ' (' + Math.round(avgPerMaand[rustigHaccp]) + '% bezetting).',
+      sub: haccpItems.length + ' HACCP-items open. Laagste verstoring in ' + MAANDEN[rm2 - 1] + ' (' + Math.round(avgPerMaand[rm2]) + '% bezetting).',
       bronnen: ['lighthouse', 'compliance'],
-      bezettingChart: avgPerMaand,
-      highlightMaand: rustigHaccp,
-      insight: 'HACCP-training vereist dat keukenmedewerkers tijdelijk van de vloer zijn. In piekperiodes (juni–augustus, ' + Math.round(avgPerMaand[7]) + '%+ bezetting) is dit niet realistisch. In <strong>' + MAANDEN[rustigHaccp-1] + '</strong> is de F&amp;B-belasting minimaal.',
-      aanbeveling: 'Plan de <strong>HACCP-herhalingsles</strong> en <strong>temperatuurlogboek-check</strong> in <strong>' + MAANDEN[rustigHaccp-1] + '</strong>. Combineer dit met een leveranciersaudit — dan hoef je maar één keer te plannen.',
-      veraVraag: 'Wat moet ik regelen voor de HACCP-compliance en wanneer is het beste moment?',
-      acties: [
-        {label: 'Actiepunt aanmaken', primary: true, id: 'haccp-actie'},
-        {label: 'Bekijk compliance', primary: false, href: 'vera-compliance.html'}
-      ],
-      id: 'signaal-haccp'
+      chart: true, highlightMaand: rm2,
+      insight: 'HACCP-training vereist dat keukenmedewerkers tijdelijk van de vloer zijn. In piekperiodes is dit niet realistisch. In <strong>' + MAANDEN[rm2 - 1] + '</strong> is de F&B-belasting minimaal.',
+      aanbeveling: 'Plan de <strong>HACCP-herhalingsles</strong> in <strong>' + MAANDEN[rm2 - 1] + '</strong>. Combineer met een leveranciersaudit — dan hoef je maar eenmaal te plannen.',
+      vraag: 'Wat moet ik regelen voor HACCP-compliance?',
+      actieId: 'haccp', actieLabel: 'Actiepunt aanmaken'
     });
   }
 
-  // ── SIGNAAL 3: RI&E × Lage bezetting ──
-  if (rieItems.length > 0 && rustig.length > 0) {
-    var rustigRie = parseInt(rustig.length > 1 ? rustig[1] : rustig[0]);
-    html += bouwSignaalKaart({
-      type: 'info',
-      icon: '&#128203;',
-      typeLabel: 'RI&amp;E × Bezetting × Personeel',
-      titel: 'RI&amp;E-update inplannen — medewerkers beschikbaar in ' + MAANDEN[rustigRie-1],
-      subtitel: 'De RI&amp;E is verplicht actueel. Een RI&amp;E-sessie vereist medewerkersinput — plan het als de werkdruk laag is.',
-      bronnen: ['compliance', 'personeel', 'lighthouse'],
-      bezettingChart: avgPerMaand,
-      highlightMaand: rustigRie,
-      insight: 'Een RI&amp;E-update duurt gemiddeld een halve dag en vereist gesprekken met medewerkers van receptie, housekeeping en TD. In <strong>' + MAANDEN[rustigRie-1] + '</strong> (' + Math.round(avgPerMaand[rustigRie]) + '% bezetting) is er meer ruimte voor dit soort interne sessies zonder dat de gast er iets van merkt.',
-      aanbeveling: 'Boek een RI&amp;E-adviseur voor <strong>' + MAANDEN[rustigRie-1] + '</strong>. Vera kan de medewerkersvragenlijsten voorbereiden op basis van de huidige personeelssamenstelling. Koppel de uitkomsten direct aan compliance-actiepunten.',
-      veraVraag: 'Hoe pak ik de RI&E-update aan en wie moet erbij betrokken worden?',
-      acties: [
-        {label: 'Actiepunt aanmaken', primary: true, id: 'rie-actie'},
-        {label: 'Bekijk medewerkers', primary: false, href: 'vera-compliance.html'}
-      ],
-      id: 'signaal-rie'
+  // Signaal 3: BHV x Piekbezetting
+  if (bhvGeldig.length < 2 && hoog.length > 0) {
+    var pm = hoog.sort(function(a, b) { return avgPerMaand[b] - avgPerMaand[a]; })[0];
+    html += maakSignaal({
+      klasse: 'urgent', icon: '&#128680;',
+      type: 'BHV x Piekbezetting',
+      titel: 'BHV-onderbezetting richting piekperiode ' + MAANDEN[parseInt(pm) - 1],
+      sub: 'Slechts ' + bhvGeldig.length + ' BHV-gecertificeerde medewerker voor een piek van ' + Math.round(avgPerMaand[pm]) + '% bezetting.',
+      bronnen: ['personeel', 'lighthouse'],
+      chart: true, highlightMaand: parseInt(pm),
+      insight: 'De Arbowet vereist voldoende BHV-ers in verhouding tot aanwezige personen. Bij ' + Math.round(avgPerMaand[pm]) + '% bezetting (~41 gasten + personeel) zijn <strong>minimaal 2 BHV-ers per dienst</strong> noodzakelijk.',
+      aanbeveling: 'Plan voor <strong>minimaal 1 extra medewerker een BHV-opleiding</strong> voor de zomerpiek. BHV-opleidingen duren 1 dag en moeten minimaal 6 weken van tevoren geboekt worden.',
+      vraag: 'Hoeveel BHV-ers heb ik nodig voor de zomerpiek?',
+      actieId: 'bhv', actieLabel: 'BHV opleiding plannen'
     });
   }
 
-  // ── SIGNAAL 4: BHV dekking × Piekperiode ──
-  var hoogBezetting = Object.keys(avgPerMaand).filter(function(m){return avgPerMaand[m] > 80;});
-  if (bhvGeldig.length < 2 && hoogBezetting.length > 0) {
-    var piekMaand = hoogBezetting.sort(function(a,b){return avgPerMaand[b]-avgPerMaand[a];})[0];
-    html += bouwSignaalKaart({
-      type: 'urgent',
-      icon: '&#128680;',
-      typeLabel: 'BHV × Piekbezetting',
-      titel: 'BHV-onderbezetting in piekperiode ' + MAANDEN[parseInt(piekMaand)-1] + '–aug',
-      subtitel: 'Slechts ' + bhvGeldig.length + ' BHV-er voor ' + hoogBezetting.length + ' piekmaanden. Bij een bezetting van ' + Math.round(avgPerMaand[piekMaand]) + '%+ is meer BHV-dekking vereist.',
-      bronnen: ['personeel', 'lighthouse', 'compliance'],
-      bezettingChart: avgPerMaand,
-      highlightMaand: parseInt(piekMaand),
-      insight: 'De Arbowet vereist voldoende BHV-ers in verhouding tot het aantal aanwezige personen. In de zomerpiek (' + Math.round(avgPerMaand[piekMaand]) + '% bezetting = ~41 gasten + personeel) is <strong>minimaal 2 BHV-ers per dienst</strong> noodzakelijk. Nu staat er slechts 1 BHV-gecertificeerde medewerker in het systeem.',
-      aanbeveling: 'Plan voor <strong>minimaal 1 extra medewerker een BHV-opleiding</strong> vóór de zomerpiek. BHV-opleidingen duren 1 dag en moeten minimaal 6 weken van tevoren geboekt worden. Vera adviseert: plan in <strong>april of mei</strong> — voor de piek, na het laagseizoen.',
-      veraVraag: 'Hoeveel BHV-ers heb ik nodig en hoe plan ik dat voor de zomerpiek?',
-      acties: [
-        {label: 'BHV opleiding plannen', primary: true, id: 'bhv-actie'},
-        {label: 'Bekijk medewerkers', primary: false, href: 'vera-compliance.html'}
-      ],
-      id: 'signaal-bhv'
+  // Signaal 4: Installaties x Bezetting
+  if (instItems.length > 0 && rustig.length > 0) {
+    var rm4 = parseInt(rustig[0]);
+    html += maakSignaal({
+      klasse: 'info', icon: '&#128295;',
+      type: 'Installaties x Bezetting',
+      titel: instItems.length + ' installatiekeuringen plannen in ' + MAANDEN[rm4 - 1],
+      sub: 'Liftkeuring en CV-ketelonderhoud vereisen toegang tot het gebouw. Plan in de rustigste periode om gastoverlast te minimaliseren.',
+      bronnen: ['lighthouse', 'compliance'],
+      chart: true, highlightMaand: rm4,
+      insight: 'Een liftkeuring duurt gemiddeld een halve dag — de lift is dan buiten gebruik. Bij ' + Math.round(avgPerMaand[rm4]) + '% bezetting is de kans klein dat gasten hinder ondervinden.',
+      aanbeveling: 'Combineer <strong>liftkeuring</strong> en <strong>CV-ketelonderhoud</strong> in <strong>' + MAANDEN[rm4 - 1] + '</strong> — één dag planning voor beide.',
+      vraag: 'Wanneer plan ik de liftkeuring en CV-onderhoud?',
+      actieId: 'inst', actieLabel: 'Actiepunten aanmaken'
     });
   }
 
-  // ── SIGNAAL 5: Installatiekeuringen × Rustige periode ──
-  var installatieItems = complianceData.filter(function(i){return i.categorie==='installatie' && (i.status==='geen_document'||i.status==='rood');});
-  if (installatieItems.length > 0 && rustig.length > 0) {
-    var rustigInst = parseInt(rustig[0]);
-    html += bouwSignaalKaart({
-      type: 'info',
-      icon: '&#128295;',
-      typeLabel: 'Installaties × Bezetting',
-      titel: installatieItems.length + ' installatiekeruing' + (installatieItems.length>1?'en':'') + ' plannen in ' + MAANDEN[rustigInst-1],
-      subtitel: 'Liftkeuring en CV-ketelonderhoud vereisen toegang tot het gebouw. Plan in de rustigste periode om gastoverlast te minimaliseren.',
-      bronnen: ['compliance', 'lighthouse'],
-      bezettingChart: avgPerMaand,
-      highlightMaand: rustigInst,
-      insight: 'Een liftkeuring duurt gemiddeld een halve dag — de lift is dan buiten gebruik. Bij ' + Math.round(avgPerMaand[rustigInst]) + '% bezetting is de kans klein dat gasten hier hinder van ondervinden. CV-ketelonderhoud vereist tijdelijk geen warm water op bepaalde verdiepingen.',
-      aanbeveling: 'Combineer <strong>liftkeuring</strong> en <strong>CV-ketelonderhoud</strong> in <strong>' + MAANDEN[rustigInst-1] + '</strong> — één dag planning voor beide. Vera kan de leveranciers herinnering aanmaken 6 weken van tevoren.',
-      veraVraag: 'Wanneer plan ik de liftkeuring en het CV-onderhoud met minimale gastoverlast?',
-      acties: [
-        {label: 'Actiepunten aanmaken', primary: true, id: 'inst-actie'},
-        {label: 'Bekijk compliance', primary: false, href: 'vera-compliance.html'}
-      ],
-      id: 'signaal-inst'
-    });
-  }
-
-  container.innerHTML = html || '<div class="loading">Geen signalen gevonden — alle compliance items zijn gedekt.</div>';
-
-  // Bind actie knoppen
-  bindActieKnoppen();
-  bindVeraAI();
-
-
-  // ── WEERSIGNAAL — via Open-Meteo (gratis, geen API key) ──
-  async function laadWeerSignaal() {
-    // Amsterdam coördinaten
-    var url = 'https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=4.90&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe%2FAmsterdam&forecast_days=5';
-    try {
-      var resp = await fetch(url);
-      var data = await resp.json();
-      if (!data.daily) return;
-
-      var dagen = ['zo','ma','di','wo','do','vr','za'];
-      var weerIcons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',51:'🌦️',53:'🌦️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',71:'🌨️',73:'🌨️',75:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️'};
-      var weerTypes = {0:'Zonnig',1:'Licht bewolkt',2:'Bewolkt',3:'Zwaar bewolkt',45:'Mist',51:'Lichte regen',61:'Regen',80:'Buien',95:'Onweer'};
-
-      var daily = data.daily;
-      var stripHtml = '<div class="weer-strip">';
-      var impacts = [];
-
-      for (var i = 0; i < 5; i++) {
-        var datum = new Date(daily.time[i]);
-        var code = daily.weathercode[i];
-        var tmax = Math.round(daily.temperature_2m_max[i]);
-        var tmin = Math.round(daily.temperature_2m_min[i]);
-        var neerslag = daily.precipitation_sum[i];
-        var icon = weerIcons[code] || '🌡️';
-        var type = weerTypes[Math.floor(code/10)*10] || weerTypes[code] || 'Wisselvallig';
-        var isVandaag = i === 0;
-
-        stripHtml += '<div class="weer-dag' + (isVandaag ? ' vandaag' : '') + '">' +
-          '<div class="weer-dag-naam">' + (isVandaag ? 'vandaag' : dagen[datum.getDay()]) + '</div>' +
-          '<div class="weer-icon">' + icon + '</div>' +
-          '<div class="weer-temp">' + tmax + '°</div>' +
-          '<div class="weer-type">' + (neerslag > 1 ? neerslag.toFixed(1) + 'mm' : '') + '</div>' +
-          '</div>';
-
-        // Bepaal impact op bezetting
-        if (tmax >= 22 && code <= 3) impacts.push({dag: isVandaag ? 'vandaag' : dagen[datum.getDay()], type:'positief', tekst: 'Mooi weer (' + tmax + '°) — verwacht hogere last-minute boekingen en terrasomzet'});
-        else if (code >= 61 || neerslag > 5) impacts.push({dag: isVandaag ? 'vandaag' : dagen[datum.getDay()], type:'negatief', tekst: 'Regen (' + neerslag.toFixed(1) + 'mm) — gasten blijven vaker binnen, hogere F&B vraag'});
-      }
-      stripHtml += '</div>';
-
-      var impactHtml = impacts.slice(0,2).map(function(imp) {
-        return '<div class="weer-impact ' + imp.type + '">' +
-          '<span style="font-size:14px">' + (imp.type==='positief'?'☀️':'🌧️') + '</span>' +
-          '<span><strong>' + imp.dag + ':</strong> ' + imp.tekst + '</span>' +
-          '</div>';
-      }).join('');
-
-      // Voeg signaalkaart toe
-      var weerKaart = bouwSignaalKaart({
-        type: impacts.length && impacts[0].type === 'negatief' ? 'aandacht' : 'info',
-        icon: impacts.length && impacts[0].type === 'negatief' ? '🌧️' : '☀️',
-        typeLabel: 'Weer × Bezetting × Omzet',
-        titel: impacts.length ? (impacts[0].type === 'positief' ? 'Mooi weer komende dagen — kans op extra omzet' : 'Regenachtig weer — anticipeer op gedragsverandering gasten') : 'Stabiel weer deze week',
-        subtitel: 'Weersvoorspelling Amsterdam 5 dagen — impact op bezetting, F&B en last-minute boekingen.',
-        bronnen: ['lighthouse'],
-        bezettingChart: null,
-        highlightMaand: null,
-        insight: stripHtml + (impacts.length ? impactHtml : '<div class="weer-impact neutraal"><span>→</span><span>Geen grote weersinvloeden verwacht de komende dagen.</span></div>'),
-        aanbeveling: impacts.length && impacts[0].type === 'positief'
-          ? 'Bij aanhoudend mooi weer in de zomer: activeer last-minute deals via OTA's, zorg voor extra terrasbestelling en overweeg dagrecreanten-pakket. Vera kan een revenue-actie aanmaken.'
-          : 'Bij regenachtig weer verhoogt de verblijfstijd in het hotel. Overweeg een in-room dining aanbieding en zorg voor voldoende F&B bezetting. Check of het wellnessdeel of de bar extra capaciteit aankan.',
-        veraVraag: 'Wat kan ik doen om de omzet te maximaliseren gezien het verwachte weer?',
-        acties: [{label:'Actie aanmaken', primary:true, id:'weer-actie'}],
-        id: 'signaal-weer'
-      });
-
-      var container = document.getElementById('signalen-container');
-      container.insertAdjacentHTML('afterbegin', weerKaart);
-      bindActieKnoppen();
-      bindVeraAI();
-
-    } catch(e) {
-      console.log('Weer API fout:', e);
-    }
-  }
-
-  // Weersignaal na 50ms op achtergrond — blokkeert rendering niet
-  setTimeout(laadWeerSignaal, 50);
+  container.innerHTML = html || '<div class="loading">Geen signalen gevonden.</div>';
+  bindActies();
+  bindVera();
 }
 
-function bouwSignaalKaart(s) {
+function maakSignaal(s) {
   var chartHtml = '';
-  if (s.bezettingChart) {
-    chartHtml = '<div class="bezetting-chart">';
-    for (var m=1; m<=12; m++) {
-      var val = s.bezettingChart[m] || 0;
-      var hoogte = Math.round(val * 0.55);
-      var klasse = val < 55 ? 'laag' : val < 75 ? 'midden' : 'hoog';
-      if (m === s.highlightMaand) klasse += ' highlight';
-      chartHtml += '<div class="bez-bar-wrap">' +
-        '<div class="bez-bar ' + klasse + '" style="height:' + hoogte + 'px"></div>' +
-        '<div class="bez-maand' + (m === s.highlightMaand ? '" style="color:var(--purple)' : '') + '">' + MAANDEN[m-1] + '</div>' +
+  if (s.chart && Object.keys(avgPerMaand).length > 0) {
+    chartHtml = '<div class="bez-chart">';
+    for (var m = 1; m <= 12; m++) {
+      var val = avgPerMaand[m] || 0;
+      var h = Math.round(val * 0.50);
+      var hl = m === s.highlightMaand;
+      var kl = val < 55 ? 'laag' : val < 75 ? 'midden' : 'hoog';
+      chartHtml += '<div class="bez-col">' +
+        '<div class="bez-balk ' + kl + (hl ? ' hl' : '') + '" style="height:' + h + 'px"></div>' +
+        '<div class="bez-maand" style="' + (hl ? 'color:var(--purple);font-weight:600' : '') + '">' + MAANDEN[m - 1] + '</div>' +
         '</div>';
     }
     chartHtml += '</div>';
   }
 
-  var bronnenHtml = s.bronnen.map(function(b) {
-    var labels = {lighthouse:'&#128201; Lighthouse (historisch)',compliance:'&#9989; Compliance',personeel:'&#128100; Personeel',financials:'&#128178; Financials',pos:'&#127860;&#65039; Lightspeed'};
-    return '<span class="bron-tag ' + b + '">' + (labels[b]||b) + '</span>';
+  var bronHtml = s.bronnen.map(function(b) {
+    var labels = {lighthouse: '&#128201; Lighthouse', compliance: '&#9989; Compliance', personeel: '&#128100; Personeel', weer: '&#127782;&#65039; Open-Meteo'};
+    return '<span class="bron bron-' + b + '">' + (labels[b] || b) + '</span>';
   }).join('');
 
-  var actiesHtml = s.acties.map(function(a) {
-    if (a.href) return '<a href="' + a.href + '" class="actie-btn">' + a.label + '</a>';
-    return '<button class="actie-btn' + (a.primary?' primary':'') + '" data-actie-id="' + a.id + '">' + a.label + '</button>';
-  }).join('');
-
-  return '<div class="signaal-card ' + s.type + '" id="' + s.id + '">' +
+  return '<div class="signaal ' + s.klasse + '" id="sig-' + s.actieId + '">' +
     '<div class="signaal-header">' +
-      '<div class="signaal-indicator ind-' + s.type + '">' + s.icon + '</div>' +
-      '<div class="signaal-header-tekst">' +
-        '<div class="signaal-type ' + s.type + '">' + s.typeLabel + '</div>' +
+      '<div class="signaal-ind ind-' + s.klasse + '">' + s.icon + '</div>' +
+      '<div style="flex:1">' +
+        '<div class="signaal-type ' + s.klasse + '">' + s.type + '</div>' +
         '<div class="signaal-titel">' + s.titel + '</div>' +
-        '<div class="signaal-subtitel">' + s.subtitel + '</div>' +
+        '<div class="signaal-sub">' + s.sub + '</div>' +
       '</div>' +
     '</div>' +
     '<div class="signaal-body">' +
-      '<div class="bronnen-row">' + bronnenHtml + '</div>' +
+      '<div class="bronnen">' + bronHtml + '</div>' +
       chartHtml +
-      '<div class="insight-box"><div class="insight-label">&#128202; Vera ziet</div><div class="insight-tekst">' + s.insight + '</div></div>' +
-      '<div class="aanbeveling-box"><div class="aanbeveling-label">&#10024; Vera adviseert</div><div class="aanbeveling-tekst">' + s.aanbeveling + '</div></div>' +
-      '<div class="vera-signaal-ai">' +
-        '<div class="vera-ai-row">' +
-          '<input class="vera-ai-input" placeholder="Stel Vera een vervolgvraag..." data-default="' + s.veraVraag + '" data-signaal="' + s.id + '">' +
-          '<button class="vera-ai-btn" data-signaal="' + s.id + '">Vraag Vera</button>' +
-        '</div>' +
-        '<div class="vera-ai-antwoord" id="ai-' + s.id + '"></div>' +
+      '<div class="insight"><div class="insight-label">&#128202; Vera ziet</div><div class="insight-tekst">' + s.insight + '</div></div>' +
+      '<div class="aanbeveling"><div class="aanbeveling-label">&#10024; Vera adviseert</div><div class="aanbeveling-tekst">' + s.aanbeveling + '</div></div>' +
+      '<div class="vera-row">' +
+        '<input class="vera-input" placeholder="Stel Vera een vervolgvraag..." data-default="' + s.vraag + '" data-sig="' + s.actieId + '" value="' + s.vraag + '">' +
+        '<button class="vera-btn" data-sig="' + s.actieId + '">Vraag Vera</button>' +
       '</div>' +
-      '<div style="margin-top:12px">' + actiesHtml + '</div>' +
+      '<div class="vera-antwoord" id="vera-' + s.actieId + '"></div>' +
+      '<div class="actie-rij">' +
+        '<button class="actie-btn prim" data-actie="' + s.actieId + '">' + s.actieLabel + '</button>' +
+        '<a href="vera-compliance.html" class="actie-btn">Bekijk compliance</a>' +
+      '</div>' +
     '</div>' +
   '</div>';
 }
 
-function bindActieKnoppen() {
-  var actieDefs = {
-    'brand-actie': {titel:'Brandveiligheidsoefening plannen', omschrijving:'Vera signaal: plan in rustige periode op basis van historische bezetting'},
-    'haccp-actie': {titel:'HACCP-training inplannen', omschrijving:'Vera signaal: combineer met leveranciersaudit in laagseizoen'},
-    'rie-actie': {titel:'RI&E-update plannen', omschrijving:'Vera signaal: adviseer RI&E-sessie met medewerkers in rustige periode'},
-    'bhv-actie': {titel:'Extra BHV-opleiding plannen voor piekperiode', omschrijving:'Vera signaal: BHV-onderbezetting voor zomerpiek'},
-    'inst-actie': {titel:'Liftkeuring + CV-onderhoud combineren', omschrijving:'Vera signaal: combineer installatiekeuringen in laagseizoen'},
-    'weer-actie': {titel:'Revenue actie op basis van weersvoorspelling', omschrijving:'Vera weersignaal: anticipeer op verwacht mooi/slecht weer'}
-  };
+// Weersignaal via Open-Meteo
+async function laadWeer() {
+  try {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=4.90&daily=weathercode,temperature_2m_max,precipitation_sum&timezone=Europe%2FAmsterdam&forecast_days=5';
+    var resp = await fetch(url);
+    var data = await resp.json();
+    if (!data.daily) return;
 
-  document.querySelectorAll('[data-actie-id]').forEach(function(btn) {
+    var weerIcons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',51:'🌦️',61:'🌧️',80:'🌦️',95:'⛈️'};
+    var daily = data.daily;
+    var dagen = ['zo','ma','di','wo','do','vr','za'];
+    var impacts = [];
+
+    var stripHtml = '<div class="weer-strip">';
+    for (var i = 0; i < 5; i++) {
+      var code = daily.weathercode[i];
+      var tmax = Math.round(daily.temperature_2m_max[i]);
+      var neerslag = daily.precipitation_sum[i] || 0;
+      var icon = weerIcons[code] || weerIcons[Math.floor(code / 10) * 10] || '🌡️';
+      var datum = new Date(daily.time[i]);
+      var dagNaam = i === 0 ? 'vandaag' : dagen[datum.getDay()];
+      stripHtml += '<div class="weer-dag' + (i === 0 ? ' vandaag' : '') + '">' +
+        '<div class="weer-naam">' + dagNaam + '</div>' +
+        '<div class="weer-icon">' + icon + '</div>' +
+        '<div class="weer-temp">' + tmax + '&#176;</div>' +
+        '<div class="weer-neerslag">' + (neerslag > 0.5 ? neerslag.toFixed(1) + 'mm' : '') + '</div>' +
+        '</div>';
+      if (tmax >= 22 && code <= 3) impacts.push({type: 'positief', dag: dagNaam, tekst: 'Mooi weer (' + tmax + '&#176;) — verwacht hogere last-minute boekingen'});
+      else if (code >= 61 || neerslag > 5) impacts.push({type: 'negatief', dag: dagNaam, tekst: 'Regen (' + neerslag.toFixed(1) + 'mm) — gasten blijven langer binnen, hogere F&B vraag'});
+    }
+    stripHtml += '</div>';
+
+    var impactHtml = impacts.slice(0, 2).map(function(imp) {
+      return '<div class="weer-impact ' + imp.type + '">' +
+        '<span>' + (imp.type === 'positief' ? '☀️' : '🌧️') + '</span>' +
+        '<span><strong>' + imp.dag + ':</strong> ' + imp.tekst + '</span>' +
+        '</div>';
+    }).join('') || '<div class="weer-impact neutraal"><span>→</span><span>Geen grote weersinvloeden verwacht.</span></div>';
+
+    var eersteImpact = impacts[0];
+    var klasse = eersteImpact ? (eersteImpact.type === 'positief' ? 'goed' : 'aandacht') : 'info';
+    var icon = eersteImpact ? (eersteImpact.type === 'positief' ? '☀️' : '🌧️') : '🌡️';
+    var titel = eersteImpact
+      ? (eersteImpact.type === 'positief' ? 'Mooi weer — kans op extra omzet en last-minute boekingen' : 'Regenachtig weer — anticipeer op gedragsverandering gasten')
+      : 'Stabiel weer deze week';
+
+    var weerKaart = '<div class="signaal ' + klasse + '" id="sig-weer">' +
+      '<div class="signaal-header">' +
+        '<div class="signaal-ind ind-' + klasse + '">' + icon + '</div>' +
+        '<div style="flex:1">' +
+          '<div class="signaal-type ' + klasse + '">Weer x Bezetting x Omzet</div>' +
+          '<div class="signaal-titel">' + titel + '</div>' +
+          '<div class="signaal-sub">Live 5-daagse weersvoorspelling Amsterdam via Open-Meteo</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="signaal-body">' +
+        '<div class="bronnen"><span class="bron bron-weer">&#127782;&#65039; Open-Meteo</span><span class="bron bron-lighthouse">&#128201; Lighthouse</span></div>' +
+        stripHtml + impactHtml +
+        '<div class="aanbeveling"><div class="aanbeveling-label">&#10024; Vera adviseert</div><div class="aanbeveling-tekst">' +
+          (eersteImpact && eersteImpact.type === 'positief'
+            ? 'Bij aanhoudend mooi weer: activeer last-minute deals via OTA, zorg voor extra terrasbestelling en overweeg een dagrecreanten-pakket.'
+            : 'Bij regenachtig weer verblijven gasten langer in het hotel. Overweeg een in-room dining aanbieding en check of F&B extra capaciteit aankan.') +
+        '</div></div>' +
+        '<div class="vera-row">' +
+          '<input class="vera-input" placeholder="Stel Vera een vraag over het weer..." data-sig="weer" value="Wat kan ik doen om de omzet te maximaliseren gezien het verwachte weer?">' +
+          '<button class="vera-btn" data-sig="weer">Vraag Vera</button>' +
+        '</div>' +
+        '<div class="vera-antwoord" id="vera-weer"></div>' +
+        '<div class="actie-rij"><button class="actie-btn prim" data-actie="weer">Actie aanmaken</button></div>' +
+      '</div>' +
+    '</div>';
+
+    var container = document.getElementById('container');
+    container.insertAdjacentHTML('afterbegin', weerKaart);
+    bindActies();
+    bindVera();
+  } catch(e) {
+    console.log('Weer fout:', e);
+  }
+}
+
+// Actiepunten
+var actieTitels = {
+  brand: 'Brandveiligheidsoefening plannen',
+  haccp: 'HACCP-training inplannen',
+  bhv: 'Extra BHV-opleiding plannen voor piekperiode',
+  inst: 'Liftkeuring + CV-onderhoud combineren in laagseizoen',
+  weer: 'Revenue actie op basis van weersvoorspelling'
+};
+
+function bindActies() {
+  document.querySelectorAll('[data-actie]').forEach(function(btn) {
+    if (btn._bound) return;
+    btn._bound = true;
     btn.addEventListener('click', async function() {
-      var id = this.dataset.actieId;
-      var def = actieDefs[id];
-      if (!def) return;
-      var r = await sb.from('acties').insert({
-        hotel_id: HOTEL_ID,
-        titel: def.titel,
-        omschrijving: def.omschrijving,
-        prioriteit: 'normaal',
-        aangemaakt_door: 'vera',
-        status: 'open'
-      });
+      var id = this.dataset.actie;
+      var titel = actieTitels[id] || 'Actie';
+      var r = await sb.from('acties').insert({hotel_id: HOTEL_ID, titel: titel, aangemaakt_door: 'vera', status: 'open'});
       if (r.error) { showToast('Fout: ' + r.error.message); return; }
-      this.textContent = '✓ Aangemaakt';
-      this.classList.remove('primary');
+      this.textContent = 'Aangemaakt';
       this.disabled = true;
-      showToast('Actiepunt aangemaakt in compliance cockpit');
+      showToast('Actiepunt aangemaakt');
     });
   });
 }
 
-function bindVeraAI() {
-  document.querySelectorAll('.vera-ai-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() { vraagVeraSignaal(this.dataset.signaal); });
-  });
-  document.querySelectorAll('.vera-ai-input').forEach(function(inp) {
-    if (!inp.value) inp.value = inp.dataset.default || '';
-    inp.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') vraagVeraSignaal(this.dataset.signaal);
-    });
+function bindVera() {
+  document.querySelectorAll('.vera-btn').forEach(function(btn) {
+    if (btn._bound) return;
+    btn._bound = true;
+    btn.addEventListener('click', function() { vraagVera(this.dataset.sig); });
   });
 }
 
-async function vraagVeraSignaal(signaalId) {
+async function vraagVera(sigId) {
   if (!ANTHROPIC_KEY) { document.getElementById('api-modal').classList.add('open'); return; }
-  var input = document.querySelector('.vera-ai-input[data-signaal="' + signaalId + '"]');
-  var antwoord = document.getElementById('ai-' + signaalId);
-  var btn = document.querySelector('.vera-ai-btn[data-signaal="' + signaalId + '"]');
+  var input = document.querySelector('.vera-input[data-sig="' + sigId + '"]');
+  var ant = document.getElementById('vera-' + sigId);
+  var btn = document.querySelector('.vera-btn[data-sig="' + sigId + '"]');
   var vraag = input.value.trim();
   if (!vraag) return;
+  btn.textContent = '...'; btn.disabled = true;
+  ant.classList.remove('show');
 
-  btn.textContent = 'Bezig...'; btn.disabled = true;
-  antwoord.classList.remove('show');
-
-  var avgTekst = Object.keys(avgPerMaand).map(function(m){return MAANDEN[m-1]+':'+Math.round(avgPerMaand[m])+'%';}).join(', ');
-  var context = 'Hotel: Hotel De Klok, Oss, 45 kamers.\n' +
-    'Historische bezetting per maand (gemiddeld): ' + avgTekst + '\n' +
-    'Compliance items zonder document: ' + complianceData.filter(function(i){return i.status==='geen_document';}).length + '\n' +
-    'BHV-gecertificeerde medewerkers: ' + medewData.filter(function(m){return m.bhv_geldig_tot && new Date(m.bhv_geldig_tot)>new Date();}).map(function(m){return m.naam;}).join(', ');
+  var ctx = 'Hotel: Hotel De Klok, Amsterdam, 45 kamers.\n';
+  ctx += 'Gemiddelde bezetting: ' + Object.keys(avgPerMaand).map(function(m) { return MAANDEN[m-1] + ':' + Math.round(avgPerMaand[m]) + '%'; }).join(', ') + '\n';
+  ctx += 'Compliance: ' + compData.filter(function(i) { return i.status !== 'groen'; }).length + ' items open\n';
 
   try {
     var resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers: {'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'},
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 300,
-        system: 'Je bent Vera — de persoonlijke assistent van de hotelmanager. Je spreekt als een ervaren collega, niet als een helpdesk. Geef directe, praktische antwoorden zonder disclaimers. Gebruik de hoteldata en trek concrete conclusies. Nederlands, max 4 zinnen.',
-        messages: [{role:'user',content:'Hoteldata:\n'+context+'\n\nVraag: '+vraag}]
+        system: 'Je bent Vera, assistent voor hotelmanager Hotel De Klok Amsterdam. Directe praktische antwoorden, geen disclaimers, Nederlands, max 4 zinnen.',
+        messages: [{role: 'user', content: 'Data:\n' + ctx + '\nVraag: ' + vraag}]
       })
     });
     var data = await resp.json();
-    antwoord.textContent = data.content && data.content[0] ? data.content[0].text : 'Geen antwoord.';
-    antwoord.classList.add('show');
+    var tekst = data.content ? data.content.filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('') : 'Geen antwoord.';
+    ant.innerHTML = tekst.replace(/\n/g, '<br>');
+    ant.classList.add('show');
   } catch(e) {
-    antwoord.textContent = 'Er ging iets mis.';
-    antwoord.classList.add('show');
+    ant.textContent = 'Er ging iets mis.'; ant.classList.add('show');
   }
-
   btn.textContent = 'Vraag Vera'; btn.disabled = false;
   input.value = '';
 }
 
-// Maak avgPerMaand globaal beschikbaar voor de AI context
-var avgPerMaand = {};
-
 var toastT;
-function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
-function fmtDatum(d){return new Date(d).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'});}
+function showToast(msg) {
+  var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
 
 init();
 </script>
