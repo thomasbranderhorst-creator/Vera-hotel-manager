@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vera — Portfolio overzicht</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--bg2:#faf8f4;--bg3:#fff;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);
+  --text:#1a1814;--text2:#4a4640;--text3:#9a948c;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 12px rgba(0,0,0,0.08);
+  --purple:#6355e0;--purple-bg:rgba(99,85,224,0.08);--purple-border:rgba(99,85,224,0.2);
+  --green:#2a9d5c;--green-bg:rgba(42,157,92,0.08);--green-border:rgba(42,157,92,0.2);
+  --amber:#c47c0a;--amber-bg:rgba(196,124,10,0.08);--amber-border:rgba(196,124,10,0.2);
+  --coral:#d44c3a;--coral-bg:rgba(212,76,58,0.08);--coral-border:rgba(212,76,58,0.2);
+  --blue:#2563c4;--blue-bg:rgba(37,99,196,0.08);--blue-border:rgba(37,99,196,0.2);
+  --gray:#6b6560;--gray-bg:rgba(107,101,96,0.08);--gray-border:rgba(107,101,96,0.2);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,241,236,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px;box-shadow:var(--shadow)}
+.logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
+.logo-name{font-size:14px;font-weight:600;color:var(--text)}
+.topbar-div{width:1px;height:18px;background:var(--border2)}
+.topbar-page{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.user-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace;box-shadow:var(--shadow)}
+.main{max-width:1100px;margin:0 auto;padding:28px 24px 80px}
+
+/* Hero */
+.hero{margin-bottom:20px;display:flex;justify-content:space-between;align-items:flex-end}
+.hero-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px}
+.hero-sub{font-size:13px;color:var(--text2);margin-top:4px}
+.hero-date{font-size:12px;font-family:'DM Mono',monospace;color:var(--text3);text-align:right;line-height:1.8}
+
+/* Portfolio KPIs */
+.portfolio-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}
+.pkpi{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;box-shadow:var(--shadow)}
+.pkpi-val{font-size:24px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text);margin-bottom:3px}
+.pkpi-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.pkpi-delta{font-size:10px;font-family:'DM Mono',monospace;margin-top:4px}
+.pkpi-delta.up{color:var(--green)}
+.pkpi-delta.down{color:var(--coral)}
+.pkpi.groen{border-color:var(--green-border)}.pkpi.groen .pkpi-val{color:var(--green)}
+.pkpi.amber{border-color:var(--amber-border)}.pkpi.amber .pkpi-val{color:var(--amber)}
+.pkpi.coral{border-color:var(--coral-border)}.pkpi.coral .pkpi-val{color:var(--coral)}
+
+/* Vera portfolio signaal */
+.portfolio-signaal{background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow)}
+.portfolio-signaal.amber{background:var(--amber-bg);border-color:var(--amber-border)}
+.ps-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.ps-tekst{font-size:12px;color:var(--text2);line-height:1.6}
+.ps-tekst strong{color:var(--text)}
+
+/* Hotel kaarten grid */
+.hotels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.hotel-kaart{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.hotel-kaart:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.hotel-kaart.status-rood{border-color:var(--coral-border);border-width:2px}
+.hotel-kaart.status-amber{border-color:var(--amber-border);border-width:2px}
+.hotel-kaart.status-groen{border-color:var(--green-border)}
+
+/* Hotel kaart header */
+.hk-header{padding:14px 16px;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid var(--border)}
+.hk-status{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.hk-status.rood{background:var(--coral);box-shadow:0 0 6px rgba(212,76,58,0.4)}
+.hk-status.amber{background:var(--amber);box-shadow:0 0 6px rgba(196,124,10,0.3)}
+.hk-status.groen{background:var(--green)}
+.hk-naam{font-size:14px;font-weight:600;color:var(--text)}
+.hk-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.hk-signaal-count{margin-left:auto;font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.count-rood{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.count-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.count-ok{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+/* Hotel metrics */
+.hk-metrics{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.hk-metric{background:var(--bg3);padding:10px 14px}
+.hk-metric-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px}
+.hk-metric-val{font-size:16px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
+.hk-metric-sub{font-size:10px;color:var(--text3);margin-top:1px}
+
+/* Hotel signalen */
+.hk-signalen{padding:10px 14px;display:flex;flex-direction:column;gap:4px;border-top:1px solid var(--border)}
+.hk-sig{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text2)}
+.hk-sig-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* Vergelijking tabel */
+.vergelijk-tabel{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:10px}
+.vt-header{display:grid;grid-template-columns:1fr 80px 80px 80px 80px 80px 60px;gap:8px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px}
+.vt-row{display:grid;grid-template-columns:1fr 80px 80px 80px 80px 80px 60px;gap:8px;padding:11px 16px;border-bottom:1px solid var(--border);font-size:12px;align-items:center}
+.vt-row:last-child{border-bottom:none}
+.vt-row.beste{background:var(--green-bg)}
+.vt-naam{font-weight:500;color:var(--text)}
+.vt-val{font-family:'DM Mono',monospace;color:var(--text2);text-align:right}
+.vt-val.best{color:var(--green);font-weight:600}
+.vt-val.worst{color:var(--coral)}
+.vt-status{display:flex;align-items:center;justify-content:flex-end}
+.vt-dot{width:8px;height:8px;border-radius:50%}
+
+.section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:16px 0 10px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.toast.show{opacity:1}
+@media(max-width:900px){.hotels-grid{grid-template-columns:1fr 1fr}.portfolio-kpis{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.hotels-grid{grid-template-columns:1fr}.portfolio-kpis{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-mark">V</div>
+  <div class="logo-name">Vera</div>
+  <div class="topbar-div"></div>
+  <div class="topbar-page">Portfolio overzicht</div>
+  <div class="topbar-right">
+    <div class="user-badge">&#128100; Cluster Manager</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="hero">
+    <div>
+      <div class="hero-title">Goedemorgen</div>
+      <div class="hero-sub">Portfolio van 5 hotels &middot; 272 kamers totaal</div>
+    </div>
+    <div class="hero-date" id="hero-date"></div>
+  </div>
+
+  <!-- Portfolio KPIs -->
+  <div class="portfolio-kpis">
+    <div class="pkpi groen">
+      <div class="pkpi-val">79%</div>
+      <div class="pkpi-lbl">Gem. bezetting</div>
+      <div class="pkpi-delta up">&#8593; +3% vs vorige week</div>
+    </div>
+    <div class="pkpi">
+      <div class="pkpi-val">€174</div>
+      <div class="pkpi-lbl">Gem. ADR</div>
+      <div class="pkpi-delta up">&#8593; +€8 vs vorige week</div>
+    </div>
+    <div class="pkpi">
+      <div class="pkpi-val">€137</div>
+      <div class="pkpi-lbl">Gem. RevPAR</div>
+      <div class="pkpi-delta up">&#8593; +€11 vs vorige week</div>
+    </div>
+    <div class="pkpi amber">
+      <div class="pkpi-val">14</div>
+      <div class="pkpi-lbl">Open signalen</div>
+      <div class="pkpi-delta" style="color:var(--amber)">3 urgent</div>
+    </div>
+    <div class="pkpi coral">
+      <div class="pkpi-val">2</div>
+      <div class="pkpi-lbl">Hotels vereisen aandacht</div>
+      <div class="pkpi-delta down">Actie vandaag</div>
+    </div>
+  </div>
+
+  <!-- Vera portfolio signalen -->
+  <div class="portfolio-signaal">
+    <div class="ps-icon">&#128680;</div>
+    <div class="ps-tekst"><strong>Hotel Centrum Utrecht — BHV niet gedekt vandaag.</strong> Geen BHV-gecertificeerde medewerker ingeroosterd bij 91% bezetting. Direct actie vereist.</div>
+  </div>
+  <div class="portfolio-signaal amber">
+    <div class="ps-icon">&#10024;</div>
+    <div class="ps-tekst"><strong>Vera ziet patroon over 3 hotels:</strong> Hotel Centrum Utrecht, Hotel Haven Rotterdam en Hotel Kanaal Breda scoren allemaal lager dan compset op ADR. Alle drie zitten in dezelfde regio — mogelijk is er een regionale tariefstrategie nodig.</div>
+  </div>
+
+  <!-- Hotel kaarten -->
+  <div class="section-label">Hotels</div>
+  <div class="hotels-grid">
+
+    <!-- Hotel 1: rood -->
+    <a href="vera-hub.html" class="hotel-kaart status-rood">
+      <div class="hk-header">
+        <div class="hk-status rood"></div>
+        <div>
+          <div class="hk-naam">Hotel Centrum Utrecht</div>
+          <div class="hk-meta">Utrecht &middot; 48 kamers</div>
+        </div>
+        <span class="hk-signaal-count count-rood">3 urgent</span>
+      </div>
+      <div class="hk-metrics">
+        <div class="hk-metric"><div class="hk-metric-lbl">Bezetting</div><div class="hk-metric-val">91%</div><div class="hk-metric-sub">44 kamers bezet</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">RevPAR</div><div class="hk-metric-val">€118</div><div class="hk-metric-sub">&#8595; onder compset</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">Review</div><div class="hk-metric-val" style="color:var(--amber)">7.9</div><div class="hk-metric-sub">Booking.com</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">GOP</div><div class="hk-metric-val" style="color:var(--coral)">18%</div><div class="hk-metric-sub">&#8595; onder norm</div></div>
+      </div>
+      <div class="hk-signalen">
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--coral)"></div>Geen BHV vandaag ingeroosterd</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--coral)"></div>5 compliance items verlopen</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--amber)"></div>ADR 14% onder compset</div>
+      </div>
+    </a>
+
+    <!-- Hotel 2: groen -->
+    <a href="vera-hub.html" class="hotel-kaart status-groen">
+      <div class="hk-header">
+        <div class="hk-status groen"></div>
+        <div>
+          <div class="hk-naam">Hotel De Klok Amsterdam</div>
+          <div class="hk-meta">Amsterdam &middot; 60 kamers</div>
+        </div>
+        <span class="hk-signaal-count count-ok">In orde</span>
+      </div>
+      <div class="hk-metrics">
+        <div class="hk-metric"><div class="hk-metric-lbl">Bezetting</div><div class="hk-metric-val">82%</div><div class="hk-metric-sub">49 kamers bezet</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">RevPAR</div><div class="hk-metric-val">€133</div><div class="hk-metric-sub">Markt: €151</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">Review</div><div class="hk-metric-val" style="color:var(--green)">8.7</div><div class="hk-metric-sub">Booking.com</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">GOP</div><div class="hk-metric-val" style="color:var(--amber)">24%</div><div class="hk-metric-sub">Norm: 28%</div></div>
+      </div>
+      <div class="hk-signalen">
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>BHV gedekt — Sandra</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--amber)"></div>12 compliance items open</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>OTA commissie stabiel</div>
+      </div>
+    </a>
+
+    <!-- Hotel 3: amber -->
+    <a href="vera-hub.html" class="hotel-kaart status-amber">
+      <div class="hk-header">
+        <div class="hk-status amber"></div>
+        <div>
+          <div class="hk-naam">Hotel Haven Rotterdam</div>
+          <div class="hk-meta">Rotterdam &middot; 52 kamers</div>
+        </div>
+        <span class="hk-signaal-count count-amber">2 aandacht</span>
+      </div>
+      <div class="hk-metrics">
+        <div class="hk-metric"><div class="hk-metric-lbl">Bezetting</div><div class="hk-metric-val">74%</div><div class="hk-metric-sub">38 kamers bezet</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">RevPAR</div><div class="hk-metric-val">€124</div><div class="hk-metric-sub">&#8595; -8% vs vorige week</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">Review</div><div class="hk-metric-val" style="color:var(--green)">8.4</div><div class="hk-metric-sub">Booking.com</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">GOP</div><div class="hk-metric-val" style="color:var(--green)">31%</div><div class="hk-metric-sub">&#8593; boven norm</div></div>
+      </div>
+      <div class="hk-signalen">
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--amber)"></div>Liftcontract verloopt over 3 weken</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--amber)"></div>ADR 9% onder compset</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>Compliance volledig in orde</div>
+      </div>
+    </a>
+
+    <!-- Hotel 4: groen -->
+    <a href="vera-hub.html" class="hotel-kaart status-groen">
+      <div class="hk-header">
+        <div class="hk-status groen"></div>
+        <div>
+          <div class="hk-naam">Hotel Kanaal Breda</div>
+          <div class="hk-meta">Breda &middot; 38 kamers</div>
+        </div>
+        <span class="hk-signaal-count count-ok">In orde</span>
+      </div>
+      <div class="hk-metrics">
+        <div class="hk-metric"><div class="hk-metric-lbl">Bezetting</div><div class="hk-metric-val">68%</div><div class="hk-metric-sub">26 kamers bezet</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">RevPAR</div><div class="hk-metric-val">€109</div><div class="hk-metric-sub">Markt: €118</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">Review</div><div class="hk-metric-val" style="color:var(--green)">8.9</div><div class="hk-metric-sub">Booking.com &#11088;</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">GOP</div><div class="hk-metric-val" style="color:var(--green)">29%</div><div class="hk-metric-sub">Binnen norm</div></div>
+      </div>
+      <div class="hk-signalen">
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>Hoogste reviewscore portfolio</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>BHV gedekt hele week</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>Compliance volledig in orde</div>
+      </div>
+    </a>
+
+    <!-- Hotel 5: amber -->
+    <a href="vera-hub.html" class="hotel-kaart status-amber">
+      <div class="hk-header">
+        <div class="hk-status amber"></div>
+        <div>
+          <div class="hk-naam">Hotel Markt Tilburg</div>
+          <div class="hk-meta">Tilburg &middot; 74 kamers</div>
+        </div>
+        <span class="hk-signaal-count count-amber">1 aandacht</span>
+      </div>
+      <div class="hk-metrics">
+        <div class="hk-metric"><div class="hk-metric-lbl">Bezetting</div><div class="hk-metric-val">77%</div><div class="hk-metric-sub">57 kamers bezet</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">RevPAR</div><div class="hk-metric-val">€148</div><div class="hk-metric-sub">&#8593; boven compset</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">Review</div><div class="hk-metric-val" style="color:var(--amber)">8.1</div><div class="hk-metric-sub">&#8595; -0.3 dalend</div></div>
+        <div class="hk-metric"><div class="hk-metric-lbl">GOP</div><div class="hk-metric-val" style="color:var(--green)">33%</div><div class="hk-metric-sub">&#8593; boven norm</div></div>
+      </div>
+      <div class="hk-signalen">
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--amber)"></div>Review trend dalend — wifi klachten</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>Sterkste RevPAR regio</div>
+        <div class="hk-sig"><div class="hk-sig-dot" style="background:var(--green)"></div>Personeel volledig ingeroosterd</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Vergelijkingstabel -->
+  <div class="section-label">Portfolio vergelijking</div>
+  <div class="vergelijk-tabel">
+    <div class="vt-header">
+      <div>Hotel</div>
+      <div style="text-align:right">Bezetting</div>
+      <div style="text-align:right">ADR</div>
+      <div style="text-align:right">RevPAR</div>
+      <div style="text-align:right">Review</div>
+      <div style="text-align:right">GOP%</div>
+      <div style="text-align:right">Status</div>
+    </div>
+    <div class="vt-row">
+      <div class="vt-naam">Hotel Centrum Utrecht</div>
+      <div class="vt-val best">91%</div>
+      <div class="vt-val worst">€130</div>
+      <div class="vt-val worst">€118</div>
+      <div class="vt-val worst">7.9</div>
+      <div class="vt-val worst">18%</div>
+      <div class="vt-status"><div class="vt-dot" style="background:var(--coral)"></div></div>
+    </div>
+    <div class="vt-row beste">
+      <div class="vt-naam">Hotel De Klok Amsterdam</div>
+      <div class="vt-val">82%</div>
+      <div class="vt-val">€162</div>
+      <div class="vt-val">€133</div>
+      <div class="vt-val best">8.7</div>
+      <div class="vt-val">24%</div>
+      <div class="vt-status"><div class="vt-dot" style="background:var(--green)"></div></div>
+    </div>
+    <div class="vt-row">
+      <div class="vt-naam">Hotel Haven Rotterdam</div>
+      <div class="vt-val">74%</div>
+      <div class="vt-val">€168</div>
+      <div class="vt-val">€124</div>
+      <div class="vt-val">8.4</div>
+      <div class="vt-val best">31%</div>
+      <div class="vt-status"><div class="vt-dot" style="background:var(--amber)"></div></div>
+    </div>
+    <div class="vt-row">
+      <div class="vt-naam">Hotel Kanaal Breda</div>
+      <div class="vt-val worst">68%</div>
+      <div class="vt-val">€160</div>
+      <div class="vt-val">€109</div>
+      <div class="vt-val best">8.9</div>
+      <div class="vt-val">29%</div>
+      <div class="vt-status"><div class="vt-dot" style="background:var(--green)"></div></div>
+    </div>
+    <div class="vt-row">
+      <div class="vt-naam">Hotel Markt Tilburg</div>
+      <div class="vt-val">77%</div>
+      <div class="vt-val best">€192</div>
+      <div class="vt-val best">€148</div>
+      <div class="vt-val">8.1</div>
+      <div class="vt-val best">33%</div>
+      <div class="vt-status"><div class="vt-dot" style="background:var(--amber)"></div></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+var nu = new Date();
+document.getElementById('hero-date').innerHTML =
+  nu.toLocaleDateString('nl-NL', {weekday:'long'}) + '<br>' +
+  nu.toLocaleDateString('nl-NL', {day:'numeric', month:'long', year:'numeric'});
+
+var toastT;
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
+</script>
+</body>
+</html>
