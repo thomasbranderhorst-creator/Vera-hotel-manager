@@ -125,6 +125,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="vera-sig-tekst"><strong>Vera ziet mogelijke overlap:</strong> Je betaalt zowel voor Lighthouse (€220/mnd) als RoomPriceGenie (€119/mnd). Beide bieden rate intelligence — heb je beiden nodig? Vera kan een vergelijking maken.</div>
   </div>
 
+  <div class="vera-sig" style="background:var(--coral-bg);border-color:var(--coral-border)">
+    <div class="vera-sig-icon">&#128200;</div>
+    <div class="vera-sig-tekst"><strong>CBS rapportage Q2 2026 deadline: 31 juli 2026.</strong> Hotels zijn wettelijk verplicht elk kwartaal bezettingsdata door te sturen aan het CBS (Centraal Bureau voor de Statistiek). Vera kan dit signaleren en de data uit Mews klaarzetten.</div>
+  </div>
+
   <div class="vera-sig">
     <div class="vera-sig-icon">&#9888;&#65039;</div>
     <div class="vera-sig-tekst"><strong>SiteMinder contract loopt af over 6 weken</strong> (31 juli 2026). Wil je verlengen of overstappen? Vera kan alternatieven tonen.</div>
@@ -191,6 +196,7 @@ var softwareData = [
   {naam:'Domeinnamen & SSL', cat:'Infrastructuur', prijs:120, freq:'jr', contract:'aug 2026', status:'verloopt', vera:false, dot:'var(--gray)'},
   {naam:'Brandblusser keuring', cat:'Veiligheid', prijs:180, freq:'jr', contract:'okt 2026', status:'ok', vera:false, dot:'var(--coral)'},
   {naam:'Toeristenbelasting aangifte', cat:'Gemeente', prijs:0, freq:'kwt', contract:'kwartaal', status:'ok', vera:false, dot:'var(--purple)'},
+  {naam:'CBS logiesaccommodaties', cat:'Wettelijke rapportage', prijs:0, freq:'kwt', contract:'kwartaal verplicht', status:'ok', vera:false, dot:'var(--coral)'},
 ];
 
 var actieveFilter = 'alle';
@@ -199,7 +205,7 @@ var catMap = {
   'pms': ['PMS & Operatie','Financiën'],
   'revenue': ['Channel Manager','Revenue Intelligence','Revenue Management'],
   'overig': ['Reputatie & CRM','Productiviteit','Infrastructuur'],
-  'jaarlijks': ['Muziekrechten','Auteursrechten','Branchevereniging','Keurmerk','Veiligheid','Gemeente']
+  'jaarlijks': ['Muziekrechten','Auteursrechten','Branchevereniging','Keurmerk','Veiligheid','Gemeente','Wettelijke rapportage']
 };
 
 document.querySelectorAll('.tab').forEach(function(tab) {
