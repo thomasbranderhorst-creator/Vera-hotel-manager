@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vera — Nieuws &amp; Wetgeving</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#181b24;--bg3:#1e2230;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#e8eaf0;--text2:#8b90a0;--text3:#555c70;
+  --purple:#7c6ff7;--purple-bg:rgba(124,111,247,0.12);--purple-border:rgba(124,111,247,0.3);
+  --teal:#2dd4a0;--teal-bg:rgba(45,212,160,0.1);--teal-border:rgba(45,212,160,0.28);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.1);--amber-border:rgba(245,166,35,0.28);
+  --coral:#ff7060;--coral-bg:rgba(255,112,96,0.1);--coral-border:rgba(255,112,96,0.28);
+  --green:#5ec96e;--green-bg:rgba(94,201,110,0.1);--green-border:rgba(94,201,110,0.28);
+  --blue:#4a9eff;--blue-bg:rgba(74,158,255,0.1);--blue-border:rgba(74,158,255,0.28);
+  --gray:#6b7280;--gray-bg:rgba(107,114,128,0.1);--gray-border:rgba(107,114,128,0.25);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px}
+.logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
+.logo-name{font-size:14px;font-weight:600;color:var(--text)}
+.topbar-div{width:1px;height:18px;background:var(--border)}
+.topbar-page{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace}
+.back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-decoration:none;transition:all .15s}
+.back-link:hover{border-color:var(--border2);color:var(--text2)}
+.api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
+
+.main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
+
+.page-hero{margin-bottom:24px}
+.page-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px}
+.page-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:640px}
+
+/* Categorie tabs */
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.cat-tab{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer;transition:all .15s}
+.cat-tab:hover{color:var(--text2);border-color:var(--border2)}
+.cat-tab.active{background:var(--purple-bg);border-color:var(--purple-border);color:var(--purple)}
+
+/* Zoekbalk */
+.zoek-row{display:flex;gap:8px;margin-bottom:24px}
+.zoek-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 16px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);outline:none}
+.zoek-input:focus{border-color:var(--purple)}
+.zoek-input::placeholder{color:var(--text3)}
+.zoek-btn{background:var(--purple);border:none;border-radius:8px;padding:10px 20px;font-size:12px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.zoek-btn:disabled{opacity:0.6;cursor:not-allowed}
+
+/* Nieuws items */
+.nieuws-grid{display:flex;flex-direction:column;gap:8px}
+
+.nieuws-item{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden;transition:border-color .2s}
+.nieuws-item:hover{border-color:rgba(255,255,255,0.2)}
+.nieuws-item.urgent{border-color:var(--coral-border)}
+.nieuws-item.aandacht{border-color:var(--amber-border)}
+.nieuws-item.info{border-color:var(--blue-border)}
+
+.nieuws-header{padding:14px 18px;display:flex;align-items:flex-start;gap:12px}
+.nieuws-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.nieuws-content{flex:1;min-width:0}
+.nieuws-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.nieuws-cat{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px}
+.cat-wetgeving{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.cat-cao{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.cat-subsidie{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.cat-compliance{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)}
+.cat-markt{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.cat-branche{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.nieuws-datum{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.nieuws-bron{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.nieuws-titel{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px;line-height:1.4}
+.nieuws-samenvatting{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:8px}
+.nieuws-footer{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nieuws-link{font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);text-decoration:none;display:flex;align-items:center;gap:4px}
+.nieuws-link:hover{text-decoration:underline}
+.nieuws-actie-tag{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:20px;background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.nieuws-vera{font-size:11px;color:var(--purple);background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:6px 10px;margin-top:8px;line-height:1.5}
+
+/* Bronnen sectie */
+.bronnen-sectie{margin-top:28px}
+.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:0 0 10px}
+.bronnen-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.bron-card{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;text-decoration:none;transition:all .2s;display:block}
+.bron-card:hover{border-color:rgba(255,255,255,0.2);transform:translateY(-1px)}
+.bron-naam{font-size:12px;font-weight:500;color:var(--text);margin-bottom:3px}
+.bron-sub{font-size:11px;color:var(--text3);line-height:1.4}
+.bron-url{font-size:10px;font-family:'DM Mono',monospace;color:var(--purple);margin-top:5px}
+
+/* Loading */
+.loading{text-align:center;padding:40px 0;color:var(--text3);font-size:13px}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-tekst{font-size:12px;color:var(--text3);margin-top:8px;font-family:'DM Mono',monospace}
+
+/* API Modal */
+#api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
+#api-modal.open{display:flex}
+.api-box{background:#1e2230;border:1px solid rgba(124,111,247,0.3);border-radius:12px;padding:28px 32px;max-width:420px;width:90%}
+.api-box h3{font-size:16px;font-weight:600;color:#e8eaf0;margin-bottom:8px}
+.api-box p{font-size:12px;color:#8b90a0;line-height:1.6;margin-bottom:16px}
+#api-input{width:100%;background:#181b24;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:12px;color:#e8eaf0;outline:none;margin-bottom:12px;box-sizing:border-box}
+.api-btns{display:flex;gap:8px}
+#btn-save-key{flex:1;background:#7c6ff7;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
+#btn-skip-key{background:#1e2230;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 16px;font-size:12px;color:#8b90a0;cursor:pointer}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.toast.show{opacity:1}
+
+@media(max-width:700px){.bronnen-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="vera-hub.html" class="back-link">&#8592; Centrale Hub</a>
+  <div class="logo-mark">V</div>
+  <div class="logo-name">Vera</div>
+  <div class="topbar-div"></div>
+  <div class="topbar-page">Nieuws &amp; Wetgeving</div>
+  <div class="topbar-right">
+    <div class="hotel-badge" id="hotel-naam">Hotel De Klok</div>
+    <button class="api-btn" id="api-status-btn">API: —</button>
+  </div>
+</div>
+
+<!-- API Modal -->
+<div id="api-modal">
+  <div class="api-box">
+    <h3>&#128274; Anthropic API sleutel</h3>
+    <p>Vera AI heeft je API sleutel nodig om nieuws op te zoeken.</p>
+    <input id="api-input" type="password" placeholder="sk-ant-api03-...">
+    <div class="api-btns">
+      <button id="btn-save-key">Opslaan</button>
+      <button id="btn-skip-key">Annuleren</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="page-hero">
+    <div class="page-title">Nieuws &amp; Wetgeving</div>
+    <div class="page-sub">Actueel branchenieuws, wetswijzigingen en signalen voor hotels in Nederland. Vera zoekt op via KHN, RVO, Rijksoverheid en vakbladen — gefilterd op wat relevant is voor jouw hotel.</div>
+  </div>
+
+  <!-- Zoeken -->
+  <div class="zoek-row">
+    <input class="zoek-input" id="zoek-input" type="text" placeholder="Zoek nieuws... bijv. &quot;BTW hotels&quot;, &quot;CAO horeca&quot;, &quot;brandveiligheid&quot;">
+    <button class="zoek-btn" id="zoek-btn">
+      <span>&#10024;</span> Zoek via Vera
+    </button>
+  </div>
+
+  <!-- Categorie filters -->
+  <div class="cat-tabs">
+    <div class="cat-tab active" data-cat="actueel">Actueel</div>
+    <div class="cat-tab" data-cat="wetgeving">Wetgeving</div>
+    <div class="cat-tab" data-cat="cao">CAO &amp; personeel</div>
+    <div class="cat-tab" data-cat="subsidie">Subsidies</div>
+    <div class="cat-tab" data-cat="compliance">Compliance</div>
+    <div class="cat-tab" data-cat="markt">Markt &amp; trends</div>
+  </div>
+
+  <!-- Nieuws feed -->
+  <div class="nieuws-grid" id="nieuws-grid">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div class="loading-tekst">Klik op een categorie of gebruik de zoekbalk om actueel nieuws op te halen via Vera AI</div>
+    </div>
+  </div>
+
+  <!-- Bronnen -->
+  <div class="bronnen-sectie">
+    <div class="section-label">Primaire bronnen</div>
+    <div class="bronnen-grid">
+      <a href="https://khn.nl/nieuws" target="_blank" class="bron-card">
+        <div class="bron-naam">&#128081; KHN</div>
+        <div class="bron-sub">Branchevereniging horeca — wet &amp; regelgeving, CAO, nieuws</div>
+        <div class="bron-url">khn.nl/nieuws</div>
+      </a>
+      <a href="https://www.rvo.nl/onderwerpen/horeca" target="_blank" class="bron-card">
+        <div class="bron-naam">&#127963; RVO</div>
+        <div class="bron-sub">Subsidies, energieplicht, vergunningen voor ondernemers</div>
+        <div class="bron-url">rvo.nl</div>
+      </a>
+      <a href="https://ondernemersplein.kvk.nl/horeca/" target="_blank" class="bron-card">
+        <div class="bron-naam">&#128200; Ondernemersplein</div>
+        <div class="bron-sub">KVK — vergunningen, meldplichten, belasting horeca</div>
+        <div class="bron-url">ondernemersplein.kvk.nl</div>
+      </a>
+      <a href="https://wetten.overheid.nl" target="_blank" class="bron-card">
+        <div class="bron-naam">&#9878;&#65039; Wetten.nl</div>
+        <div class="bron-sub">Officiële wettenbank — Drank- &amp; Horecawet, Arbowet, Warenwet</div>
+        <div class="bron-url">wetten.overheid.nl</div>
+      </a>
+      <a href="https://www.missethoreca.nl" target="_blank" class="bron-card">
+        <div class="bron-naam">&#128240; Misset Horeca</div>
+        <div class="bron-sub">Vakblad — branchenieuws, trends, interviews</div>
+        <div class="bron-url">missethoreca.nl</div>
+      </a>
+      <a href="https://www.rijksoverheid.nl/onderwerpen/horeca" target="_blank" class="bron-card">
+        <div class="bron-naam">&#127963; Rijksoverheid</div>
+        <div class="bron-sub">Officiële overheidsinformatie horeca &amp; regelgeving</div>
+        <div class="bron-url">rijksoverheid.nl</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
+var actieveCat = 'actueel';
+
+// API modal
+document.getElementById('api-status-btn').addEventListener('click', function() {
+  document.getElementById('api-modal').classList.add('open');
+  document.getElementById('api-input').value = ANTHROPIC_KEY;
+});
+document.getElementById('btn-save-key').addEventListener('click', function() {
+  var key = document.getElementById('api-input').value.trim();
+  if (!key) return;
+  ANTHROPIC_KEY = key;
+  localStorage.setItem('vera_anthropic_key', key);
+  document.getElementById('api-modal').classList.remove('open');
+  updateApiStatus();
+  showToast('API sleutel opgeslagen');
+});
+document.getElementById('btn-skip-key').addEventListener('click', function() {
+  document.getElementById('api-modal').classList.remove('open');
+});
+function updateApiStatus() {
+  var btn = document.getElementById('api-status-btn');
+  btn.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
+  btn.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
+}
+
+// Categorie tabs
+document.querySelectorAll('.cat-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+    this.classList.add('active');
+    actieveCat = this.dataset.cat;
+    haalNieuws(actieveCat, null);
+  });
+});
+
+// Zoekbalk
+document.getElementById('zoek-btn').addEventListener('click', function() {
+  var query = document.getElementById('zoek-input').value.trim();
+  if (!query) return;
+  haalNieuws(null, query);
+});
+document.getElementById('zoek-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    var query = this.value.trim();
+    if (query) haalNieuws(null, query);
+  }
+});
+
+var catZoekvragen = {
+  'actueel': 'Wat is het meest recente nieuws voor hotels en horeca in Nederland in 2025-2026? Zoek naar actuele wetswijzigingen, CAO-updates, subsidies en brancheontwikkelingen.',
+  'wetgeving': 'Wat zijn de meest recente wetswijzigingen die hotels in Nederland raken in 2025-2026? Denk aan BTW-regels, vergunningswetgeving, Drank- en Horecawet, Arbowet, brandveiligheid.',
+  'cao': 'Wat zijn de laatste ontwikkelingen rondom de horeca-CAO 2025-2026 in Nederland? Loonsverhogingen, arbeidsvoorwaarden, nieuwe afspraken.',
+  'subsidie': 'Welke subsidies en fiscale regelingen zijn beschikbaar voor hotels en horecabedrijven in Nederland in 2025-2026? EIA, ISDE, SDE++, gemeentelijke subsidies.',
+  'compliance': 'Wat zijn de actuele compliance-verplichtingen voor hotels in Nederland? Brandveiligheid, HACCP, legionella, BHV, vergunningen, energiebesparingsplicht.',
+  'markt': 'Wat zijn de laatste markt- en brancheontwikkelingen voor Nederlandse hotels in 2025-2026? Bezettingsgraden, revenue trends, OTA-ontwikkelingen, gastenontwikkelingen.'
+};
+
+async function haalNieuws(categorie, zoekterm) {
+  if (!ANTHROPIC_KEY) {
+    document.getElementById('api-modal').classList.add('open');
+    return;
+  }
+
+  var grid = document.getElementById('nieuws-grid');
+  grid.innerHTML = '<div class="loading"><div class="spinner"></div><div class="loading-tekst">Vera zoekt actueel nieuws op...</div></div>';
+
+  var zoekVraag = zoekterm || catZoekvragen[categorie] || 'Actueel hotelnieuws Nederland';
+
+  var prompt = 'Zoek actueel nieuws en wetgeving op voor hotels in Nederland. ' + zoekVraag + '\n\n' +
+    'Geef de resultaten terug als een JSON array met dit formaat (ALLEEN JSON, geen andere tekst):\n' +
+    '[{\n' +
+    '  "titel": "Titel van het nieuwsitem",\n' +
+    '  "samenvatting": "2-3 zinnen samenvatting in het Nederlands",\n' +
+    '  "categorie": "wetgeving|cao|subsidie|compliance|markt|branche",\n' +
+    '  "urgentie": "urgent|aandacht|info",\n' +
+    '  "bron": "KHN|RVO|Rijksoverheid|Misset Horeca|Overig",\n' +
+    '  "datum": "maand jaar of specifieke datum",\n' +
+    '  "url": "directe URL naar het artikel of de bron",\n' +
+    '  "vera_signaal": "Wat betekent dit concreet voor Hotel De Klok (1 zin)?",\n' +
+    '  "actie_vereist": true of false\n' +
+    '}]\n\n' +
+    'Geef 5-8 relevante items. Zorg dat de URLs echt bestaan. Focus op 2025-2026.';
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        tools: [{type: 'web_search_20250305', name: 'web_search'}],
+        system: 'Je bent Vera, nieuws-assistent voor hotelmanagers in Nederland. Je zoekt actuele informatie op en presenteert die gestructureerd. Je antwoordt ALLEEN met een valide JSON array, geen markdown, geen uitleg, geen inleiding.',
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+
+    var data = await resp.json();
+
+    // Extraheer text content
+    var tekst = '';
+    if (data.content) {
+      data.content.forEach(function(block) {
+        if (block.type === 'text') tekst += block.text;
+      });
+    }
+
+    // Parse JSON
+    var items;
+    try {
+      var clean = tekst.replace(/```json|```/g, '').trim();
+      // Zoek de JSON array
+      var start = clean.indexOf('[');
+      var end = clean.lastIndexOf(']');
+      if (start !== -1 && end !== -1) {
+        clean = clean.substring(start, end + 1);
+      }
+      items = JSON.parse(clean);
+    } catch(e) {
+      console.error('Parse error:', e, tekst.substring(0, 500));
+      grid.innerHTML = '<div class="loading" style="color:var(--coral)">Kon resultaten niet verwerken. Probeer opnieuw.</div>';
+      return;
+    }
+
+    renderNieuws(items);
+
+  } catch(e) {
+    console.error('Fetch error:', e);
+    grid.innerHTML = '<div class="loading" style="color:var(--coral)">Er ging iets mis. Controleer je API sleutel.</div>';
+  }
+}
+
+function renderNieuws(items) {
+  var grid = document.getElementById('nieuws-grid');
+  if (!items || !items.length) {
+    grid.innerHTML = '<div class="loading">Geen resultaten gevonden.</div>';
+    return;
+  }
+
+  grid.innerHTML = items.map(function(item) {
+    var urgClass = item.urgentie === 'urgent' ? 'urgent' : item.urgentie === 'aandacht' ? 'aandacht' : 'info';
+    var urgIcon = item.urgentie === 'urgent' ? '&#128680;' : item.urgentie === 'aandacht' ? '&#9888;&#65039;' : 'ℹ️';
+    var catClass = 'cat-' + (item.categorie || 'branche');
+
+    return '<div class="nieuws-item ' + urgClass + '">' +
+      '<div class="nieuws-header">' +
+        '<div class="nieuws-icon">' + urgIcon + '</div>' +
+        '<div class="nieuws-content">' +
+          '<div class="nieuws-meta">' +
+            '<span class="nieuws-cat ' + catClass + '">' + (item.categorie||'') + '</span>' +
+            '<span class="nieuws-datum">' + (item.datum||'') + '</span>' +
+            '<span class="nieuws-bron">&#128196; ' + (item.bron||'') + '</span>' +
+            (item.actie_vereist ? '<span class="nieuws-actie-tag">Actie vereist</span>' : '') +
+          '</div>' +
+          '<div class="nieuws-titel">' + item.titel + '</div>' +
+          '<div class="nieuws-samenvatting">' + item.samenvatting + '</div>' +
+          '<div class="nieuws-footer">' +
+            (item.url ? '<a href="' + item.url + '" target="_blank" class="nieuws-link">Lees meer &#8594;</a>' : '') +
+          '</div>' +
+          (item.vera_signaal ? '<div class="nieuws-vera">&#10024; Vera: ' + item.vera_signaal + '</div>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// Init
+updateApiStatus();
+if (ANTHROPIC_KEY) {
+  haalNieuws('actueel', null);
+}
+
+var toastT;
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
+</script>
+</body>
+</html>
