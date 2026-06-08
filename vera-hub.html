@@ -21,7 +21,6 @@
   --gray:#6b7280;--gray-bg:rgba(107,114,128,0.1);--gray-border:rgba(107,114,128,0.25);
 }
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
-
 .topbar{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px}
 .logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
 .logo-name{font-size:14px;font-weight:600;color:var(--text)}
@@ -30,38 +29,40 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(94,201,110,0.5)}
+.api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
 .back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-decoration:none;transition:all .15s}
 .back-link:hover{border-color:var(--border2);color:var(--text2)}
-
 .main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
 
 /* Hero */
-.dagstart-hero{margin-bottom:24px;display:flex;justify-content:space-between;align-items:flex-end}
-.dagstart-greeting{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.5px}
-.dagstart-date{font-size:12px;font-family:'DM Mono',monospace;color:var(--text3);text-align:right;line-height:1.8}
+.hub-hero{margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-end}
+.hub-greeting{font-size:24px;font-weight:600;color:var(--text);letter-spacing:-0.5px}
+.hub-hotel{font-size:13px;color:var(--text2);margin-top:3px}
+.hub-date{font-size:12px;font-family:'DM Mono',monospace;color:var(--text3);text-align:right;line-height:1.8}
 
-/* Signalen banner */
-.signalen-banner{border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:12px}
-.signalen-banner.goed{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
-.signalen-banner.aandacht{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
-.signalen-banner.kritiek{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
-.signalen-icon{font-size:18px;flex-shrink:0}
-.signalen-tekst{flex:1;line-height:1.6}
-.signalen-tekst strong{color:var(--text)}
+/* Status pills */
+.status-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.s-pill{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 12px;font-size:11px;font-family:'DM Sans',sans-serif}
+.s-pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.s-pill-gray{background:var(--bg3);border:1px solid var(--border2);color:var(--text2)}
+.s-pill-gray .dot{background:var(--gray)}
+.s-pill-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.s-pill-green .dot{background:var(--green);box-shadow:0 0 5px rgba(94,201,110,0.5)}
+.s-pill-amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+.s-pill-amber .dot{background:var(--amber)}
+.s-pill-red{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.s-pill-red .dot{background:var(--coral)}
 
-/* Twee kolommen layout */
+/* Twee kolommen */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .full-col{margin-bottom:8px}
 
-/* Kaarten */
+/* Kaart basis */
 .hub-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;overflow:hidden}
 .hub-card-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .hub-card-title{font-size:12px;font-weight:500;color:var(--text)}
-.hub-card-link{font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);text-decoration:none;cursor:pointer;transition:opacity .15s}
+.hub-card-link{font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);text-decoration:none;cursor:pointer}
 .hub-card-link:hover{opacity:.7}
-.hub-card-body{padding:0}
-
-/* Compliance rijen */
 .hub-row{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1px solid var(--border);font-size:12px}
 .hub-row:last-child{border-bottom:none}
 .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -69,8 +70,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .dot.oranje{background:var(--amber)}
 .dot.rood{background:var(--coral);box-shadow:0 0 5px rgba(255,112,96,0.5)}
 .dot.geen_document{background:var(--gray)}
-.dot.normaal{background:var(--amber)}
-.dot.urgent{background:var(--coral)}
 .hub-row-naam{flex:1;color:var(--text2)}
 .hub-row-meta{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
 .hub-row-tag{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px}
@@ -80,34 +79,82 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .tag-geen_document{background:var(--gray-bg);color:var(--gray);border:1px solid var(--gray-border)}
 .hub-empty{padding:16px;font-size:12px;color:var(--text3);text-align:center}
 
-/* Module navigatie */
-.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:16px 0 10px}
-.module-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:8px}
-.mod-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:28px 24px;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:16px}
-.mod-btn:hover{border-color:rgba(255,255,255,0.25);transform:translateY(-1px)}
-.mod-btn.live{border-color:var(--green-border)}
-.mod-btn.dim{opacity:0.5;cursor:default}
-.mod-btn-icon{font-size:28px;flex-shrink:0}
-.mod-btn-info{}
-.mod-btn-naam{font-size:14px;font-weight:500;color:var(--text);margin-bottom:4px}
-.mod-btn-sub{font-size:12px;color:var(--text3)}
+/* Bezettingskaart */
+.bezetting-kaart{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
+.bezetting-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.bezetting-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.bezetting-getal{font-size:32px;font-weight:600;font-family:'DM Mono',monospace;color:var(--purple)}
+.bezetting-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.bez-grafiek{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-items:flex-end;height:60px;margin-bottom:4px}
+.bez-kolom{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.bez-balk{width:100%;border-radius:3px 3px 0 0;min-height:4px}
+.bez-balk-laag{background:var(--green)}
+.bez-balk-midden{background:var(--amber)}
+.bez-balk-hoog{background:var(--coral)}
+.bez-balk-vandaag{background:var(--purple);box-shadow:0 0 8px rgba(124,111,247,0.5)}
+.bez-dag{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center}
+.bez-dag-vandaag{color:var(--purple);font-weight:600}
+.bez-pct{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center}
+.bez-signalen{border-top:1px solid var(--border);margin-top:8px;padding-top:8px;display:flex;flex-direction:column;gap:4px}
+.bez-signaal{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+.bez-signaal-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
-/* Vera AI invoer */
+/* Review kaart */
+.review-kaart{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
+.review-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.review-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.review-scores{display:flex;gap:20px}
+.review-score{text-align:center}
+.review-score-getal{font-size:26px;font-weight:600;font-family:'DM Mono',monospace}
+.review-score-getal.up{color:var(--green)}
+.review-score-getal.down{color:var(--coral)}
+.review-score-getal.flat{color:var(--text)}
+.review-score-naam{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:2px}
+.review-grafiek{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;height:50px;align-items:flex-end;margin-bottom:4px}
+.review-kolom{display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end}
+.review-bars{display:flex;gap:1px;align-items:flex-end;width:100%}
+.review-balk-b{background:var(--blue);border-radius:2px 2px 0 0;flex:1;min-height:3px}
+.review-balk-g{background:var(--amber);border-radius:2px 2px 0 0;flex:1;min-height:3px}
+.review-week{font-size:8px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center}
+.review-legende{display:flex;gap:12px;margin-top:6px}
+.review-leg{display:flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.review-leg-dot{width:8px;height:6px;border-radius:2px}
+.review-delta{font-size:11px;font-family:'DM Mono',monospace;margin-top:6px}
+.review-delta.up{color:var(--green)}
+.review-delta.down{color:var(--coral)}
+.review-delta.flat{color:var(--text3)}
+
+/* Signalenbanner */
+.signalen-banner{border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:12px;font-size:12px}
+.signalen-banner.goed{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.signalen-banner.aandacht{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+.signalen-banner.kritiek{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.signalen-icon{font-size:18px;flex-shrink:0}
+.signalen-tekst{flex:1;line-height:1.6}
+.signalen-tekst strong{color:var(--text)}
+
+/* Vera AI */
 .vera-ai-panel{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:12px;padding:18px 20px;margin-bottom:8px}
-.vera-ai-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px}
+.vera-ai-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
 .vera-ai-sub{font-size:11px;color:var(--text2);margin-bottom:12px;line-height:1.5}
 .vera-ai-input-row{display:flex;gap:8px}
 #vera-vraag{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none}
 #vera-vraag:focus{border-color:var(--purple)}
 #vera-vraag::placeholder{color:var(--text3)}
 .vera-ai-btn{background:var(--purple);border:none;border-radius:7px;padding:9px 16px;font-size:12px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
-.vera-ai-antwoord{margin-top:12px;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--text2);line-height:1.7;display:none}
+.vera-ai-antwoord{margin-top:12px;background:var(--bg2);border-left:3px solid var(--purple);border-radius:0 6px 6px 0;padding:10px 14px;font-size:12px;color:var(--text2);line-height:1.7;display:none}
 .vera-ai-antwoord.show{display:block}
 
-/* Loading */
-.loading{text-align:center;padding:28px 0;color:var(--text3);font-size:12px}
-.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* Module nav */
+.section-label{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:16px 0 10px}
+.module-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mod-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:22px 20px;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:14px}
+.mod-btn:hover{border-color:rgba(255,255,255,0.25);transform:translateY(-1px)}
+.mod-btn.live{border-color:var(--green-border)}
+.mod-btn.dim{opacity:0.5;cursor:default}
+.mod-btn-icon{font-size:24px;flex-shrink:0}
+.mod-btn-naam{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.mod-btn-sub{font-size:11px;color:var(--text3)}
 
 /* API Modal */
 #api-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center}
@@ -120,70 +167,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 #btn-save-key{flex:1;background:#7c6ff7;border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
 #btn-skip-key{background:#1e2230;border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 16px;font-size:12px;color:#8b90a0;cursor:pointer}
 
+.loading{text-align:center;padding:28px 0;color:var(--text3);font-size:12px}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}
+@keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--text2);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
 .toast.show{opacity:1}
-.api-btn{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);cursor:pointer}
-
-@media(max-width:700px){
-  .two-col{grid-template-columns:1fr}
-  .module-nav{grid-template-columns:1fr 1fr}
-  .dagstart-hero{flex-direction:column;gap:8px;align-items:flex-start}
-}
-
-/* Bezettingsgrafiek */
-.bez-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px}
-.bez-dag{display:flex;flex-direction:column;align-items:center;gap:3px}
-.bez-dag-balk-wrap{width:100%;height:48px;display:flex;align-items:flex-end}
-.bez-dag-balk{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height .4s}
-.bez-dag-balk.laag{background:var(--green)}
-.bez-dag-balk.midden{background:var(--amber)}
-.bez-dag-balk.hoog{background:var(--coral)}
-.bez-dag-balk.vandaag{background:var(--purple);box-shadow:0 0 8px rgba(124,111,247,0.5)}
-.bez-dag-label{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
-.bez-dag-pct{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
-/* Status pills */
-.status-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.status-pill{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text2)}
-.status-pill .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.status-pill.groen-pill{border-color:var(--green-border);background:var(--green-bg)}
-.status-pill.groen-pill .dot{background:var(--green);box-shadow:0 0 5px rgba(94,201,110,0.5)}
-.status-pill.amber-pill{border-color:var(--amber-border);background:var(--amber-bg)}
-.status-pill.amber-pill .dot{background:var(--amber)}
-.status-pill.rood-pill{border-color:var(--coral-border);background:var(--coral-bg)}
-.status-pill.rood-pill .dot{background:var(--coral)}
-/* Vandaag kaart */
-.vandaag-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
-.vandaag-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
-.vandaag-title{font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.vandaag-bezetting{font-size:30px;font-weight:600;font-family:'DM Mono',monospace;color:var(--purple)}
-.vandaag-sub{font-size:11px;color:var(--text3);margin-top:2px}
-/* Signaal items */
-.signaal-items{display:flex;flex-direction:column;gap:3px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
-.signaal-item{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px;color:var(--text2)}
-.signaal-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-
-/* Review trend */
-.review-card{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px;margin-bottom:8px}
-.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
-.review-scores{display:flex;gap:16px}
-.review-score-item{text-align:center}
-.review-score-val{font-size:24px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
-.review-score-val.stijgend{color:var(--green)}
-.review-score-val.dalend{color:var(--coral)}
-.review-score-platform{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:2px}
-.review-trend-chart{display:flex;gap:3px;align-items:flex-end;height:44px;margin-bottom:6px}
-.review-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
-.review-bar{width:100%;border-radius:2px 2px 0 0;min-height:3px;transition:height .3s}
-.review-bar.booking{background:var(--blue)}
-.review-bar.google{background:var(--amber)}
-.review-week-label{font-size:8px;font-family:'DM Mono',monospace;color:var(--text3)}
-.review-trend-delta{font-size:11px;font-family:'DM Mono',monospace;margin-top:4px}
-.review-trend-delta.up{color:var(--green)}
-.review-trend-delta.down{color:var(--coral)}
-.review-trend-delta.flat{color:var(--text3)}
-.review-legend{display:flex;gap:12px;margin-top:6px}
-.review-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
-.review-legend-dot{width:8px;height:8px;border-radius:2px}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}.module-nav{grid-template-columns:1fr 1fr}.hub-hero{flex-direction:column;gap:8px}}
 </style>
 </head>
 <body>
@@ -201,7 +190,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 </div>
 
-<!-- API Modal -->
 <div id="api-modal">
   <div class="api-box">
     <h3>&#128274; Anthropic API sleutel</h3>
@@ -217,81 +205,77 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="main">
 
   <!-- Hero -->
-  <div class="dagstart-hero">
+  <div class="hub-hero">
     <div>
-      <div class="dagstart-greeting" id="greeting">Goedemorgen</div>
-      <div style="font-size:13px;color:var(--text2);margin-top:3px" id="hotel-sub">Hotel De Klok</div>
+      <div class="hub-greeting" id="greeting">Goedemorgen</div>
+      <div class="hub-hotel" id="hotel-sub">Hotel De Klok</div>
     </div>
-    <div class="dagstart-date" id="dagstart-date"></div>
+    <div class="hub-date" id="hub-date"></div>
   </div>
 
   <!-- Status pills -->
   <div class="status-pills" id="status-pills">
-    <div class="status-pill"><div class="dot" style="background:var(--gray)"></div>Laden...</div>
+    <div class="s-pill s-pill-gray"><div class="dot"></div>Laden...</div>
   </div>
 
-  <!-- Vandaag kaart met bezettingsgrafiek -->
-  <div class="vandaag-card" id="vandaag-card" style="display:none">
-    <div class="vandaag-header">
-      <div>
-        <div class="vandaag-title">&#128197; Bezetting deze week</div>
+  <!-- Bezetting + Reviews naast elkaar -->
+  <div class="two-col">
+
+    <!-- Bezettingskaart -->
+    <div class="bezetting-kaart" id="bezetting-kaart" style="display:none">
+      <div class="bezetting-top">
+        <div>
+          <div class="bezetting-label">&#128197; Bezetting week</div>
+        </div>
+        <div style="text-align:right">
+          <div class="bezetting-getal" id="bez-pct-groot">—%</div>
+          <div class="bezetting-sub" id="bez-sub">vandaag</div>
+        </div>
       </div>
-      <div style="text-align:right">
-        <div class="vandaag-bezetting" id="vandaag-pct">—%</div>
-        <div class="vandaag-sub" id="vandaag-sub">vandaag</div>
-      </div>
+      <div class="bez-grafiek" id="bez-grafiek"></div>
+      <div class="bez-signalen" id="bez-signalen"></div>
     </div>
-    <div class="bez-week" id="bez-week"></div>
-    <div class="signaal-items" id="vandaag-signalen"></div>
+
+    <!-- Review trend kaart -->
+    <div class="review-kaart" id="review-kaart" style="display:none">
+      <div class="review-top">
+        <div>
+          <div class="review-label">&#11088; Review trend — 8 weken</div>
+        </div>
+        <div class="review-scores" id="review-scores"></div>
+      </div>
+      <div class="review-grafiek" id="review-grafiek"></div>
+      <div class="review-legende">
+        <div class="review-leg"><div class="review-leg-dot" style="background:var(--blue)"></div>Booking.com</div>
+        <div class="review-leg"><div class="review-leg-dot" style="background:var(--amber)"></div>Google</div>
+      </div>
+      <div id="review-delta" class="review-delta flat"></div>
+    </div>
+
   </div>
 
-  <!-- Review trend kaart -->
-  <div class="review-card" id="review-card" style="display:none">
-    <div class="review-header">
-      <div>
-        <div class="vandaag-title">&#11088; Review trend — 8 weken</div>
-      </div>
-      <div class="review-scores" id="review-scores"></div>
-    </div>
-    <div class="review-trend-chart" id="review-chart"></div>
-    <div class="review-legend">
-      <div class="review-legend-item"><div class="review-legend-dot" style="background:var(--blue)"></div>Booking.com</div>
-      <div class="review-legend-item"><div class="review-legend-dot" style="background:var(--amber)"></div>Google</div>
-    </div>
-    <div id="review-delta" style="margin-top:8px"></div>
-  </div>
-
-  <!-- Signalen banner -->
-  <div class="signalen-banner" id="signalen-banner">
+  <!-- Signalenbanner -->
+  <div class="signalen-banner aandacht" id="signalen-banner">
     <div class="signalen-icon">&#9203;</div>
     <div class="signalen-tekst" id="signalen-tekst">Laden...</div>
   </div>
 
-  <!-- Twee kolommen: Compliance + Acties -->
+  <!-- Compliance + Acties -->
   <div class="two-col">
-
-    <!-- Compliance -->
     <div class="hub-card">
       <div class="hub-card-header">
         <div class="hub-card-title">&#9989; Compliance</div>
         <a href="vera-compliance.html" class="hub-card-link">Beheren &rarr;</a>
       </div>
-      <div id="compliance-list">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
+      <div id="compliance-list"><div class="loading"><div class="spinner"></div></div></div>
     </div>
-
-    <!-- Acties -->
     <div class="hub-card">
       <div class="hub-card-header">
         <div class="hub-card-title">&#128203; Open acties</div>
         <a href="vera-compliance.html" class="hub-card-link">Alle acties &rarr;</a>
       </div>
-      <div id="acties-list">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
+      <div id="acties-list"><div class="loading"><div class="spinner"></div></div></div>
     </div>
-
   </div>
 
   <!-- Medewerkers -->
@@ -301,77 +285,48 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
         <div class="hub-card-title">&#128100; Medewerkers &amp; certificaten</div>
         <a href="vera-compliance.html" class="hub-card-link">Beheren &rarr;</a>
       </div>
-      <div id="medew-list">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
+      <div id="medew-list"><div class="loading"><div class="spinner"></div></div></div>
     </div>
   </div>
 
   <!-- Vera AI -->
   <div class="vera-ai-panel">
     <div class="vera-ai-title">&#10024; Vera AI</div>
-    <div class="vera-ai-sub">Stel een vraag over jouw hotel. Vera analyseert op basis van de beschikbare data.</div>
+    <div class="vera-ai-sub">Stel een vraag over jouw hotel. Vera analyseert op basis van alle beschikbare systemen.</div>
     <div class="vera-ai-input-row">
-      <input id="vera-vraag" type="text" placeholder="Bijv. &quot;Zijn we klaar voor een inspectie?&quot; of &quot;Wat vraagt vandaag aandacht?&quot;">
+      <input id="vera-vraag" type="text" placeholder="Bijv. &quot;Hoe staat het hotel ervoor?&quot; of &quot;Is BHV gedekt deze week?&quot;">
       <button class="vera-ai-btn" id="vera-ai-btn">Vraag Vera</button>
     </div>
     <div class="vera-ai-antwoord" id="vera-antwoord"></div>
   </div>
 
-  <!-- Module navigatie -->
+  <!-- Modules -->
   <div class="section-label">Modules</div>
   <div class="module-nav">
     <a href="vera-compliance.html" class="mod-btn live">
       <div class="mod-btn-icon">&#9989;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Compliance &amp; Duurzaamheid</div>
-        <div class="mod-btn-sub">Documenten, certificaten, acties</div>
-      </div>
+      <div><div class="mod-btn-naam">Compliance &amp; Duurzaamheid</div><div class="mod-btn-sub">Documenten, certificaten, acties</div></div>
+    </a>
+    <a href="vera-cross.html" class="mod-btn live" style="border-color:var(--blue-border)">
+      <div class="mod-btn-icon">&#128257;</div>
+      <div><div class="mod-btn-naam">Cross-discipline signalen</div><div class="mod-btn-sub">Verbanden tussen systemen</div></div>
+    </a>
+    <a href="vera-nieuws.html" class="mod-btn live" style="border-color:var(--amber-border)">
+      <div class="mod-btn-icon">&#128240;</div>
+      <div><div class="mod-btn-naam">Nieuws &amp; Wetgeving</div><div class="mod-btn-sub">Actueel branchenieuws</div></div>
     </a>
     <div class="mod-btn dim">
       <div class="mod-btn-icon">&#128200;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Real-time Financials</div>
-        <div class="mod-btn-sub">In ontwikkeling</div>
-      </div>
+      <div><div class="mod-btn-naam">Real-time Financials</div><div class="mod-btn-sub">In ontwikkeling</div></div>
     </div>
     <div class="mod-btn dim">
       <div class="mod-btn-icon">&#128100;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Personeel</div>
-        <div class="mod-btn-sub">In ontwikkeling</div>
-      </div>
+      <div><div class="mod-btn-naam">Personeel</div><div class="mod-btn-sub">In ontwikkeling</div></div>
     </div>
     <div class="mod-btn dim">
       <div class="mod-btn-icon">&#11088;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Reputatie</div>
-        <div class="mod-btn-sub">In ontwikkeling</div>
-      </div>
+      <div><div class="mod-btn-naam">Reputatie</div><div class="mod-btn-sub">In ontwikkeling</div></div>
     </div>
-    <div class="mod-btn dim">
-      <div class="mod-btn-icon">&#128176;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Sales &amp; Commercieel</div>
-        <div class="mod-btn-sub">In ontwikkeling</div>
-      </div>
-    </div>
-    <a href="vera-nieuws.html" class="mod-btn live" style="border-color:var(--amber-border)">
-      <div class="mod-btn-icon">&#128240;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Nieuws &amp; Wetgeving</div>
-        <div class="mod-btn-sub">Actueel branchenieuws &amp; wetgeving via Vera AI</div>
-      </div>
-    </a>
-
-    <a href="vera-cross.html" class="mod-btn live" style="border-color:var(--blue-border)">
-      <div class="mod-btn-icon">&#128257;</div>
-      <div class="mod-btn-info">
-        <div class="mod-btn-naam">Cross-discipline signalen</div>
-        <div class="mod-btn-sub">Verbanden tussen bezetting, compliance &amp; personeel</div>
-      </div>
-    </a>
-
   </div>
 
 </div>
@@ -380,440 +335,230 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 
 <script>
 const { createClient } = supabase;
-const sb = createClient(
-  'https://nznsimwgjwkdvudcdmup.supabase.co',
-  'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ'
-);
+const sb = createClient('https://nznsimwgjwkdvudcdmup.supabase.co','sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ');
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
 let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
-let complianceData = [], actiesData = [], medewData = [];
+let complianceData=[], actiesData=[], medewData=[], mewsData=[], shiftbaseData=[], exactData=null, documentenData=[], reviewData=[];
 
 // API modal
-document.getElementById('api-status-btn').addEventListener('click', function() {
-  document.getElementById('api-modal').classList.add('open');
-  document.getElementById('api-input').value = ANTHROPIC_KEY;
-});
-document.getElementById('btn-save-key').addEventListener('click', function() {
-  var key = document.getElementById('api-input').value.trim();
-  if (!key) return;
-  ANTHROPIC_KEY = key;
-  localStorage.setItem('vera_anthropic_key', key);
-  document.getElementById('api-modal').classList.remove('open');
-  updateApiStatus();
-  showToast('API sleutel opgeslagen');
-});
-document.getElementById('btn-skip-key').addEventListener('click', function() {
-  document.getElementById('api-modal').classList.remove('open');
-});
-function updateApiStatus() {
-  var btn = document.getElementById('api-status-btn');
-  btn.textContent = ANTHROPIC_KEY ? 'API: actief' : 'API: niet ingesteld';
-  btn.style.color = ANTHROPIC_KEY ? 'var(--green)' : '';
-}
-
-// Init
-// Globale data containers
-var mewsData = [], shiftbaseData = [], exactData = null, documentenData = [];
+document.getElementById('api-status-btn').addEventListener('click',function(){document.getElementById('api-modal').classList.add('open');document.getElementById('api-input').value=ANTHROPIC_KEY;});
+document.getElementById('btn-save-key').addEventListener('click',function(){var k=document.getElementById('api-input').value.trim();if(!k)return;ANTHROPIC_KEY=k;localStorage.setItem('vera_anthropic_key',k);document.getElementById('api-modal').classList.remove('open');updateApiStatus();showToast('Opgeslagen');});
+document.getElementById('btn-skip-key').addEventListener('click',function(){document.getElementById('api-modal').classList.remove('open');});
+function updateApiStatus(){var b=document.getElementById('api-status-btn');b.textContent=ANTHROPIC_KEY?'API: actief':'API: niet ingesteld';b.style.color=ANTHROPIC_KEY?'var(--green)':'';}
 
 async function init() {
   updateApiStatus();
-  setDatum();
+  var nu = new Date();
+  var uur = nu.getHours();
+  document.getElementById('greeting').textContent = uur<12?'Goedemorgen':uur<18?'Goedemiddag':'Goedenavond';
+  document.getElementById('hub-date').innerHTML = nu.toLocaleDateString('nl-NL',{weekday:'long'})+'<br>'+nu.toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});
 
-  var hotel = await sb.from('hotels').select('naam').eq('id', HOTEL_ID).single();
-  if (hotel.data) {
-    document.getElementById('hotel-naam').textContent = hotel.data.naam;
-    document.getElementById('hotel-sub').textContent = hotel.data.naam;
-  }
+  var hotel = await sb.from('hotels').select('naam').eq('id',HOTEL_ID).single();
+  if(hotel.data){document.getElementById('hotel-naam').textContent=hotel.data.naam;document.getElementById('hotel-sub').textContent=hotel.data.naam;}
 
-  await Promise.all([laadCompliance(), laadActies(), laadMedewerkers(), laadSystemData()]);
-  updateSignalen();
-}
-
-async function laadSystemData() {
-  // Laad gesimuleerde data van alle systemen
-  var [mews, shift, exact, docs, reviews] = await Promise.all([
-    sb.from('mews_bezetting').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(7),
-    sb.from('shiftbase_rooster').select('*').eq('hotel_id', HOTEL_ID).gte('datum', new Date().toISOString().split('T')[0]).order('datum').limit(10),
-    sb.from('exact_financials').select('*').eq('hotel_id', HOTEL_ID).order('periode', {ascending:false}).limit(1),
-    sb.from('documenten').select('*').eq('hotel_id', HOTEL_ID).order('created_at', {ascending:false}).limit(10),
-    sb.from('review_trend').select('*').eq('hotel_id', HOTEL_ID).order('datum').limit(20)
+  var vandaag = nu.toISOString().split('T')[0];
+  var [comp,act,medew,mews,shift,exact,docs,reviews] = await Promise.all([
+    sb.from('compliance_items').select('*').eq('hotel_id',HOTEL_ID).order('status'),
+    sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id',HOTEL_ID).eq('status','open').order('created_at',{ascending:false}),
+    sb.from('medewerkers').select('*').eq('hotel_id',HOTEL_ID).eq('actief',true).order('naam'),
+    sb.from('mews_bezetting').select('*').eq('hotel_id',HOTEL_ID).gte('datum',vandaag).order('datum').limit(7),
+    sb.from('shiftbase_rooster').select('*').eq('hotel_id',HOTEL_ID).gte('datum',vandaag).order('datum').limit(10),
+    sb.from('exact_financials').select('*').eq('hotel_id',HOTEL_ID).order('periode',{ascending:false}).limit(1),
+    sb.from('documenten').select('*').eq('hotel_id',HOTEL_ID).order('created_at',{ascending:false}).limit(10),
+    sb.from('review_trend').select('*').eq('hotel_id',HOTEL_ID).order('datum').limit(20)
   ]);
-  mewsData = mews.data || [];
-  shiftbaseData = shift.data || [];
-  exactData = exact.data && exact.data[0] ? exact.data[0] : null;
-  documentenData = docs.data || [];
-  var reviewData = reviews.data || [];
-  if (reviewData.length) renderReviewTrend(reviewData);
 
-  renderVandaagKaart();
+  complianceData=comp.data||[]; actiesData=act.data||[]; medewData=medew.data||[];
+  mewsData=mews.data||[]; shiftbaseData=shift.data||[]; exactData=exact.data&&exact.data[0]?exact.data[0]:null;
+  documentenData=docs.data||[]; reviewData=reviews.data||[];
+
+  renderCompliance(); renderActies(); renderMedewerkers();
+  renderBezetting(); renderReviews(); updateSignalen();
 }
 
-function renderReviewTrend(data) {
-  var booking = data.filter(function(d){return d.platform==='booking';});
-  var google = data.filter(function(d){return d.platform==='google';});
+// Bezettingsgrafiek
+function renderBezetting() {
+  if (!mewsData.length) return;
+  var vandaag = new Date().toISOString().split('T')[0];
+  var v = mewsData[0];
+  document.getElementById('bez-pct-groot').textContent = v.bezettingsgraad + '%';
+  document.getElementById('bez-sub').textContent = v.kamers_bezet + ' van 45 kamers bezet';
 
+  var dagen = ['zo','ma','di','wo','do','vr','za'];
+  var html = mewsData.map(function(d) {
+    var isVandaag = d.datum.substring(0,10) === vandaag;
+    var pct = d.bezettingsgraad;
+    var hoogte = Math.round(pct * 0.52);
+    var balkKlasse = isVandaag ? 'bez-balk-vandaag' : pct<60?'bez-balk-laag':pct<80?'bez-balk-midden':'bez-balk-hoog';
+    var dagNaam = dagen[new Date(d.datum).getDay()];
+    return '<div class="bez-kolom">' +
+      '<div class="bez-balk ' + balkKlasse + '" style="height:' + hoogte + 'px"></div>' +
+      '<div class="bez-dag ' + (isVandaag?'bez-dag-vandaag':'') + '">' + dagNaam + '</div>' +
+      '<div class="bez-pct">' + Math.round(pct) + '</div>' +
+      '</div>';
+  }).join('');
+  document.getElementById('bez-grafiek').innerHTML = html;
+
+  var signalen = [];
+  if (v.aankomsten>0) signalen.push({k:'var(--green)',t:v.aankomsten+' aankomsten vandaag'});
+  if (v.vertrekken>0) signalen.push({k:'var(--blue)',t:v.vertrekken+' vertrekken vandaag'});
+  var vandaagShift = shiftbaseData.filter(function(s){return s.datum&&s.datum.substring(0,10)===vandaag;});
+  var bhv = vandaagShift.filter(function(s){return s.bhv_gecertificeerd;});
+  if (bhv.length>0) signalen.push({k:'var(--green)',t:'BHV gedekt — '+bhv[0].medewerker_naam});
+  else if (vandaagShift.length>0) signalen.push({k:'var(--coral)',t:'Geen BHV vandaag ingeroosterd'});
+  if (exactData) {
+    var bp = Math.round(exactData.omzet_mtd/exactData.omzet_budget*100);
+    signalen.push({k:bp>=90?'var(--green)':bp>=70?'var(--amber)':'var(--coral)',t:'Omzet MTD: €'+exactData.omzet_mtd.toLocaleString('nl-NL')+' ('+bp+'% van budget)'});
+    if (exactData.ota_commissie_pct>17) signalen.push({k:'var(--amber)',t:'OTA-commissie '+exactData.ota_commissie_pct+'% — hoger dan norm'});
+  }
+  document.getElementById('bez-signalen').innerHTML = signalen.map(function(s){
+    return '<div class="bez-signaal"><div class="bez-signaal-dot" style="background:'+s.k+'"></div>'+s.t+'</div>';
+  }).join('');
+  document.getElementById('bezetting-kaart').style.display = 'block';
+}
+
+// Review trend
+function renderReviews() {
+  if (!reviewData.length) return;
+  var booking = reviewData.filter(function(d){return d.platform==='booking';});
+  var google = reviewData.filter(function(d){return d.platform==='google';});
   if (!booking.length && !google.length) return;
 
-  // Huidige scores
-  var latestBooking = booking.length ? booking[booking.length-1].score : null;
-  var latestGoogle = google.length ? google[google.length-1].score : null;
-  var prevBooking = booking.length > 1 ? booking[booking.length-2].score : null;
-  var prevGoogle = google.length > 1 ? google[google.length-2].score : null;
+  var lB = booking.length ? booking[booking.length-1].score : null;
+  var lG = google.length ? google[google.length-1].score : null;
+  var pB = booking.length>1 ? booking[booking.length-2].score : null;
+  var pG = google.length>1 ? google[google.length-2].score : null;
 
   var scoresHtml = '';
-  if (latestBooking) {
-    var deltaB = prevBooking ? latestBooking - prevBooking : 0;
-    var klasseB = deltaB > 0 ? 'stijgend' : deltaB < 0 ? 'dalend' : '';
-    scoresHtml += '<div class="review-score-item"><div class="review-score-val ' + klasseB + '">' + latestBooking.toFixed(1) + '</div><div class="review-score-platform">Booking.com</div></div>';
+  if (lB) {
+    var dB = pB ? lB-pB : 0;
+    var kB = dB>0?'up':dB<0?'down':'flat';
+    scoresHtml += '<div class="review-score"><div class="review-score-getal '+kB+'">'+lB.toFixed(1)+'</div><div class="review-score-naam">Booking</div></div>';
   }
-  if (latestGoogle) {
-    var deltaG = prevGoogle ? latestGoogle - prevGoogle : 0;
-    var klasseG = deltaG > 0 ? 'stijgend' : deltaG < 0 ? 'dalend' : '';
-    scoresHtml += '<div class="review-score-item"><div class="review-score-val ' + klasseG + '">' + latestGoogle.toFixed(1) + '</div><div class="review-score-platform">Google</div></div>';
+  if (lG) {
+    var dG = pG ? lG-pG : 0;
+    var kG = dG>0?'up':dG<0?'down':'flat';
+    scoresHtml += '<div class="review-score"><div class="review-score-getal '+kG+'">'+lG.toFixed(1)+'</div><div class="review-score-naam">Google</div></div>';
   }
   document.getElementById('review-scores').innerHTML = scoresHtml;
 
-  // Grafiek — combineer per datum
-  var datums = [...new Set(data.map(function(d){return d.datum.substring(0,10);}))].sort().slice(-8);
-  var maxScore = 10;
+  // Grafiek
+  var datums = [];
+  reviewData.forEach(function(d){var dt=d.datum.substring(0,10);if(datums.indexOf(dt)===-1)datums.push(dt);});
+  datums.sort(); var recent = datums.slice(-8);
 
-  var chartHtml = datums.map(function(datum, i) {
+  var grafiekHtml = recent.map(function(datum,i) {
     var bItem = booking.find(function(d){return d.datum.substring(0,10)===datum;});
     var gItem = google.find(function(d){return d.datum.substring(0,10)===datum;});
-    var weekLabel = 'W' + (i+1);
-    var isLatest = i === datums.length - 1;
-
-    var bHoogte = bItem ? Math.round((bItem.score / maxScore) * 40) : 0;
-    var gHoogte = gItem ? Math.round((gItem.score / 5) * 40) : 0; // Google is /5
-
-    return '<div class="review-bar-wrap">' +
-      '<div style="display:flex;gap:1px;align-items:flex-end;height:44px">' +
-        (bItem ? '<div class="review-bar booking" style="height:' + bHoogte + 'px;flex:1' + (isLatest?';box-shadow:0 0 6px rgba(74,158,255,0.5)':'') + '"></div>' : '<div style="flex:1"></div>') +
-        (gItem ? '<div class="review-bar google" style="height:' + gHoogte + 'px;flex:1' + (isLatest?';box-shadow:0 0 6px rgba(245,166,35,0.5)':'') + '"></div>' : '<div style="flex:1"></div>') +
+    var bH = bItem ? Math.round((bItem.score/10)*44) : 0;
+    var gH = gItem ? Math.round((gItem.score/5)*44) : 0;
+    var isLast = i===recent.length-1;
+    return '<div class="review-kolom">' +
+      '<div class="review-bars">' +
+        (bH ? '<div class="review-balk-b" style="height:'+bH+'px'+(isLast?';box-shadow:0 0 5px rgba(74,158,255,0.5)':'')+'"></div>' : '<div style="flex:1"></div>') +
+        (gH ? '<div class="review-balk-g" style="height:'+gH+'px'+(isLast?';box-shadow:0 0 5px rgba(245,166,35,0.5)':'')+'"></div>' : '<div style="flex:1"></div>') +
       '</div>' +
-      '<div class="review-week-label' + (isLatest?' style="color:var(--purple);font-weight:500"':'') + '">' + weekLabel + '</div>' +
+      '<div class="review-week">'+(isLast?'nu':'W'+(i+1))+'</div>' +
       '</div>';
   }).join('');
+  document.getElementById('review-grafiek').innerHTML = grafiekHtml;
 
-  document.getElementById('review-chart').innerHTML = chartHtml;
-
-  // Trend delta
-  var deltaHtml = '';
-  if (latestBooking && prevBooking) {
-    var d = (latestBooking - prevBooking).toFixed(1);
-    var klasse = d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
-    var pijl = d > 0 ? '&#8593;' : d < 0 ? '&#8595;' : '&#8594;';
-    deltaHtml += '<span class="review-trend-delta ' + klasse + '">' + pijl + ' Booking ' + (d > 0 ? '+' : '') + d + ' t.o.v. vorige week</span>';
+  if (lB && pB) {
+    var delta = (lB-pB).toFixed(1);
+    var kl = delta>0?'up':delta<0?'down':'flat';
+    var pijl = delta>0?'↑':delta<0?'↓':'→';
+    var el = document.getElementById('review-delta');
+    el.className = 'review-delta '+kl;
+    el.textContent = pijl+' Booking '+(delta>0?'+':'')+delta+' t.o.v. vorige week';
   }
-  document.getElementById('review-delta').innerHTML = deltaHtml;
-  document.getElementById('review-card').style.display = 'block';
+  document.getElementById('review-kaart').style.display = 'block';
 }
 
-function renderVandaagKaart() {
-  if (!mewsData.length) return;
-
-  var vandaag = mewsData[0];
-  var vandaagDatum = new Date().toISOString().split('T')[0];
-  var dagen = ['zo','ma','di','wo','do','vr','za'];
-
-  // Bezettingsgrafiek
-  document.getElementById('vandaag-pct').textContent = vandaag.bezettingsgraad + '%';
-  document.getElementById('vandaag-sub').textContent = vandaag.kamers_bezet + ' van 45 kamers bezet';
-
-  var weekHtml = mewsData.map(function(d, i) {
-    var datum = new Date(d.datum);
-    var dagNaam = dagen[datum.getDay()];
-    var isVandaag = d.datum === vandaagDatum || d.datum.substring(0,10) === vandaagDatum;
-    var hoogte = Math.round(d.bezettingsgraad * 0.46);
-    var klasse = isVandaag ? 'vandaag' : d.bezettingsgraad < 60 ? 'laag' : d.bezettingsgraad < 80 ? 'midden' : 'hoog';
-    return '<div class="bez-dag">' +
-      '<div class="bez-dag-balk-wrap"><div class="bez-dag-balk ' + klasse + '" style="height:' + hoogte + 'px"></div></div>' +
-      '<div class="bez-dag-label" style="' + (isVandaag?'color:var(--purple);font-weight:500':'') + '">' + dagNaam + '</div>' +
-      '<div class="bez-dag-pct">' + Math.round(d.bezettingsgraad) + '%</div>' +
-      '</div>';
-  }).join('');
-
-  document.getElementById('bez-week').innerHTML = weekHtml;
-
-  // Signalen vandaag
-  var signalen = [];
-  // Aankomsten/vertrekken
-  if (vandaag.aankomsten > 0) signalen.push({kleur:'var(--green)', tekst: vandaag.aankomsten + ' aankomsten vandaag'});
-  if (vandaag.vertrekken > 0) signalen.push({kleur:'var(--blue)', tekst: vandaag.vertrekken + ' vertrekken vandaag'});
-  // BHV check
-  var vandaagRooster = shiftbaseData.filter(function(s){ return s.datum && s.datum.substring(0,10) === vandaagDatum; });
-  var bhvVandaag = vandaagRooster.filter(function(s){return s.bhv_gecertificeerd;});
-  if (bhvVandaag.length > 0) {
-    signalen.push({kleur:'var(--green)', tekst:'BHV gedekt — ' + bhvVandaag[0].medewerker_naam});
-  } else if (vandaagRooster.length > 0) {
-    signalen.push({kleur:'var(--coral)', tekst:'Geen BHV vandaag ingeroosterd'});
-  }
-  // Exacte financiën
-  if (exactData) {
-    var budgetPct = Math.round(exactData.omzet_mtd / exactData.omzet_budget * 100);
-    var kleur = budgetPct >= 90 ? 'var(--green)' : budgetPct >= 70 ? 'var(--amber)' : 'var(--coral)';
-    signalen.push({kleur:kleur, tekst:'Omzet MTD: €' + exactData.omzet_mtd.toLocaleString('nl-NL') + ' (' + budgetPct + '% van budget)'});
-    if (exactData.ota_commissie_pct > 17) {
-      signalen.push({kleur:'var(--amber)', tekst:'OTA-commissie ' + exactData.ota_commissie_pct + '% — hoger dan norm'});
-    }
-  }
-
-  document.getElementById('vandaag-signalen').innerHTML = signalen.map(function(s){
-    return '<div class="signaal-item"><div class="signaal-item-dot" style="background:' + s.kleur + ';box-shadow:0 0 5px ' + s.kleur + '40"></div>' + s.tekst + '</div>';
-  }).join('');
-
-  document.getElementById('vandaag-card').style.display = 'block';
+// Compliance
+function renderCompliance() {
+  var sorted = complianceData.slice().sort(function(a,b){return ({rood:0,geen_document:1,oranje:2,groen:3}[a.status]||9)-({rood:0,geen_document:1,oranje:2,groen:3}[b.status]||9);}).slice(0,6);
+  document.getElementById('compliance-list').innerHTML = sorted.length ? sorted.map(function(i){
+    return '<div class="hub-row"><div class="dot '+i.status+'"></div><div class="hub-row-naam">'+i.naam+'</div><div class="hub-row-meta">'+i.categorie+'</div><div class="hub-row-tag tag-'+i.status+'">'+statusLbl(i.status)+'</div></div>';
+  }).join('') : '<div class="hub-empty">Alles in orde ✓</div>';
 }
 
-function bouwRijkeContext() {
-  var ctx = 'HOTEL: Hotel De Klok, Oss, 45 kamers.\n\n';
-
-  // Mews bezetting
-  if (mewsData.length > 0) {
-    var vandaag = mewsData[0];
-    ctx += 'MEWS (bezetting):\n';
-    ctx += '- Vandaag: ' + vandaag.bezettingsgraad + '% bezet, ' + vandaag.kamers_bezet + ' kamers\n';
-    ctx += '- Aankomsten vandaag: ' + vandaag.aankomsten + ', vertrekken: ' + vandaag.vertrekken + '\n';
-    ctx += '- Forecast komende week: ' + mewsData.map(function(d){
-      return new Date(d.datum).toLocaleDateString('nl-NL',{weekday:'short'}) + ' ' + d.bezettingsgraad + '%';
-    }).join(', ') + '\n\n';
-  }
-
-  // Shiftbase rooster
-  var vandaagRooster = shiftbaseData.filter(function(s){ return s.datum === new Date().toISOString().split('T')[0]; });
-  if (vandaagRooster.length > 0) {
-    ctx += 'SHIFTBASE (rooster vandaag):\n';
-    vandaagRooster.forEach(function(s){
-      ctx += '- ' + s.medewerker_naam + ' (' + s.functie + ') ' + s.dienst_start + '-' + s.dienst_eind + (s.bhv_gecertificeerd ? ' [BHV]' : '') + '\n';
-    });
-    var bhvVandaag = vandaagRooster.filter(function(s){return s.bhv_gecertificeerd;});
-    ctx += '- BHV dekking vandaag: ' + (bhvVandaag.length > 0 ? 'JA (' + bhvVandaag[0].medewerker_naam + ')' : 'NIET GEDEKT') + '\n\n';
-  }
-
-  // Exact Online
-  if (exactData) {
-    var budgetPct = Math.round(exactData.omzet_mtd / exactData.omzet_budget * 100);
-    ctx += 'EXACT ONLINE (financiën deze maand):\n';
-    ctx += '- Omzet MTD: €' + exactData.omzet_mtd.toLocaleString('nl-NL') + ' van budget €' + exactData.omzet_budget.toLocaleString('nl-NL') + ' (' + budgetPct + '%)\n';
-    ctx += '- OTA-commissie: ' + exactData.ota_commissie_pct + '%\n';
-    ctx += '- Personeelskosten: ' + exactData.personeelskosten_pct + '% van omzet\n';
-    ctx += '- Openstaande facturen: ' + exactData.openstaande_facturen + '\n';
-    ctx += '- Cashflow 30 dagen: €' + exactData.cashflow_30d.toLocaleString('nl-NL') + '\n\n';
-  }
-
-  // Compliance
-  ctx += 'COMPLIANCE (' + complianceData.length + ' items):\n';
-  var groen = complianceData.filter(function(i){return i.status==='groen';});
-  var open = complianceData.filter(function(i){return i.status==='geen_document'||i.status==='rood';});
-  ctx += '- In orde: ' + groen.length + ' items\n';
-  ctx += '- Aandacht nodig: ' + open.length + ' items: ' + open.slice(0,5).map(function(i){return i.naam;}).join(', ') + (open.length>5?'...':'') + '\n\n';
-
-  // Medewerkers
-  ctx += 'MEDEWERKERS (' + medewData.length + ' actief):\n';
-  medewData.forEach(function(m){
-    ctx += '- ' + m.naam + ' (' + (m.functie||'onbekend') + ')';
-    if (m.bhv_geldig_tot) ctx += ', BHV geldig t/m ' + new Date(m.bhv_geldig_tot).toLocaleDateString('nl-NL');
-    ctx += '\n';
-  });
-  ctx += '\n';
-
-  // Open acties
-  if (actiesData.length > 0) {
-    ctx += 'OPEN ACTIES (' + actiesData.length + '):\n';
-    actiesData.slice(0,5).forEach(function(a){ ctx += '- ' + a.titel + '\n'; });
-    ctx += '\n';
-  }
-
-  // Geüploade documenten
-  if (documentenData.length > 0) {
-    ctx += 'GEÜPLOADE DOCUMENTEN:\n';
-    documentenData.forEach(function(d){
-      ctx += '- ' + d.bestandsnaam + ': ' + (d.vera_type||'onbekend') + (d.vera_samenvatting ? ' — ' + d.vera_samenvatting : '') + (d.vera_vervaldatum ? ' (geldig t/m ' + new Date(d.vera_vervaldatum).toLocaleDateString('nl-NL') + ')' : '') + '\n';
-    });
-  }
-
-  return ctx;
-}
-
-function setDatum() {
-  var nu = new Date();
-  var uur = nu.getHours();
-  var greeting = uur < 12 ? 'Goedemorgen' : uur < 18 ? 'Goedemiddag' : 'Goedenavond';
-  document.getElementById('greeting').textContent = greeting;
-  document.getElementById('dagstart-date').innerHTML =
-    nu.toLocaleDateString('nl-NL', {weekday:'long'}) + '<br>' +
-    nu.toLocaleDateString('nl-NL', {day:'numeric',month:'long',year:'numeric'});
-}
-
-async function laadCompliance() {
-  var r = await sb.from('compliance_items').select('*').eq('hotel_id', HOTEL_ID).order('status');
-  if (r.error || !r.data) return;
-  complianceData = r.data;
-
-  var sorted = r.data.slice().sort(function(a,b){
-    return ({rood:0,geen_document:1,oranje:2,groen:3}[a.status]||9) - ({rood:0,geen_document:1,oranje:2,groen:3}[b.status]||9);
-  }).slice(0,6);
-
-  document.getElementById('compliance-list').innerHTML = sorted.map(function(i) {
-    return '<div class="hub-row">' +
-      '<div class="dot ' + i.status + '"></div>' +
-      '<div class="hub-row-naam">' + i.naam + '</div>' +
-      '<div class="hub-row-meta">' + i.categorie + '</div>' +
-      '<div class="hub-row-tag tag-' + i.status + '">' + statusLbl(i.status) + '</div>' +
-      '</div>';
+function renderActies() {
+  if (!actiesData.length) {document.getElementById('acties-list').innerHTML='<div class="hub-empty">Geen open acties ✓</div>';return;}
+  document.getElementById('acties-list').innerHTML = actiesData.slice(0,5).map(function(a){
+    return '<div class="hub-row"><div class="dot oranje"></div><div class="hub-row-naam">'+a.titel+(a.compliance_items?' <span style="color:var(--text3);font-size:11px">— '+a.compliance_items.naam+'</span>':'')+'</div><div class="hub-row-meta">'+(a.aangemaakt_door==='vera'?'✨':'👤')+'</div></div>';
   }).join('');
 }
 
-async function laadActies() {
-  var r = await sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id', HOTEL_ID).eq('status','open').order('created_at',{ascending:false});
-  if (r.error || !r.data) return;
-  actiesData = r.data;
-
-  if (!r.data.length) {
-    document.getElementById('acties-list').innerHTML = '<div class="hub-empty">Geen open acties &#10003;</div>';
-    return;
-  }
-  document.getElementById('acties-list').innerHTML = r.data.slice(0,5).map(function(a) {
-    return '<div class="hub-row">' +
-      '<div class="dot normaal"></div>' +
-      '<div class="hub-row-naam">' + a.titel + '</div>' +
-      '<div class="hub-row-meta">' + (a.aangemaakt_door==='vera'?'&#10024;':'&#128100;') + '</div>' +
-      '</div>';
-  }).join('');
-}
-
-async function laadMedewerkers() {
-  var r = await sb.from('medewerkers').select('*').eq('hotel_id', HOTEL_ID).eq('actief',true).order('naam');
-  if (r.error || !r.data) return;
-  medewData = r.data;
-
-  document.getElementById('medew-list').innerHTML = r.data.map(function(m) {
-    var klasse = !m.bhv_geldig_tot ? 'verlopen' : (datumKlasse(m.bhv_geldig_tot) || 'geldig');
-    var tekst = m.bhv_geldig_tot ? 'BHV t/m ' + fmtDatum(m.bhv_geldig_tot) : 'Geen BHV';
-    return '<div class="hub-row">' +
-      '<div class="dot ' + (klasse==='verlopen'?'rood':klasse==='binnenkort'?'oranje':'groen') + '"></div>' +
-      '<div class="hub-row-naam">' + m.naam + ' <span style="color:var(--text3);font-size:11px;">' + (m.functie||'') + '</span></div>' +
-      '<div class="hub-row-meta">' + tekst + '</div>' +
-      '<div class="hub-row-tag tag-' + (klasse==='verlopen'?'rood':klasse==='binnenkort'?'oranje':'groen') + '">' + (klasse==='verlopen'?'Verlopen':klasse==='binnenkort'?'Binnenkort':'Geldig') + '</div>' +
-      '</div>';
+function renderMedewerkers() {
+  if (!medewData.length) {document.getElementById('medew-list').innerHTML='<div class="hub-empty">Geen medewerkers</div>';return;}
+  document.getElementById('medew-list').innerHTML = medewData.map(function(m){
+    var kl = !m.bhv_geldig_tot?'rood':datumKlasse(m.bhv_geldig_tot)||'groen';
+    var tekst = m.bhv_geldig_tot?'BHV t/m '+fmtDatum(m.bhv_geldig_tot):'Geen BHV';
+    return '<div class="hub-row"><div class="dot '+kl+'"></div><div class="hub-row-naam">'+m.naam+' <span style="color:var(--text3);font-size:11px">'+( m.functie||'')+'</span></div><div class="hub-row-meta">'+tekst+'</div><div class="hub-row-tag tag-'+kl+'">'+(kl==='rood'?'Verlopen':kl==='oranje'?'Binnenkort':'Geldig')+'</div></div>';
   }).join('');
 }
 
 function updateSignalen() {
-  var rood = complianceData.filter(function(i){return i.status==='rood';}).length;
-  var geen = complianceData.filter(function(i){return i.status==='geen_document';}).length;
-  var groen = complianceData.filter(function(i){return i.status==='groen';}).length;
-  var totaal = complianceData.length;
-  var acties = actiesData.length;
+  var rood=complianceData.filter(function(i){return i.status==='rood';}).length;
+  var geen=complianceData.filter(function(i){return i.status==='geen_document';}).length;
+  var groen=complianceData.filter(function(i){return i.status==='groen';}).length;
+  var totaal=complianceData.length;
+  var acties=actiesData.length;
 
-  // Status pills
-  var pills = [];
-  // Bezetting vandaag
-  if (mewsData.length > 0) {
-    var pct = mewsData[0].bezettingsgraad;
-    var pillKlasse = pct >= 80 ? 'rood-pill' : pct >= 60 ? 'amber-pill' : 'groen-pill';
-    pills.push('<div class="status-pill ' + pillKlasse + '"><div class="dot"></div>' + pct + '% bezet vandaag</div>');
-  }
-  // Compliance
-  if (rood > 0) {
-    pills.push('<div class="status-pill rood-pill"><div class="dot"></div>' + rood + ' kritieke compliance items</div>');
-  } else if (geen > 0) {
-    pills.push('<div class="status-pill amber-pill"><div class="dot"></div>' + geen + ' compliance items open</div>');
-  } else {
-    pills.push('<div class="status-pill groen-pill"><div class="dot"></div>Compliance in orde</div>');
-  }
-  // Acties
-  if (acties > 0) {
-    pills.push('<div class="status-pill amber-pill"><div class="dot"></div>' + acties + ' open acties</div>');
-  }
-  // Medewerkers
-  pills.push('<div class="status-pill groen-pill"><div class="dot"></div>' + medewData.length + ' medewerkers actief</div>');
+  // Pills
+  var pills=[];
+  if(mewsData.length){var pct=mewsData[0].bezettingsgraad;var pk=pct>=80?'s-pill-red':pct>=60?'s-pill-amber':'s-pill-green';pills.push('<div class="s-pill '+pk+'"><div class="dot"></div>'+pct+'% bezet vandaag</div>');}
+  if(rood>0) pills.push('<div class="s-pill s-pill-red"><div class="dot"></div>'+rood+' kritieke items</div>');
+  else if(geen>0) pills.push('<div class="s-pill s-pill-amber"><div class="dot"></div>'+geen+' compliance items open</div>');
+  else pills.push('<div class="s-pill s-pill-green"><div class="dot"></div>Compliance in orde</div>');
+  if(acties>0) pills.push('<div class="s-pill s-pill-amber"><div class="dot"></div>'+acties+' open acties</div>');
+  pills.push('<div class="s-pill s-pill-green"><div class="dot"></div>'+medewData.length+' medewerkers actief</div>');
+  document.getElementById('status-pills').innerHTML=pills.join('');
 
-  document.getElementById('status-pills').innerHTML = pills.join('');
-
-  // Signalen banner
-  var banner = document.getElementById('signalen-banner');
-  var tekst = document.getElementById('signalen-tekst');
-
-  if (rood > 0) {
-    banner.className = 'signalen-banner kritiek';
-    tekst.innerHTML = '<strong>' + rood + ' kritieke compliance-items</strong> vragen direct aandacht.';
-  } else if (geen > 8) {
-    banner.className = 'signalen-banner aandacht';
-    tekst.innerHTML = '<strong>' + geen + ' compliance-items</strong> hebben nog geen document. ' + (acties > 0 ? acties + ' open acties.' : '');
-  } else if (groen === totaal) {
-    banner.className = 'signalen-banner goed';
-    tekst.innerHTML = '<strong>Alles in orde.</strong> Alle ' + totaal + ' compliance-items zijn gedekt.';
-  } else {
-    banner.className = 'signalen-banner aandacht';
-    tekst.innerHTML = '<strong>' + groen + ' van ' + totaal + ' compliance-items</strong> in orde. ' + geen + ' items wachten nog op een document.';
-  }
+  // Banner
+  var b=document.getElementById('signalen-banner'),t=document.getElementById('signalen-tekst');
+  if(rood>0){b.className='signalen-banner kritiek';t.innerHTML='<strong>'+rood+' kritieke compliance-items</strong> vragen direct aandacht.';}
+  else if(geen>8){b.className='signalen-banner aandacht';t.innerHTML='<strong>'+geen+' compliance-items</strong> hebben nog geen document.'+(acties>0?' '+acties+' open acties.':'');}
+  else if(groen===totaal){b.className='signalen-banner goed';t.innerHTML='<strong>Alles in orde.</strong> Alle '+totaal+' compliance-items zijn gedekt.';}
+  else{b.className='signalen-banner aandacht';t.innerHTML='<strong>'+groen+' van '+totaal+' compliance-items</strong> in orde. '+geen+' items wachten op een document.';}
 }
 
 // Vera AI
 document.getElementById('vera-ai-btn').addEventListener('click', vraagVera);
-document.getElementById('vera-vraag').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') vraagVera();
-});
+document.getElementById('vera-vraag').addEventListener('keydown',function(e){if(e.key==='Enter')vraagVera();});
 
 async function vraagVera() {
-  var vraag = document.getElementById('vera-vraag').value.trim();
-  if (!vraag) return;
-  if (!ANTHROPIC_KEY) {
-    document.getElementById('api-modal').classList.add('open');
-    return;
-  }
+  var vraag=document.getElementById('vera-vraag').value.trim();
+  if(!vraag)return;
+  if(!ANTHROPIC_KEY){document.getElementById('api-modal').classList.add('open');return;}
+  var btn=document.getElementById('vera-ai-btn'), ant=document.getElementById('vera-antwoord');
+  btn.textContent='Bezig...';btn.disabled=true;ant.classList.remove('show');
 
-  var btn = document.getElementById('vera-ai-btn');
-  var antwoord = document.getElementById('vera-antwoord');
-  btn.textContent = 'Bezig...';
-  btn.disabled = true;
-  antwoord.classList.remove('show');
+  var vandaag=new Date().toISOString().split('T')[0];
+  var vandaagShift=shiftbaseData.filter(function(s){return s.datum&&s.datum.substring(0,10)===vandaag;});
+  var bhvVandaag=vandaagShift.filter(function(s){return s.bhv_gecertificeerd;});
 
-  var context = bouwRijkeContext();
+  var ctx='Hotel: Hotel De Klok, Amsterdam, 45 kamers.\n\n';
+  if(mewsData.length){var v=mewsData[0];ctx+='MEWS: vandaag '+v.bezettingsgraad+'% bezet, '+v.aankomsten+' aankomsten, '+v.vertrekken+' vertrekken.\nForecast week: '+mewsData.map(function(d){return new Date(d.datum).toLocaleDateString('nl-NL',{weekday:'short'})+' '+d.bezettingsgraad+'%';}).join(', ')+'.\n\n';}
+  if(vandaagShift.length){ctx+='SHIFTBASE vandaag: '+vandaagShift.map(function(s){return s.medewerker_naam+' ('+s.functie+')';}).join(', ')+'. BHV: '+(bhvVandaag.length?bhvVandaag[0].medewerker_naam:'NIET GEDEKT')+'.\n\n';}
+  if(exactData){var bp=Math.round(exactData.omzet_mtd/exactData.omzet_budget*100);ctx+='EXACT: omzet MTD €'+exactData.omzet_mtd.toLocaleString('nl-NL')+' ('+bp+'% van budget). OTA-commissie '+exactData.ota_commissie_pct+'%. Personeelskosten '+exactData.personeelskosten_pct+'%.\n\n';}
+  ctx+='COMPLIANCE: '+complianceData.filter(function(i){return i.status==='groen';}).length+' in orde, '+complianceData.filter(function(i){return i.status==='geen_document';}).length+' open.\n';
+  ctx+='MEDEWERKERS: '+medewData.map(function(m){return m.naam+' (BHV: '+(m.bhv_geldig_tot||'geen')+')';}).join(', ')+'.\n';
+  if(reviewData.length){var lb=reviewData.filter(function(d){return d.platform==='booking';});var lg=reviewData.filter(function(d){return d.platform==='google';});if(lb.length)ctx+='REVIEWS: Booking '+lb[lb.length-1].score+'/10, Google '+( lg.length?lg[lg.length-1].score+'/5':'-')+'.\n';}
 
   try {
-    var resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_KEY,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        tools: [{type: 'web_search_20250305', name: 'web_search'}],
-        system: 'Je bent Vera — de persoonlijke assistent van de hotelmanager van Hotel De Klok in Oss. Je hebt toegang tot alle systemen: Mews (bezetting & forecast), Shiftbase (rooster), Exact Online (financiën), compliance status, personeelsgegevens en geüploade documenten. Spreek als een ervaren collega die het hotel door en door kent. Trek concrete conclusies uit de data. Geef directe antwoorden zonder disclaimers. Bij vragen over wetgeving of externe info zoek je op. Antwoord in het Nederlands.',
-        messages: [{role:'user',content:'Hoteldata:\n' + context + '\n\nVraag: ' + vraag}]
-      })
-    });
-    var data = await resp.json();
-    var tekst = '';
-    if (data.content) {
-      data.content.forEach(function(block) {
-        if (block.type === 'text') tekst += block.text;
-      });
-    }
-    if (!tekst) tekst = 'Geen antwoord ontvangen.';
-    tekst = tekst.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" style="color:var(--purple);text-decoration:underline">$1</a>');
-    antwoord.innerHTML = tekst.replace(/\n/g, '<br>');
-    antwoord.classList.add('show');
-  } catch(e) {
-    antwoord.textContent = 'Er ging iets mis. Controleer je API sleutel.';
-    antwoord.classList.add('show');
-  }
-
-  btn.textContent = 'Vraag Vera';
-  btn.disabled = false;
-  document.getElementById('vera-vraag').value = '';
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,system:'Je bent Vera — de persoonlijke assistent van de hotelmanager van Hotel De Klok in Amsterdam. Je hebt toegang tot alle systemen. Spreek als een ervaren collega. Directe antwoorden, geen disclaimers. Nederlands.',messages:[{role:'user',content:'Data:\n'+ctx+'\nVraag: '+vraag}]})});
+    var data=await resp.json();
+    var tekst=data.content?data.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join(''):'Geen antwoord.';
+    ant.innerHTML=tekst.replace(/\n/g,'<br>');ant.classList.add('show');
+  } catch(e){ant.textContent='Er ging iets mis.';ant.classList.add('show');}
+  btn.textContent='Vraag Vera';btn.disabled=false;
+  document.getElementById('vera-vraag').value='';
 }
 
 function statusLbl(s){return{groen:'In orde',oranje:'Let op',rood:'Kritiek',geen_document:'Geen doc'}[s]||s;}
 function fmtDatum(d){return new Date(d).toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'});}
-function datumKlasse(d){if(!d)return'';var dagen=Math.floor((new Date(d)-new Date())/86400000);return dagen<0?'verlopen':dagen<60?'binnenkort':'';}
-
+function datumKlasse(d){if(!d)return'rood';var dagen=Math.floor((new Date(d)-new Date())/86400000);return dagen<0?'rood':dagen<60?'oranje':'';}
 var toastT;
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
 
