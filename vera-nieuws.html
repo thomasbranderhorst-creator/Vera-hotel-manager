@@ -359,14 +359,26 @@ async function haalNieuws(categorie, zoekterm) {
       if (start !== -1 && end !== -1) {
         clean = clean.substring(start, end + 1);
       }
-      // Fix eventuele control characters
+      // Fix eventuele control characters en escaped newlines in strings
       clean = clean.replace(/[\x00-\x08\x0b\x0c\x0e-\x1f]/g, '');
+      // Vervang literal newlines binnen strings door spaties
+      clean = clean.replace(/:\s*"([^"]*?)"/g, function(match, p1) {
+        return ': "' + p1.replace(/\n/g, ' ').replace(/\r/g, '') + '"';
+      });
       items = JSON.parse(clean);
     } catch(e) {
       console.error('Parse error:', e.message);
       console.log('Raw tekst:', tekst.substring(0, 800));
       // Fallback: toon de tekst als platte items
-      grid.innerHTML = '<div class="nieuws-item info"><div class="nieuws-header"><div class="nieuws-content"><div class="nieuws-titel">Resultaten ophalen</div><div class="nieuws-samenvatting" style="white-space:pre-wrap">' + tekst.substring(0, 1000) + '</div></div></div></div>';
+      // Probeer nogmaals met strengere cleaning
+      try {
+        var matches = tekst.match(/\{[^{}]+\}/g);
+        if (matches) items = matches.map(function(m){try{return JSON.parse(m);}catch(e){return null;}}).filter(Boolean);
+        if (!items || !items.length) throw new Error('geen items');
+      } catch(e2) {
+        grid.innerHTML = '<div class="loading" style="color:var(--coral)">Probeer opnieuw — klik op een categorie tab.</div>';
+        return;
+      }
       return;
     }
 
