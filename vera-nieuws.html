@@ -164,6 +164,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="cat-tab" data-cat="subsidie">Subsidies</div>
     <div class="cat-tab" data-cat="compliance">Compliance</div>
     <div class="cat-tab" data-cat="markt">Markt &amp; trends</div>
+    <div class="cat-tab" data-cat="lokaal">&#127968; Lokaal</div>
   </div>
 
   <!-- Nieuws feed -->
@@ -215,9 +216,26 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://nznsimwgjwkdvudcdmup.supabase.co',
+  'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ'
+);
+const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
 var ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
 var actieveCat = 'actueel';
+var hotelData = {naam: 'Hotel De Klok', stad: 'Amsterdam', kamers: 45};
+
+// Lokale nieuwsbronnen per stad
+var lokaleNieuwsbronnen = {
+  'Amsterdam': {naam: 'AT5 / gemeente Amsterdam', url: 'https://www.amsterdam.nl/bestuur-organisatie/', omschrijving: 'Lokaal nieuws Amsterdam — toeristenbelasting, APV, evenementen, horecabeleid'},
+  'Rotterdam': {naam: 'gemeente Rotterdam', url: 'https://www.rotterdam.nl/ondernemen/', omschrijving: 'Lokaal ondernemersnieuws Rotterdam'},
+  'Utrecht': {naam: 'gemeente Utrecht', url: 'https://www.utrecht.nl/ondernemen/', omschrijving: 'Lokaal ondernemersnieuws Utrecht'},
+  'Den Haag': {naam: 'gemeente Den Haag', url: 'https://www.denhaag.nl/nl/ondernemers/', omschrijving: 'Lokaal ondernemersnieuws Den Haag'},
+  'Oss': {naam: 'gemeente Oss', url: 'https://www.oss.nl/ondernemen', omschrijving: 'Lokaal ondernemersnieuws Oss'},
+};
 
 // API modal
 document.getElementById('api-status-btn').addEventListener('click', function() {
@@ -271,7 +289,8 @@ var catZoekvragen = {
   'cao': 'Wat zijn de laatste ontwikkelingen rondom de horeca-CAO 2025-2026 in Nederland? Loonsverhogingen, arbeidsvoorwaarden, nieuwe afspraken.',
   'subsidie': 'Welke subsidies en fiscale regelingen zijn beschikbaar voor hotels en horecabedrijven in Nederland in 2025-2026? EIA, ISDE, SDE++, gemeentelijke subsidies.',
   'compliance': 'Wat zijn de actuele compliance-verplichtingen voor hotels in Nederland? Brandveiligheid, HACCP, legionella, BHV, vergunningen, energiebesparingsplicht.',
-  'markt': 'Wat zijn de laatste markt- en brancheontwikkelingen voor Nederlandse hotels in 2025-2026? Bezettingsgraden, revenue trends, OTA-ontwikkelingen, gastenontwikkelingen.'
+  'markt': 'Wat zijn de laatste markt- en brancheontwikkelingen voor Nederlandse hotels in 2025-2026? Bezettingsgraden, revenue trends, OTA-ontwikkelingen, gastenontwikkelingen.',
+  'lokaal': 'Wat is het actuele lokale nieuws voor hotels en horeca in de gemeente ' + (hotelData.stad||'Amsterdam') + '? Toeristenbelasting, APV-wijzigingen, evenementen, gemeentelijk horecabeleid, bestemmingsplan.'
 };
 
 async function haalNieuws(categorie, zoekterm) {
@@ -285,7 +304,8 @@ async function haalNieuws(categorie, zoekterm) {
 
   var zoekVraag = zoekterm || catZoekvragen[categorie] || 'Actueel hotelnieuws Nederland';
 
-  var prompt = 'Zoek actueel nieuws en wetgeving op voor hotels in Nederland. ' + zoekVraag + '\n\n' +
+  var stad = hotelData.stad || 'Amsterdam';
+  var prompt = 'Zoek actueel nieuws en wetgeving op voor hotels in Nederland, specifiek relevant voor ' + stad + '. ' + zoekVraag + '\n\n' +
     'Geef de resultaten terug als een JSON array met dit formaat (ALLEEN JSON, geen andere tekst):\n' +
     '[{\n' +
     '  "titel": "Titel van het nieuwsitem",\n' +
@@ -313,7 +333,7 @@ async function haalNieuws(categorie, zoekterm) {
         model: 'claude-sonnet-4-20250514',
         max_tokens: 2000,
         tools: [{type: 'web_search_20250305', name: 'web_search'}],
-        system: 'Je bent Vera, nieuws-assistent voor hotelmanagers in Nederland. Je zoekt actuele informatie op en presenteert die gestructureerd. Je antwoordt ALLEEN met een valide JSON array, geen markdown, geen uitleg, geen inleiding.',
+        system: 'Je bent Vera, nieuws-assistent voor hotelmanagers in Nederland. Je zoekt actuele informatie op relevant voor hotels in ' + stad + '. Geef ook lokaal nieuws mee (gemeente ' + stad + ', toeristenbelasting, APV, evenementen). Je antwoordt ALLEEN met een valide JSON array, geen markdown, geen uitleg, geen inleiding.',
         messages: [{role: 'user', content: prompt}]
       })
     });
@@ -393,10 +413,39 @@ function renderNieuws(items) {
 }
 
 // Init
-updateApiStatus();
-if (ANTHROPIC_KEY) {
-  haalNieuws('actueel', null);
+async function init() {
+  updateApiStatus();
+  // Haal hotel op uit database
+  var result = await sb.from('hotels').select('naam,stad,kamers').eq('id', HOTEL_ID).single();
+  if (result.data) {
+    hotelData = result.data;
+    document.getElementById('hotel-naam').textContent = hotelData.naam;
+  }
+  // Lokale bron toevoegen
+  updateLokaleBron();
+  // Laad nieuws als API actief
+  if (ANTHROPIC_KEY) haalNieuws('actueel', null);
 }
+
+function updateLokaleBron() {
+  var stad = hotelData.stad || 'Amsterdam';
+  var lokaal = lokaleNieuwsbronnen[stad];
+  var bronGrid = document.querySelector('.bronnen-grid');
+  if (lokaal && bronGrid) {
+    // Voeg lokale bron toe als eerste
+    var lokaalCard = document.createElement('a');
+    lokaalCard.href = lokaal.url;
+    lokaalCard.target = '_blank';
+    lokaalCard.className = 'bron-card';
+    lokaalCard.style.borderColor = 'var(--amber-border)';
+    lokaalCard.innerHTML = '<div class="bron-naam">&#127968; ' + stad + ' — ' + lokaal.naam + '</div>' +
+      '<div class="bron-sub">' + lokaal.omschrijving + '</div>' +
+      '<div class="bron-url">' + lokaal.url.replace('https://','') + '</div>';
+    bronGrid.insertBefore(lokaalCard, bronGrid.firstChild);
+  }
+}
+
+init();
 
 var toastT;
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
