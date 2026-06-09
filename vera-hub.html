@@ -405,7 +405,8 @@ async function init() {
     sb.from('shiftbase_rooster').select('*').eq('hotel_id',HOTEL_ID).gte('datum',vandaag).order('datum').limit(10),
     sb.from('exact_financials').select('*').eq('hotel_id',HOTEL_ID).order('periode',{ascending:false}).limit(1),
     sb.from('documenten').select('*').eq('hotel_id',HOTEL_ID).order('created_at',{ascending:false}).limit(10),
-    sb.from('review_trend').select('*').eq('hotel_id',HOTEL_ID).order('datum').limit(20)
+    sb.from('review_trend').select('*').eq('hotel_id',HOTEL_ID).order('datum').limit(20),
+    sb.from('hotels').select('kamers').eq('id',HOTEL_ID).single()
   ]);
   complianceData=comp.data||[];actiesData=act.data||[];medewData=medew.data||[];
   mewsData=mews.data||[];shiftbaseData=shift.data||[];exactData=exact.data&&exact.data[0]?exact.data[0]:null;if(hotel.data&&hotel.data.kamers)hotelKamers=hotel.data.kamers;
