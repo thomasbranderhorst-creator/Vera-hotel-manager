@@ -255,6 +255,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <button class="sync-btn" id="mews-sync-btn" onclick="mewsSync()">
       <span class="sync-icon">🔁</span> Mews sync
     </button>
+    <button class="sync-btn" id="exact-sync-btn" onclick="exactSync()" style="margin-left:4px">
+      <span class="sync-icon">📊</span> Exact sync
+    </button>
+    <span id="exact-sync-status" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);margin-right:8px"></span>
     <span id="mews-sync-status" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)"></span>
   </div>
 
@@ -520,6 +524,43 @@ function fmtDatum(d){return new Date(d).toLocaleDateString('nl-NL',{day:'numeric
 function datumKlasse(d){if(!d)return'rood';var dagen=Math.floor((new Date(d)-new Date())/86400000);return dagen<0?'rood':dagen<60?'oranje':'';}
 var toastT;
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
+
+async function exactSync() {
+  var btn = document.getElementById('exact-sync-btn');
+  var status = document.getElementById('exact-sync-status');
+  btn.disabled = true;
+  btn.className = 'sync-btn bezig';
+  btn.innerHTML = '<span class="sync-spin"></span> Bezig...';
+  status.textContent = '';
+  var t0 = Date.now();
+  try {
+    var res = await fetch('https://nznsimwgjwkdvudcdmup.supabase.co/functions/v1/exact-sync?maanden=6');
+    var data = await res.json();
+    var ms = Date.now() - t0;
+    if (data.success) {
+      btn.className = 'sync-btn ok';
+      btn.innerHTML = '✓ Exact gesync';
+      status.textContent = data.records + ' periodes · ' + ms + 'ms';
+      status.style.color = 'var(--green)';
+      showToast('Exact sync geslaagd — ' + data.records + ' maanden bijgewerkt');
+      setTimeout(function() { init(); }, 800);
+    } else {
+      throw new Error(data.error || 'onbekende fout');
+    }
+  } catch(e) {
+    btn.className = 'sync-btn fout';
+    btn.innerHTML = '⚠ Exact mislukt';
+    status.textContent = e.message ? e.message.substring(0, 60) : 'fout';
+    status.style.color = 'var(--coral)';
+    showToast('Exact sync mislukt');
+  }
+  setTimeout(function() {
+    btn.disabled = false;
+    btn.className = 'sync-btn';
+    btn.innerHTML = '<span class="sync-icon">📊</span> Exact sync';
+    status.style.color = 'var(--text3)';
+  }, 5000);
+}
 
 async function mewsSync() {
   var btn = document.getElementById('mews-sync-btn');
