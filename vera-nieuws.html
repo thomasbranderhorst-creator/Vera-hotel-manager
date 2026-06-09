@@ -110,6 +110,18 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border:1px solid var(--border2);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
 .toast.show{opacity:1}
 @media(max-width:700px){.bronnen-grid{grid-template-columns:1fr 1fr}}
+
+/* Weer widget */
+.weer-widget{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.weer-widget-titel{font-size:12px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.weer-grafiek-wrap{position:relative;height:120px;margin-bottom:8px}
+.weer-grafiek-svg{width:100%;height:100%}
+.weer-x-labels{display:grid;margin-top:4px;font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
+.weer-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.weer-stat{text-align:center}
+.weer-stat-val{font-size:18px;font-weight:600;font-family:'DM Mono',monospace;color:var(--text)}
+.weer-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.weer-loading{text-align:center;padding:20px;color:var(--text3);font-size:12px}
 </style>
 </head>
 <body>
@@ -416,6 +428,13 @@ function toonNieuwsVoorQuery(grid, query) {
   if (query && (query.indexOf('Amsterdam') !== -1 || query.indexOf('Rotterdam') !== -1 || query.indexOf('Utrecht') !== -1)) {
     cat = 'lokaal';
   }
+  // Toon weer widget bij Weer tab
+  var weerWidget = document.getElementById('weer-widget');
+  if (cat === 'weer') {
+    if (weerWidget) { weerWidget.style.display = 'block'; laadWeerGrafiek(); }
+  } else {
+    if (weerWidget) weerWidget.style.display = 'none';
+  }
   var items = NIEUWS_DATA[cat] || NIEUWS_DATA['markt'];
   grid.innerHTML = items.map(function(n) {
     return '<a href="' + n.url + '" target="_blank" class="nieuws-item">' +
@@ -425,6 +444,105 @@ function toonNieuwsVoorQuery(grid, query) {
       '<div class="nieuws-titel">' + n.titel + '</div>' +
       '</a>';
   }).join('');
+}
+
+
+async function laadWeerGrafiek() {
+  var svg = document.getElementById('weer-svg');
+  var labels = document.getElementById('weer-labels');
+  var stats = document.getElementById('weer-stats');
+  if (!svg) return;
+  svg.innerHTML = '<text x="400" y="65" text-anchor="middle" fill="#9a948c" font-size="12">Weer laden...</text>';
+
+  try {
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=52.37&longitude=4.90' +
+      '&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode' +
+      '&timezone=Europe%2FAmsterdam&forecast_days=14';
+    var resp = await fetch(url);
+    var data = await resp.json();
+    if (!data.daily) return;
+
+    var tmax = data.daily.temperature_2m_max;
+    var tmin = data.daily.temperature_2m_min;
+    var neerslag = data.daily.precipitation_sum;
+    var dagen = data.daily.time;
+    var n = tmax.length;
+
+    var minT = Math.min.apply(null, tmin) - 2;
+    var maxT = Math.max.apply(null, tmax) + 2;
+    var range = maxT - minT;
+    var W = 800, H = 120, padL = 10, padR = 10, padT = 10, padB = 10;
+    var grafW = W - padL - padR;
+    var grafH = H - padT - padB;
+
+    function xPos(i) { return padL + (i / (n-1)) * grafW; }
+    function yPos(t) { return padT + grafH - ((t - minT) / range) * grafH; }
+
+    // Neerslag balkjes
+    var balkHtml = '';
+    for (var i = 0; i < n; i++) {
+      var x = xPos(i);
+      var breedte = grafW / n * 0.6;
+      var neerslagH = Math.min((neerslag[i] / 20) * grafH, grafH);
+      if (neerslag[i] > 0.3) {
+        balkHtml += '<rect x="' + (x - breedte/2) + '" y="' + (H - padB - neerslagH) + '" width="' + breedte + '" height="' + neerslagH + '" fill="rgba(37,99,196,0.15)" rx="2"/>';
+      }
+    }
+
+    // Tmax lijn
+    var tmaxPath = tmax.map(function(t, i) { return (i===0?'M':'L') + xPos(i) + ',' + yPos(t); }).join(' ');
+    // Tmin lijn
+    var tminPath = tmin.map(function(t, i) { return (i===0?'M':'L') + xPos(i) + ',' + yPos(t); }).join(' ');
+    // Gradient area tussen tmin en tmax
+    var areaPath = tmax.map(function(t, i) { return (i===0?'M':'L') + xPos(i) + ',' + yPos(t); }).join(' ') +
+      ' ' + tmin.slice().reverse().map(function(t, i) { return 'L' + xPos(n-1-i) + ',' + yPos(t); }).join(' ') + ' Z';
+
+    // Vandaag markering
+    var vandaagX = xPos(0);
+
+    svg.innerHTML = '<defs>' +
+      '<linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(212,76,58,0.2)"/><stop offset="100%" stop-color="rgba(37,99,196,0.05)"/></linearGradient>' +
+      '</defs>' +
+      balkHtml +
+      '<path d="' + areaPath + '" fill="url(#tempGrad)"/>' +
+      '<path d="' + tminPath + '" fill="none" stroke="rgba(37,99,196,0.6)" stroke-width="1.5" stroke-dasharray="4,3"/>' +
+      '<path d="' + tmaxPath + '" fill="none" stroke="#d44c3a" stroke-width="2"/>' +
+      '<line x1="' + vandaagX + '" y1="' + padT + '" x2="' + vandaagX + '" y2="' + (H-padB) + '" stroke="rgba(99,85,224,0.4)" stroke-width="1" stroke-dasharray="3,2"/>' +
+      '<text x="' + (vandaagX+3) + '" y="' + (padT+8) + '" fill="#6355e0" font-size="8" font-family="monospace">vandaag</text>' +
+      // Punten op tmax
+      tmax.map(function(t, i) {
+        return '<circle cx="' + xPos(i) + '" cy="' + yPos(t) + '" r="3" fill="' + (i===0?'#6355e0':'#d44c3a') + '"/>';
+      }).join('') +
+      // Temperatuur labels om de 2 dagen
+      tmax.map(function(t, i) {
+        if (i % 2 !== 0) return '';
+        return '<text x="' + xPos(i) + '" y="' + (yPos(t)-5) + '" text-anchor="middle" fill="#d44c3a" font-size="9" font-family="monospace">' + Math.round(t) + '</text>';
+      }).join('');
+
+    // X labels
+    var dagNamen = ['zo','ma','di','wo','do','vr','za'];
+    labels.style.gridTemplateColumns = 'repeat(' + n + ', 1fr)';
+    labels.innerHTML = dagen.map(function(d, i) {
+      var datum = new Date(d);
+      var naam = i === 0 ? 'van' : dagNamen[datum.getDay()];
+      return '<div style="text-align:center;' + (i===0?'color:var(--purple);font-weight:600':'') + '">' + naam + ' ' + datum.getDate() + '</div>';
+    }).join('');
+
+    // Stats
+    var gemMax = Math.round(tmax.reduce(function(s,v){return s+v;},0)/n);
+    var gemMin = Math.round(tmin.reduce(function(s,v){return s+v;},0)/n);
+    var totNeerslag = neerslag.reduce(function(s,v){return s+v;},0).toFixed(1);
+    var regenDagen = neerslag.filter(function(v){return v>1;}).length;
+    stats.innerHTML =
+      '<div class="weer-stat"><div class="weer-stat-val" style="color:var(--coral)">' + Math.round(Math.max.apply(null,tmax)) + '&#176;</div><div class="weer-stat-lbl">Max komende 2 weken</div></div>' +
+      '<div class="weer-stat"><div class="weer-stat-val">' + gemMax + '&#176;</div><div class="weer-stat-lbl">Gem. dagtemp</div></div>' +
+      '<div class="weer-stat"><div class="weer-stat-val" style="color:var(--blue)">' + gemMin + '&#176;</div><div class="weer-stat-lbl">Gem. nachttemp</div></div>' +
+      '<div class="weer-stat"><div class="weer-stat-val">' + regenDagen + '</div><div class="weer-stat-lbl">Regendagen</div></div>' +
+      '<div class="weer-stat"><div class="weer-stat-val" style="color:var(--blue)">' + totNeerslag + 'mm</div><div class="weer-stat-lbl">Totale neerslag</div></div>';
+
+  } catch(e) {
+    svg.innerHTML = '<text x="400" y="65" text-anchor="middle" fill="#9a948c" font-size="12">Weer niet beschikbaar</text>';
+  }
 }
 
 init();
