@@ -171,6 +171,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 
   <!-- Nieuws feed -->
+  <div id="weer-widget" class="weer-widget">
+    <div class="weer-widget-titel">&#127782;&#65039; Temperatuur &amp; neerslag — 14 dagen Amsterdam</div>
+    <div class="weer-grafiek-wrap">
+      <svg id="weer-svg" class="weer-grafiek-svg" viewBox="0 0 800 120" preserveAspectRatio="none">
+        <text x="400" y="65" text-anchor="middle" fill="#9a948c" font-size="12" font-family="sans-serif">Weer laden...</text>
+      </svg>
+    </div>
+    <div id="weer-labels" class="weer-x-labels"></div>
+    <div id="weer-stats" class="weer-stats"></div>
+  </div>
   <div class="nieuws-grid" id="nieuws-grid">
     <div class="loading"><div class="spinner"></div>Nieuws laden...</div>
   </div>
