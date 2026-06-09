@@ -166,6 +166,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="cat-tab" data-feed="hotel brandveiligheid HACCP compliance nederland">Compliance</div>
     <div class="cat-tab" data-feed="hotel markt bezetting revenue nederland 2025">Markt</div>
     <div class="cat-tab" id="tab-weer" data-feed="weer nederland hotel toerisme zomer">&#127782;&#65039; Weer &amp; Toerisme</div>
+    <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
     <div class="cat-tab" id="tab-lokaal" data-feed="hotel horeca Amsterdam gemeente">&#127968; Amsterdam</div>
   </div>
 
@@ -428,12 +429,15 @@ function toonNieuwsVoorQuery(grid, query) {
   if (query && (query.indexOf('Amsterdam') !== -1 || query.indexOf('Rotterdam') !== -1 || query.indexOf('Utrecht') !== -1)) {
     cat = 'lokaal';
   }
-  // Toon weer widget bij Weer tab
+  // Toon/verberg weer widget
   var weerWidget = document.getElementById('weer-widget');
-  if (cat === 'weer') {
-    if (weerWidget) { weerWidget.style.display = 'block'; laadWeerGrafiek(); }
-  } else {
-    if (weerWidget) weerWidget.style.display = 'none';
+  if (weerWidget) {
+    if (cat === 'weer') {
+      weerWidget.style.display = 'block';
+      if (!weerWidget.dataset.geladen) { weerWidget.dataset.geladen = '1'; laadWeerGrafiek(); }
+    } else {
+      weerWidget.style.display = 'none';
+    }
   }
   var items = NIEUWS_DATA[cat] || NIEUWS_DATA['markt'];
   grid.innerHTML = items.map(function(n) {
@@ -545,7 +549,44 @@ async function laadWeerGrafiek() {
   }
 }
 
+
+function openJouwBron() {
+  document.getElementById('jouw-bron-modal').style.display = 'flex';
+}
+function slaJouwBronOp() {
+  var url = document.getElementById('jouw-bron-url').value.trim();
+  var naam = document.getElementById('jouw-bron-naam').value.trim();
+  if (!url) { return; }
+  document.getElementById('jouw-bron-modal').style.display = 'none';
+  showToast('Aangemeld! We nemen contact op zodra de functie live gaat.');
+}
+
 init();
 </script>
+
+<!-- Jouw nieuwsbron modal -->
+<div id="jouw-bron-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:500;align-items:center;justify-content:center">
+  <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:28px 32px;max-width:460px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.12)">
+    <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px">&#128240; Jouw nieuwsbron toevoegen</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:16px">
+      Voeg een eigen website of RSS-feed toe als nieuwsbron. Vera scant deze dagelijks en toont relevante berichten in jouw dashboard.<br><br>
+      <strong style="color:var(--text)">Wat is mogelijk?</strong><br>
+      &#10003; Elke website met een RSS-feed (bijv. KHN, gemeente, vakblad)<br>
+      &#10003; Eigen intranet of nieuwspagina van je hotelgroep<br>
+      &#10003; Leveranciersupdates (Mews, Siemens, Otis)<br>
+      &#10003; Lokale nieuwsbronnen voor jouw stad
+    </div>
+    <input id="jouw-bron-url" type="url" placeholder="https://www.jouwwebsite.nl/rss of /nieuws" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;margin-bottom:10px;box-sizing:border-box">
+    <input id="jouw-bron-naam" type="text" placeholder="Naam van de bron (bijv. Gemeente Amsterdam)" style="width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);outline:none;margin-bottom:16px;box-sizing:border-box">
+    <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;padding:10px 14px;font-size:11px;color:var(--amber);margin-bottom:16px">
+      &#128736;&#65039; <strong>Binnenkort beschikbaar.</strong> Deze functie is in ontwikkeling. Laat je URL alvast achter — we nemen contact op zodra het live gaat.
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="slaJouwBronOp()" style="flex:1;background:var(--purple);border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer">Aanmelden voor bèta</button>
+      <button onclick="document.getElementById('jouw-bron-modal').style.display='none'" style="background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 16px;font-size:12px;color:var(--text2);cursor:pointer">Sluiten</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
