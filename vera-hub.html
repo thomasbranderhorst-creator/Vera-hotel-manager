@@ -326,26 +326,20 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 
 
-  <div class="two-col">
+  <div class="full-col">
     <div class="hub-card">
       <div class="hub-card-header">
-        <div class="hub-card-title">🧹 HK Kwaliteit</div>
-        <a href="vera-hk.html" class="hub-card-link">Meldingen &rarr;</a>
+        <div class="hub-card-title">🧹 HK Kwaliteitscontrole</div>
+        <a href="vera-hk.html" class="hub-card-link">Openen &rarr;</a>
       </div>
-      <div id="hk-hub-list">
-        <div class="hub-row">
-          <div class="hub-row-naam" style="color:var(--text3);font-size:11px">Laad meldingen...</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div>
+          <div style="padding:6px 16px 2px;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Meldingen</div>
+          <div id="hk-hub-list"></div>
         </div>
-      </div>
-    </div>
-    <div class="hub-card">
-      <div class="hub-card-header">
-        <div class="hub-card-title">🔍 HK Inspectie</div>
-        <a href="vera-hk-inspectie.html" class="hub-card-link">Starten &rarr;</a>
-      </div>
-      <div id="hk-inspectie-hub-list">
-        <div class="hub-row">
-          <div class="hub-row-naam" style="color:var(--text3);font-size:11px">Laad inspecties...</div>
+        <div style="border-left:1px solid var(--border)">
+          <div style="padding:6px 16px 2px;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Inspecties</div>
+          <div id="hk-inspectie-hub-list"></div>
         </div>
       </div>
     </div>
@@ -401,11 +395,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     </a>
     <a href="vera-hk.html" class="mod-btn live" style="border-color:rgba(99,85,224,0.3)">
       <div class="mod-btn-icon">🧹</div>
-      <div><div class="mod-btn-naam">HK Kwaliteitscontrole</div><div class="mod-btn-sub">Meldingen, SLA &amp; housekeeper performance</div></div>
-    </a>
-    <a href="vera-hk-inspectie.html" class="mod-btn live" style="border-color:rgba(99,85,224,0.3)">
-      <div class="mod-btn-icon">🔍</div>
-      <div><div class="mod-btn-naam">HK Inspectie</div><div class="mod-btn-sub">Kamercheck met checklist, log &amp; trend</div></div>
+      <div><div class="mod-btn-naam">HK Kwaliteitscontrole</div><div class="mod-btn-sub">Meldingen, inspectie, SLA &amp; trend</div></div>
     </a>
     <a href="vera-voorraad.html" class="mod-btn live" style="border-color:rgba(26,140,90,0.3)">
       <div class="mod-btn-icon">📦</div>
