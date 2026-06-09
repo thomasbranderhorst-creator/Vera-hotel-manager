@@ -226,6 +226,34 @@ body { background: var(--bg); font-family: 'DM Sans', -apple-system, sans-serif;
 
   <!-- ── LEVERANCIERS TAB ── -->
   <div id="tab-leveranciers" style="display:none">
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">💶 Prijslijst uploaden</div></div>
+      <div class="card-body">
+        <p style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.7">Upload een prijslijst van een leverancier (PDF, Word of .txt). Vera leest productnamen en prijzen uit en vult de catalogus automatisch in.</p>
+        <div class="upload-zone" id="prijs-upload-zone">
+          <input type="file" id="prijs-file" accept=".pdf,.doc,.docx,.txt,.csv" onchange="handlePrijslijst(this)">
+          <div style="font-size:24px;margin-bottom:6px">💶</div>
+          <div style="font-size:13px;font-weight:500">Prijslijst uploaden</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">PDF, Word, CSV of .txt</div>
+        </div>
+        <div id="prijs-loading" style="display:none;text-align:center;padding:16px;color:var(--text3);font-size:13px">
+          <div class="spinner" style="width:20px;height:20px;border-width:2px;display:inline-block;margin-right:8px;vertical-align:middle"></div>
+          Vera leest de prijslijst uit...
+        </div>
+        <div id="prijs-result" style="display:none">
+          <div style="background:var(--green-bg);border:0.5px solid var(--green-border);border-radius:8px;padding:12px;margin-bottom:10px">
+            <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:6px">✅ <span id="prijs-count">0</span> producten gevonden</div>
+            <div id="prijs-preview" style="font-size:11px;color:var(--text2);max-height:160px;overflow-y:auto"></div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn-sm" style="flex:1;padding:10px" onclick="resetPrijslijst()">Annuleren</button>
+            <button class="btn-primary" style="flex:2" onclick="slaanPrijslijstOp()">Catalogus bijwerken</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-header"><div class="card-title">➕ Leverancier toevoegen</div></div>
       <div class="card-body">
@@ -704,6 +732,82 @@ function setPrijs(naam, val) {
   if (!productCatalogus[naam]) productCatalogus[naam] = {};
   productCatalogus[naam].prijs = parseFloat(val) || 0;
   localStorage.setItem('vera_product_catalogus', JSON.stringify(productCatalogus));
+}
+
+var _parsedPrijzen = [];
+
+async function handlePrijslijst(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var key = getApiKey();
+  if (!key) { key = prompt('Vul je Anthropic API sleutel in:'); if (!key) return; localStorage.setItem('vera_anthropic_key', key.trim()); key = key.trim(); }
+
+  document.getElementById('prijs-loading').style.display = 'block';
+  document.getElementById('prijs-result').style.display = 'none';
+
+  var tekst = '';
+  try { tekst = await file.text(); } catch(e) { tekst = file.name; }
+
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: 'Dit is een prijslijst van een leverancier:
+
+' + tekst.substring(0, 8000) + '
+
+Extraheer alle producten met hun inkoopprijs. Geef ALLEEN JSON:
+{
+  "leverancier": "naam van leverancier of null",
+  "producten": [
+    { "naam": "productnaam", "prijs": 0.00, "eenheid": "per stuk/fles/kg/doos" }
+  ]
+}
+Alleen producten met een duidelijke prijs. Puur JSON.' }]
+      })
+    });
+    var data = await res.json();
+    var text = data.content[0].text;
+    var m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('Geen JSON');
+    var parsed = JSON.parse(m[0]);
+    _parsedPrijzen = parsed.producten || [];
+    if (parsed.leverancier) document.getElementById('lev-naam').value = parsed.leverancier;
+
+    document.getElementById('prijs-loading').style.display = 'none';
+    document.getElementById('prijs-count').textContent = _parsedPrijzen.length;
+    document.getElementById('prijs-preview').innerHTML = _parsedPrijzen.slice(0, 20).map(function(p) {
+      return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:0.5px solid var(--border)">' +
+        '<span>' + p.naam + '</span><span style="font-family:monospace;color:var(--green)">€' + (p.prijs||0).toFixed(2) + '</span></div>';
+    }).join('') + (_parsedPrijzen.length > 20 ? '<div style="color:var(--text3);font-size:10px;margin-top:4px">... en ' + (_parsedPrijzen.length-20) + ' meer</div>' : '');
+    document.getElementById('prijs-result').style.display = 'block';
+  } catch(e) {
+    document.getElementById('prijs-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+}
+
+function slaanPrijslijstOp() {
+  var bijgewerkt = 0;
+  _parsedPrijzen.forEach(function(p) {
+    if (!productCatalogus[p.naam]) productCatalogus[p.naam] = {};
+    productCatalogus[p.naam].prijs = p.prijs || 0;
+    bijgewerkt++;
+  });
+  localStorage.setItem('vera_product_catalogus', JSON.stringify(productCatalogus));
+  alert('✅ ' + bijgewerkt + ' producten bijgewerkt in de catalogus');
+  resetPrijslijst();
+  renderLeveranciers();
+}
+
+function resetPrijslijst() {
+  document.getElementById('prijs-file').value = '';
+  document.getElementById('prijs-result').style.display = 'none';
+  document.getElementById('prijs-loading').style.display = 'none';
+  _parsedPrijzen = [];
 }
 
 // ── GESCHIEDENIS ──
