@@ -1431,9 +1431,51 @@
       </div>
     </div>
 
+    <div style="background:rgba(99,85,224,0.06);border:1px solid rgba(99,85,224,0.2);border-radius:12px;padding:16px 20px;margin-top:8px">
+      <div style="font-size:12px;font-weight:600;color:#6355e0;margin-bottom:8px">&#9889; Demo voorwarmen</div>
+      <div style="font-size:11px;color:#4a4640;margin-bottom:12px;line-height:1.6">Klik hieronder 2 minuten voor de demo om alle pagina&#39;s op de achtergrond te laden. Supabase connecties worden warm zodat alles direct laadt tijdens de presentatie.</div>
+      <button onclick="voorwarmDemo()" id="voorwarm-btn" style="background:#6355e0;border:none;border-radius:8px;padding:10px 20px;font-size:12px;font-weight:500;color:white;cursor:pointer;font-family:'DM Sans',sans-serif">&#9889; Start voorwarmen</button>
+      <div id="voorwarm-status" style="margin-top:10px;font-size:11px;font-family:monospace;color:#9a948c"></div>
+    </div>
+
   </div>
 </div>
 </div>
+
+<script>
+function voorwarmDemo() {
+  var btn = document.getElementById('voorwarm-btn');
+  var status = document.getElementById('voorwarm-status');
+  btn.textContent = 'Bezig...';
+  btn.disabled = true;
+
+  var paginas = [
+    'vera-hub.html', 'vera-cross.html', 'vera-compliance.html',
+    'vera-installaties.html', 'vera-software.html', 'vera-financials.html',
+    'vera-markt.html', 'vera-nieuws.html', 'vera-personeel.html',
+    'vera-reputatie.html', 'vera-portfolio.html'
+  ];
+
+  var geladen = 0;
+  status.innerHTML = '&#9203; Paginas laden in achtergrond...';
+
+  paginas.forEach(function(p) {
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://thomasbranderhorst-creator.github.io/vera-hotel-manager/' + p;
+    iframe.style.cssText = 'position:absolute;width:1px;height:1px;opacity:0;pointer-events:none';
+    iframe.onload = function() {
+      geladen++;
+      status.innerHTML = '&#9203; ' + geladen + ' / ' + paginas.length + ' paginas geladen...';
+      if (geladen === paginas.length) {
+        btn.textContent = '&#10003; Klaar — demo is warm';
+        btn.style.background = '#2a9d5c';
+        status.innerHTML = '&#10003; Alle paginas geladen. Supabase is warm. Demo kan beginnen!';
+      }
+    };
+    document.body.appendChild(iframe);
+  });
+}
+</script>
 
 
 <!-- TAB: BUSINESSMODEL & INVESTEERDERS -->
