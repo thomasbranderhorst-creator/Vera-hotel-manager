@@ -235,25 +235,25 @@ var lokaleFeed = {
 // RSS via rss2json.com — zie laadFeed functie
 
 async function init() {
-  // Haal hotel stad op
-  var result = await sb.from('hotels').select('naam,stad').eq('id', HOTEL_ID).single();
-  if (result.data) {
-    hotelStad = result.data.stad || 'Amsterdam';
-    document.getElementById('hotel-naam').textContent = result.data.naam;
-    // Update lokale tab
-    var lokaalTab = document.getElementById('tab-lokaal');
-    var lokaal = lokaleFeed[hotelStad] || lokaleFeed['Amsterdam'];
-    lokaalTab.innerHTML = lokaal.label;
-    lokaalTab.dataset.feed = lokaal.query;
-  }
-
-  // Update lokale bronnenkaart
+  // Toon nieuws direct zonder te wachten op Supabase
+  var eersteTab = document.querySelector('.cat-tab');
+  if (eersteTab) laadFeed(eersteTab.dataset.feed);
   updateLokaleBron();
 
-  // Laad eerste tab
-  var eersteTab = document.querySelector('.cat-tab.active');
-  if (eersteTab) laadFeed(eersteTab.dataset.feed);
+  // Supabase op achtergrond
+  try {
+    var result = await sb.from('hotels').select('naam,stad').eq('id', HOTEL_ID).single();
+    if (result.data) {
+      hotelStad = result.data.stad || 'Amsterdam';
+      document.getElementById('hotel-naam').textContent = result.data.naam;
+      var lokaalTab = document.getElementById('tab-lokaal');
+      var lokaal = lokaleFeed[hotelStad] || lokaleFeed['Amsterdam'];
+      if (lokaalTab) { lokaalTab.innerHTML = lokaal.label; lokaalTab.dataset.feed = lokaal.query; }
+      updateLokaleBron();
+    }
+  } catch(e) { console.log('Supabase fout:', e); }
 }
+
 
 function updateLokaleBron() {
   var bronGrid = document.getElementById('bronnen-grid');
