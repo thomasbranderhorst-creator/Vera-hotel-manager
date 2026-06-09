@@ -1005,6 +1005,13 @@
       <div class="home-card-arrow">&#8594;</div>
     </div>
 
+    <div class="home-card c-coral" onclick="goTo('tab-costcontrol','Cost Control')">
+      <div class="home-card-icon">&#128202;</div>
+      <div class="home-card-title">Cost Control</div>
+      <div class="home-card-sub">Houd grip op je uitgaven — software, contracten, commissies</div>
+      <div class="home-card-arrow">&#8594;</div>
+    </div>
+
     <div class="home-card c-gray" onclick="goTo('tab-bouw','Bouwen &amp; implementeren')">
       <div class="home-card-icon">&#128295;</div>
       <div class="home-card-title">Bouwen &amp; implementeren</div>
@@ -1215,6 +1222,124 @@
 
 </div>
 </div>
+
+<!-- TAB: COST CONTROL -->
+<div id="tab-costcontrol" class="page-panel">
+<div class="page-content">
+  <button class="back-btn" onclick="goHome()">&#8592; Terug</button>
+  <div class="home-hero" style="padding:20px 0 16px">
+    <div class="home-hero-title" style="font-size:18px">Cost Control</div>
+    <div class="home-hero-sub">Independent hotelmanagers missen overzicht over hun uitgaven. Vera geeft dat terug.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+
+    <!-- Het probleem -->
+    <div style="background:white;border:1px solid rgba(212,76,58,0.2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:600;color:#d44c3a;margin-bottom:10px">&#128680; Het probleem</div>
+      <div style="font-size:12px;color:#4a4640;line-height:1.8">
+        Een independent hotelmanager van 60 kamers betaalt gemiddeld:<br><br>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px">
+          <div style="background:#f4f1ec;border-radius:8px;padding:10px 14px">
+            <div style="font-size:10px;color:#9a948c;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Software abonnementen</div>
+            <div style="font-size:20px;font-weight:600;font-family:monospace;color:#1a1814">€3.240/mnd</div>
+            <div style="font-size:11px;color:#9a948c;margin-top:2px">9 tools — deels onbekend</div>
+          </div>
+          <div style="background:#f4f1ec;border-radius:8px;padding:10px 14px">
+            <div style="font-size:10px;color:#9a948c;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">OTA commissie</div>
+            <div style="font-size:20px;font-weight:600;font-family:monospace;color:#d44c3a">18.2%</div>
+            <div style="font-size:11px;color:#9a948c;margin-top:2px">norm is 15% — €680 te veel/mnd</div>
+          </div>
+          <div style="background:#f4f1ec;border-radius:8px;padding:10px 14px">
+            <div style="font-size:10px;color:#9a948c;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Contracten verlopen ongemerkt</div>
+            <div style="font-size:20px;font-weight:600;font-family:monospace;color:#c47c0a">2-4/jaar</div>
+            <div style="font-size:11px;color:#9a948c;margin-top:2px">automatische verlenging ongunstige voorwaarden</div>
+          </div>
+          <div style="background:#f4f1ec;border-radius:8px;padding:10px 14px">
+            <div style="font-size:10px;color:#9a948c;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Ongebruikte tools</div>
+            <div style="font-size:20px;font-weight:600;font-family:monospace;color:#c47c0a">1-2/hotel</div>
+            <div style="font-size:11px;color:#9a948c;margin-top:2px">gemiddeld €200-400/mnd betaald voor niets</div>
+          </div>
+        </div>
+        <strong style="color:#1a1814">De manager weet dit niet</strong> — omdat het verspreid staat over tientallen facturen, automatische incasso's en contracten in een la.
+      </div>
+    </div>
+
+    <!-- Wat Vera doet -->
+    <div style="background:white;border:1px solid rgba(0,0,0,0.12);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:600;color:#1a1814;margin-bottom:12px">&#10024; Wat Vera doet</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:#4a4640">
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#128187;</div>
+          <div><strong style="color:#1a1814">Alle software in één overzicht</strong><br>Vera leest contracten en facturen uit en maakt automatisch een overzicht van alle abonnementen — met prijs, looptijd en koppelstatus. Manager ziet voor het eerst wat hij werkelijk betaalt.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#128197;</div>
+          <div><strong style="color:#1a1814">Contractvervaldatum alerts</strong><br>Vera signaleert 6 weken voor elke vervaldatum. Manager kan bewust beslissen: verlengen, heronderhandelen of opzeggen. Nooit meer een ongunstige automatische verlenging.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#128257;</div>
+          <div><strong style="color:#1a1814">Overlap detectie</strong><br>Vera ziet wanneer twee tools hetzelfde doen — zoals Lighthouse én RoomPriceGenie. Signaleert de overlap en stelt voor wat te doen: <em>"Je betaalt €339/mnd voor twee rate intelligence tools. Wil je ze vergelijken?"</em></div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#128200;</div>
+          <div><strong style="color:#1a1814">OTA commissie bewaking</strong><br>Vera houdt dagelijks de OTA commissie bij via Exact. Zodra die boven de norm stijgt (15%) signaleert Vera direct: hoeveel het kost en wat de manager kan doen om direct boekingen te stimuleren.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#128293;</div>
+          <div><strong style="color:#1a1814">Installatiecontracten</strong><br>Lift, HVAC, brandmeld — Vera bewaakt alle onderhoudscontracten. Signaleert vervaldatum én of het onderhoud daadwerkelijk is uitgevoerd. Voorkomt dat je betaalt voor onderhoud dat niet is gedaan.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:#f4f1ec;border-radius:8px">
+          <div style="font-size:16px;flex-shrink:0">&#127973;</div>
+          <div><strong style="color:#1a1814">Jaarlijkse verplichte kosten</strong><br>Buma/Stemra, KHN, toeristenbelasting, CBS rapportage — Vera herinnert je tijdig. Nooit meer vergeten, nooit meer een boete.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Het getal -->
+    <div style="background:rgba(42,157,92,0.06);border:1px solid rgba(42,157,92,0.2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:600;color:#2a9d5c;margin-bottom:10px">&#128176; Wat het oplevert</div>
+      <div style="font-size:12px;color:#4a4640;line-height:1.8;margin-bottom:14px">
+        Op basis van gemiddelden bij hotels van 40-80 kamers:
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:white;border-radius:7px;border:1px solid rgba(0,0,0,0.07)">
+          <span style="color:#4a4640">OTA commissie verlagen van 18% naar 15%</span>
+          <span style="font-family:monospace;font-weight:600;color:#2a9d5c">+€680/mnd</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:white;border-radius:7px;border:1px solid rgba(0,0,0,0.07)">
+          <span style="color:#4a4640">1 ongebruikte tool opzeggen</span>
+          <span style="font-family:monospace;font-weight:600;color:#2a9d5c">+€200/mnd</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:white;border-radius:7px;border:1px solid rgba(0,0,0,0.07)">
+          <span style="color:#4a4640">1 contract heronderhandelen bij verlenging</span>
+          <span style="font-family:monospace;font-weight:600;color:#2a9d5c">+€150/mnd</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 12px;background:white;border-radius:7px;border:1px solid rgba(0,0,0,0.07)">
+          <span style="color:#4a4640">Overlap software elimineren</span>
+          <span style="font-family:monospace;font-weight:600;color:#2a9d5c">+€120/mnd</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px 14px;background:rgba(42,157,92,0.08);border-radius:7px;border:1px solid rgba(42,157,92,0.2);margin-top:4px">
+          <span style="font-weight:600;color:#1a1814">Totaal potentieel per maand</span>
+          <span style="font-family:monospace;font-weight:700;color:#2a9d5c;font-size:14px">+€1.150/mnd</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;color:#9a948c;font-style:italic">
+        Vera kost €149-499/mnd. De besparing betaalt het abonnement ruimschoots terug.
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 <!-- TAB: ONBOARDING & GDPR -->
 <div id="tab-onboarding" class="page-panel">
