@@ -1978,6 +1978,70 @@ function voorwarmDemo() {
       <div class="home-card-sub">Van aanmelding tot eerste Centrale Hub in &lt; 2 uur</div>
       <div class="home-card-arrow">&#8594;</div>
     </div>
+
+    <div class="home-card c-amber" style="opacity:0.9" onclick="goTo('tab-roadmap','In ontwikkeling')">
+      <div class="home-card-icon">🚧</div>
+      <div class="home-card-title">In ontwikkeling</div>
+      <div class="home-card-sub">Nachtrapport, schadeformulier &amp; meer — volgende modules</div>
+      <div class="home-card-arrow">&#8594;</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TAB: IN ONTWIKKELING -->
+<div id="tab-roadmap" class="page-panel">
+<div class="page-content">
+  <button class="back-btn" onclick="goTo('tab-bouw','Bouwen &amp; implementeren')">&#8592; Terug</button>
+  <div class="home-hero" style="padding:20px 0 16px">
+    <div class="home-hero-title" style="font-size:18px">In ontwikkeling</div>
+    <div class="home-hero-sub">Modules die op de roadmap staan — concepten die al bewezen zijn, nog niet gebouwd.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--amber-bg);padding:12px 16px;border-bottom:1px solid var(--amber-border);display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">🌙</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Nachtrapport generator</div>
+          <div style="font-size:11px;color:var(--amber);">Concept — klaar om te bouwen</div>
+        </div>
+      </div>
+      <div style="padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7;">
+        Vera schrijft elke ochtend automatisch een dagrapport op basis van Mews, Exact en Shiftbase data. Bezetting, revenue, compliance issues, open acties. Manager opent de app en ziet in 30 seconden wat er die nacht is gebeurd — zonder handmatig schrijven.
+        <div style="margin-top:8px;font-size:11px;color:var(--text3);">Vereist: Mews sync actief &middot; Exact sync actief</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--amber-bg);padding:12px 16px;border-bottom:1px solid var(--amber-border);display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">📸</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Schadeformulier via foto</div>
+          <div style="font-size:11px;color:var(--amber);">Concept — klaar om te bouwen</div>
+        </div>
+      </div>
+      <div style="padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7;">
+        Medewerker maakt foto van schade aan een kamer. Vera herkent het type schade, vult automatisch een formulier in met kamer, ernst en omschrijving, en koppelt het aan de reservering in Mews. Bewijs voor verzekering of borg inhouding direct beschikbaar.
+        <div style="margin-top:8px;font-size:11px;color:var(--text3);">Vereist: Mews sync actief &middot; Claude Vision (al aanwezig in voorraad module)</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;overflow:hidden;">
+      <div style="background:var(--amber-bg);padding:12px 16px;border-bottom:1px solid var(--amber-border);display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">🧾</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Leveranciersfactuur scannen</div>
+          <div style="font-size:11px;color:var(--amber);">Concept — klaar om te bouwen</div>
+        </div>
+      </div>
+      <div style="padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7;">
+        Foto van een papieren factuur → Vera leest bedrag, leverancier en datum uit → boekt automatisch voor in Exact. Zelfde Vision techniek als de voorraad scan. Elimineert handmatig invoeren en typofouten.
+        <div style="margin-top:8px;font-size:11px;color:var(--text3);">Vereist: Exact sync actief &middot; Claude Vision (al aanwezig)</div>
+      </div>
+    </div>
+
   </div>
 </div>
 </div>
