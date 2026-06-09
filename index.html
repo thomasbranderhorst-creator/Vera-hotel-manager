@@ -1005,6 +1005,13 @@
       <div class="home-card-arrow">&#8594;</div>
     </div>
 
+    <div class="home-card c-purple" onclick="goTo('tab-waaromvera','Waarom Vera')">
+      <div class="home-card-icon">&#128161;</div>
+      <div class="home-card-title">Waarom Vera</div>
+      <div class="home-card-sub">Meer dan AI met een map — het weerwoord</div>
+      <div class="home-card-arrow">&#8594;</div>
+    </div>
+
     <div class="home-card c-coral" onclick="goTo('tab-costcontrol','Cost Control')">
       <div class="home-card-icon">&#128202;</div>
       <div class="home-card-title">Cost Control</div>
@@ -1222,6 +1229,88 @@
 
 </div>
 </div>
+
+<!-- TAB: WAAROM VERA -->
+<div id="tab-waaromvera" class="page-panel">
+<div class="page-content">
+  <button class="back-btn" onclick="goHome()">&#8592; Terug</button>
+  <div class="home-hero" style="padding:20px 0 16px">
+    <div class="home-hero-title" style="font-size:18px">Waarom Vera</div>
+    <div class="home-hero-sub">"Is dit niet gewoon ChatGPT met een map erbij?" — Het weerwoord.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px">
+
+    <!-- Kernzin -->
+    <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:12px;padding:20px 24px">
+      <div style="font-size:14px;font-weight:600;color:var(--purple);line-height:1.7;text-align:center">
+        &#10024; Vera is geen AI-tool die antwoord geeft als je een vraag stelt.<br>
+        Vera is een operationele laag die continu meekijkt en signaleert<br>
+        <span style="color:var(--text)">— zonder dat de manager er iets voor hoeft te doen.</span>
+      </div>
+    </div>
+
+    <!-- 5 punten -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px">&#128273; Vijf fundamentele verschillen</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--purple)">
+          <div style="font-size:20px;flex-shrink:0">&#128337;</div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">1. Proactief — geen vraag nodig</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">ChatGPT wacht tot je een vraag stelt. Vera signaleert zonder vraag. De manager opent zijn dashboard en Vera heeft al gesignaleerd dat het liftonderhoud niet bevestigd is, de OTA-commissie te hoog staat en vrijdag de BHV ontbreekt.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--blue)">
+          <div style="font-size:20px;flex-shrink:0">&#127963;&#65039;</div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">2. Domeinkennis hotels — niet generiek</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">Vera weet dat een BHV-certificaat elke 2 jaar verlengd moet, dat CBS-rapportage kwartaal verplicht is, dat een RGI onder 100 betekent dat je onderprijst. Een generieke AI heeft geen hoteloperationele context. Vera is daar specifiek voor gebouwd.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--green)">
+          <div style="font-size:20px;flex-shrink:0">&#128257;</div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">3. Integraties zijn de echte waarde</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">Vera combineert Mews, Exact, Shiftbase én documenten in één signaal. Dat kan geen generieke AI-tool — die heeft geen API-toegang tot jouw PMS. Het signaal "brandveiligheidskeuring plannen in januari" is alleen mogelijk als compliance-data én bezettingshistorie tegelijk beschikbaar zijn.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--amber)">
+          <div style="font-size:20px;flex-shrink:0">&#128200;</div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">4. Vera leert jouw hotel kennen <span style="font-size:10px;font-family:monospace;color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:20px;padding:2px 7px;margin-left:4px">roadmap</span></div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">Na verloop van tijd kent Vera de patronen van jouw hotel — wanneer het laagseizoen is, hoe jouw OTA-commissie historisch beweegt, welke medewerker zijn certificaat altijd op het laatste moment verlengt. De basis (2 jaar historische bezettingsdata) is er al. Persoonlijk lerende profielen per hotel staan op de roadmap.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;background:var(--bg2);border-radius:8px;border-left:3px solid var(--coral)">
+          <div style="font-size:20px;flex-shrink:0">&#127981;</div>
+          <div>
+            <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">5. Voor adverteerders: gekwalificeerd bereik</div>
+            <div style="font-size:12px;color:var(--text2);line-height:1.6">Een generieke AI weet niet wie de gebruiker is. Vera weet: dit is een hotelmanager van 60 kamers in Amsterdam, met een Mews-koppeling, een liftcontract bij Otis dat over 6 maanden afloopt. Voor een leverancier is dat oneindig waardevoller dan een banner op een nieuwssite.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Wanneer wél generieke AI -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">&#9878;&#65039; Eerlijk: wanneer is generieke AI wél goed genoeg?</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.7">
+        Als een manager eenmalig een contract wil samenvatten, een e-mail wil opstellen of een vraag heeft over wetgeving — dan volstaat ChatGPT. Vera is daar niet voor.<br><br>
+        Vera is voor de <strong style="color:var(--text)">dagelijkse operationele realiteit</strong> van een hotel: compliance bijhouden, kosten in de gaten houden, roosters bewaken, revenue optimaliseren. Dat zijn taken die elke dag terugkomen en waarbij context en integraties het verschil maken — niet de AI-technologie op zich.
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
 
 <!-- TAB: COST CONTROL -->
 <div id="tab-costcontrol" class="page-panel">
