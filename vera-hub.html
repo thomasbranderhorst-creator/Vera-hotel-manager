@@ -380,7 +380,7 @@ const { createClient } = supabase;
 const sb = createClient('https://nznsimwgjwkdvudcdmup.supabase.co','sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ');
 const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
 let ANTHROPIC_KEY = localStorage.getItem('vera_anthropic_key') || '';
-let complianceData=[],actiesData=[],medewData=[],mewsData=[],shiftbaseData=[],exactData=null,documentenData=[],reviewData=[];
+let complianceData=[],actiesData=[],medewData=[],mewsData=[],shiftbaseData=[],exactData=null,documentenData=[],reviewData=[],hotelKamers=18;
 
 document.getElementById('api-status-btn').addEventListener('click',function(){document.getElementById('api-modal').classList.add('open');document.getElementById('api-input').value=ANTHROPIC_KEY;});
 document.getElementById('btn-save-key').addEventListener('click',function(){var k=document.getElementById('api-input').value.trim();if(!k)return;ANTHROPIC_KEY=k;localStorage.setItem('vera_anthropic_key',k);document.getElementById('api-modal').classList.remove('open');updateApiStatus();showToast('Opgeslagen');});
@@ -397,7 +397,7 @@ async function init() {
   if(hotel.data){document.getElementById('hotel-naam').textContent=hotel.data.naam;document.getElementById('hotel-sub').textContent=hotel.data.naam;}
 
   var vandaag=nu.toISOString().split('T')[0];
-  var [comp,act,medew,mews,shift,exact,docs,reviews]=await Promise.all([
+  var [comp,act,medew,mews,shift,exact,docs,reviews,hotel]=await Promise.all([
     sb.from('compliance_items').select('*').eq('hotel_id',HOTEL_ID).order('status'),
     sb.from('acties').select('*, compliance_items(naam)').eq('hotel_id',HOTEL_ID).eq('status','open').order('created_at',{ascending:false}),
     sb.from('medewerkers').select('*').eq('hotel_id',HOTEL_ID).eq('actief',true).order('naam'),
@@ -408,7 +408,7 @@ async function init() {
     sb.from('review_trend').select('*').eq('hotel_id',HOTEL_ID).order('datum').limit(20)
   ]);
   complianceData=comp.data||[];actiesData=act.data||[];medewData=medew.data||[];
-  mewsData=mews.data||[];shiftbaseData=shift.data||[];exactData=exact.data&&exact.data[0]?exact.data[0]:null;
+  mewsData=mews.data||[];shiftbaseData=shift.data||[];exactData=exact.data&&exact.data[0]?exact.data[0]:null;if(hotel.data&&hotel.data.kamers)hotelKamers=hotel.data.kamers;
   documentenData=docs.data||[];reviewData=reviews.data||[];
 
   renderCompliance();renderActies();renderMedewerkers();
@@ -419,7 +419,7 @@ function renderBezetting(){
   if(!mewsData.length)return;
   var vandaag=new Date().toISOString().split('T')[0],v=mewsData[0];
   document.getElementById('bez-getal').textContent=v.bezettingsgraad+'%';
-  document.getElementById('bez-sub').textContent=v.kamers_bezet+' van 18 kamers bezet';
+  document.getElementById('bez-sub').textContent=v.kamers_bezet+' van '+hotelKamers+' kamers bezet';
   var dag=['zo','ma','di','wo','do','vr','za'];
   document.getElementById('bez-grafiek').innerHTML=mewsData.map(function(d){
     var iv=d.datum.substring(0,10)===vandaag,p=d.bezettingsgraad,h=Math.round(p*0.56);
@@ -499,7 +499,7 @@ async function vraagVera(){
   var btn=document.getElementById('vera-ai-btn'),ant=document.getElementById('vera-antwoord');
   btn.textContent='Bezig...';btn.disabled=true;ant.classList.remove('show');
   var vandaag=new Date().toISOString().split('T')[0],vs=shiftbaseData.filter(function(s){return s.datum&&s.datum.substring(0,10)===vandaag;}),bh=vs.filter(function(s){return s.bhv_gecertificeerd;});
-  var ctx='Hotel: Hotel De Klok, Amsterdam, 18 kamers.\n\n';
+  var ctx='Hotel: Hotel De Klok, Amsterdam, '+hotelKamers+' kamers.\n\n';
   if(mewsData.length){var v=mewsData[0];ctx+='MEWS: vandaag '+v.bezettingsgraad+'% bezet, '+v.aankomsten+' aankomsten, '+v.vertrekken+' vertrekken.\n';}
   if(vs.length)ctx+='SHIFTBASE: '+vs.map(function(s){return s.medewerker_naam;}).join(', ')+'. BHV: '+(bh.length?bh[0].medewerker_naam:'NIET GEDEKT')+'.\n';
   if(exactData){var bp=Math.round(exactData.omzet_mtd/exactData.omzet_budget*100);ctx+='EXACT: €'+exactData.omzet_mtd.toLocaleString('nl-NL')+' MTD ('+bp+'% budget). OTA '+exactData.ota_commissie_pct+'%.\n';}
