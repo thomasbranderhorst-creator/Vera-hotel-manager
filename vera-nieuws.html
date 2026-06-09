@@ -112,9 +112,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 @media(max-width:700px){.bronnen-grid{grid-template-columns:1fr 1fr}}
 
 /* Weer widget */
-.weer-widget{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.weer-widget{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow);max-width:100%;overflow:hidden}
 .weer-widget-titel{font-size:12px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.weer-grafiek-wrap{position:relative;height:120px;margin-bottom:8px;overflow:hidden;width:100%}
+.weer-grafiek-wrap{position:relative;height:120px;margin-bottom:8px;overflow:hidden;width:100%;max-width:100%}
 .weer-grafiek-svg{width:100%;height:100%;display:block}
 .weer-x-labels{display:grid;margin-top:4px;font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
 .weer-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
@@ -175,7 +175,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div id="weer-widget" class="weer-widget">
     <div class="weer-widget-titel">&#127782;&#65039; Temperatuur &amp; neerslag — 14 dagen Amsterdam</div>
     <div class="weer-grafiek-wrap">
-      <svg id="weer-svg" class="weer-grafiek-svg" viewBox="0 0 800 120" preserveAspectRatio="xMidYMid meet" style="width:100%;height:120px;overflow:hidden">
+      <svg id="weer-svg" class="weer-grafiek-svg" viewBox="0 0 800 120" preserveAspectRatio="none" style="width:100%;height:120px;display:block">
         <text x="400" y="65" text-anchor="middle" fill="#9a948c" font-size="12" font-family="sans-serif">Weer laden...</text>
       </svg>
     </div>
