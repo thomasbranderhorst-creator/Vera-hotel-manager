@@ -419,7 +419,7 @@ function renderBezetting(){
   if(!mewsData.length)return;
   var vandaag=new Date().toISOString().split('T')[0],v=mewsData[0];
   document.getElementById('bez-getal').textContent=v.bezettingsgraad+'%';
-  document.getElementById('bez-sub').textContent=v.kamers_bezet+' van 60 kamers bezet';
+  document.getElementById('bez-sub').textContent=v.kamers_bezet+' van 18 kamers bezet';
   var dag=['zo','ma','di','wo','do','vr','za'];
   document.getElementById('bez-grafiek').innerHTML=mewsData.map(function(d){
     var iv=d.datum.substring(0,10)===vandaag,p=d.bezettingsgraad,h=Math.round(p*0.56);
@@ -499,7 +499,7 @@ async function vraagVera(){
   var btn=document.getElementById('vera-ai-btn'),ant=document.getElementById('vera-antwoord');
   btn.textContent='Bezig...';btn.disabled=true;ant.classList.remove('show');
   var vandaag=new Date().toISOString().split('T')[0],vs=shiftbaseData.filter(function(s){return s.datum&&s.datum.substring(0,10)===vandaag;}),bh=vs.filter(function(s){return s.bhv_gecertificeerd;});
-  var ctx='Hotel: Hotel De Klok, Amsterdam, 60 kamers.\n\n';
+  var ctx='Hotel: Hotel De Klok, Amsterdam, 18 kamers.\n\n';
   if(mewsData.length){var v=mewsData[0];ctx+='MEWS: vandaag '+v.bezettingsgraad+'% bezet, '+v.aankomsten+' aankomsten, '+v.vertrekken+' vertrekken.\n';}
   if(vs.length)ctx+='SHIFTBASE: '+vs.map(function(s){return s.medewerker_naam;}).join(', ')+'. BHV: '+(bh.length?bh[0].medewerker_naam:'NIET GEDEKT')+'.\n';
   if(exactData){var bp=Math.round(exactData.omzet_mtd/exactData.omzet_budget*100);ctx+='EXACT: €'+exactData.omzet_mtd.toLocaleString('nl-NL')+' MTD ('+bp+'% budget). OTA '+exactData.ota_commissie_pct+'%.\n';}
