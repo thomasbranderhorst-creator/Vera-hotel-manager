@@ -422,14 +422,14 @@ async function slaOp() {
     totaal: currentResult.totaal_items
   };
 
-  // Sla op in localStorage als geschiedenis
+  // Altijd opslaan in localStorage
   history.unshift(entry);
   if (history.length > 20) history = history.slice(0, 20);
   localStorage.setItem('vera_voorraad_history', JSON.stringify(history));
 
-  // Probeer ook naar Supabase te sturen als voorraad log
+  // Probeer Supabase — stil falen is OK
   try {
-    await fetch(SUPABASE_URL + '/rest/v1/voorraad_tellingen', {
+    var res = await fetch(SUPABASE_URL + '/rest/v1/voorraad_tellingen', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -447,13 +447,13 @@ async function slaOp() {
         geteld_op: new Date().toISOString()
       })
     });
-  } catch(e) {
-    // Supabase tabel bestaat nog niet — alleen localStorage voor nu
-  }
+  } catch(e) {}
 
+  // Altijd doorgaan naar bevestiging
   document.getElementById('result-section').style.display = 'none';
   document.getElementById('saved-section').style.display = 'block';
   document.getElementById('saved-sub').textContent = entry.items.length + ' producten · ' + catLabels[selectedCat];
+  btn.disabled = false;
 
   renderHistory();
 }
