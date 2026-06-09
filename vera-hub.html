@@ -193,6 +193,15 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 #btn-save-key{flex:1;background:var(--purple);border:none;border-radius:7px;padding:10px;font-size:12px;font-weight:500;color:white;cursor:pointer}
 #btn-skip-key{background:var(--bg);border:1px solid var(--border2);border-radius:7px;padding:10px 16px;font-size:12px;color:var(--text2);cursor:pointer}
 
+.mews-sync-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.sync-btn{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:5px 14px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);cursor:pointer;box-shadow:var(--shadow);transition:all .15s}
+.sync-btn:hover{border-color:var(--purple-border);color:var(--purple)}
+.sync-btn:disabled{opacity:.5;cursor:not-allowed}
+.sync-btn.bezig{border-color:var(--amber-border);color:var(--amber)}
+.sync-btn.ok{border-color:var(--green-border);color:var(--green)}
+.sync-btn.fout{border-color:var(--coral-border);color:var(--coral)}
+.sync-icon{font-size:12px}
+.sync-spin{display:inline-block;width:10px;height:10px;border:1.5px solid var(--border2);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite}
 .loading{text-align:center;padding:28px 0;color:var(--text3);font-size:12px}
 .spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -240,6 +249,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 
   <div class="status-pills" id="status-pills">
     <div class="s-pill s-pill-gray"><div class="dot"></div>Laden...</div>
+  </div>
+
+  <div class="mews-sync-bar">
+    <button class="sync-btn" id="mews-sync-btn" onclick="mewsSync()">
+      <span class="sync-icon">🔁</span> Mews sync
+    </button>
+    <span id="mews-sync-status" style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)"></span>
   </div>
 
   <div class="two-col">
@@ -503,6 +519,45 @@ function fmtDatum(d){return new Date(d).toLocaleDateString('nl-NL',{day:'numeric
 function datumKlasse(d){if(!d)return'rood';var dagen=Math.floor((new Date(d)-new Date())/86400000);return dagen<0?'rood':dagen<60?'oranje':'';}
 var toastT;
 function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
+
+async function mewsSync() {
+  var btn = document.getElementById('mews-sync-btn');
+  var status = document.getElementById('mews-sync-status');
+  btn.disabled = true;
+  btn.className = 'sync-btn bezig';
+  btn.innerHTML = '<span class="sync-spin"></span> Bezig...';
+  status.textContent = '';
+  var t0 = Date.now();
+  try {
+    var res = await fetch('https://nznsimwgjwkdvudcdmup.supabase.co/functions/v1/mews-sync?type=all');
+    var data = await res.json();
+    var ms = Date.now() - t0;
+    if (data.success) {
+      var bez = data.results && data.results.bezetting ? data.results.bezetting.records : 0;
+      var otb = data.results && data.results.otb ? data.results.otb.records : 0;
+      btn.className = 'sync-btn ok';
+      btn.innerHTML = '\u2713 Gesynchroniseerd';
+      status.textContent = bez + ' bezetting \u00b7 ' + otb + ' OTB \u00b7 ' + ms + 'ms';
+      status.style.color = 'var(--green)';
+      showToast('Mews sync geslaagd \u2014 ' + bez + ' dagen bijgewerkt');
+      setTimeout(function() { init(); }, 800);
+    } else {
+      throw new Error(JSON.stringify(data.results));
+    }
+  } catch(e) {
+    btn.className = 'sync-btn fout';
+    btn.innerHTML = '\u26a0 Sync mislukt';
+    status.textContent = e.message ? e.message.substring(0, 80) : 'onbekende fout';
+    status.style.color = 'var(--coral)';
+    showToast('Mews sync mislukt');
+  }
+  setTimeout(function() {
+    btn.disabled = false;
+    btn.className = 'sync-btn';
+    btn.innerHTML = '<span class="sync-icon">\ud83d\udd01</span> Mews sync';
+    status.style.color = 'var(--text3)';
+  }, 5000);
+}
 
 init();
 </script>
