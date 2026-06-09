@@ -627,6 +627,37 @@ async function mewsSync() {
   }, 5000);
 }
 
+
+function renderHkHub() {
+  // Meldingen
+  var meldingen = JSON.parse(localStorage.getItem('vera_hk_meldingen') || '[]');
+  var hkList = document.getElementById('hk-hub-list');
+  if (meldingen.length === 0) {
+    hkList.innerHTML = '<div class="hub-empty">Geen meldingen</div>';
+  } else {
+    var recent = meldingen.slice(0, 3);
+    hkList.innerHTML = recent.map(function(m) {
+      var kleur = m.ernst === 'critical' ? 'rood' : m.ernst === 'major' ? 'oranje' : 'groen';
+      return '<div class="hub-row"><div class="dot ' + kleur + '"></div><div class="hub-row-naam">Kamer ' + m.kamer + ' — ' + m.categorie + '</div><div class="hub-row-tag tag-' + kleur + '">' + m.ernst + '</div></div>';
+    }).join('');
+  }
+
+  // Inspecties
+  var inspecties = JSON.parse(localStorage.getItem('vera_hk_inspecties') || '[]');
+  var inspList = document.getElementById('hk-inspectie-hub-list');
+  if (inspecties.length === 0) {
+    inspList.innerHTML = '<div class="hub-empty">Nog geen inspecties</div>';
+  } else {
+    var recent = inspecties.slice(0, 3);
+    inspList.innerHTML = recent.map(function(insp) {
+      var kleur = insp.totaal_score >= 8 ? 'groen' : insp.totaal_score >= 6 ? 'oranje' : 'rood';
+      var d = new Date(insp.geteld_op).toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+      return '<div class="hub-row"><div class="dot ' + kleur + '"></div><div class="hub-row-naam">Kamer ' + insp.kamer + '</div><div class="hub-row-meta">' + insp.totaal_score.toFixed(1) + ' · ' + d + '</div></div>';
+    }).join('');
+  }
+}
+
+renderHkHub();
 init();
 </script>
 </body>
