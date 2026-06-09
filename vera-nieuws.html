@@ -114,8 +114,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 /* Weer widget */
 .weer-widget{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}
 .weer-widget-titel{font-size:12px;font-weight:600;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.weer-grafiek-wrap{position:relative;height:120px;margin-bottom:8px}
-.weer-grafiek-svg{width:100%;height:100%}
+.weer-grafiek-wrap{position:relative;height:120px;margin-bottom:8px;overflow:hidden;width:100%}
+.weer-grafiek-svg{width:100%;height:100%;display:block}
 .weer-x-labels{display:grid;margin-top:4px;font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
 .weer-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
 .weer-stat{text-align:center}
@@ -161,22 +161,22 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 
   <!-- Categorie tabs -->
   <div class="cat-tabs" id="cat-tabs">
-    <div class="cat-tab active" data-feed="horeca wetgeving nederland hotel">Wetgeving</div>
+    <div class="cat-tab active" id="tab-weer" data-feed="weer nederland hotel toerisme zomer">&#127782;&#65039; Weer &amp; Toerisme</div>
+    <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
+    <div class="cat-tab" data-feed="horeca wetgeving nederland hotel">Wetgeving</div>
     <div class="cat-tab" data-feed="horeca CAO 2025 2026 personeel">CAO &amp; Personeel</div>
     <div class="cat-tab" data-feed="horeca subsidie energiebesparing RVO 2025">Subsidies</div>
     <div class="cat-tab" data-feed="hotel brandveiligheid HACCP compliance nederland">Compliance</div>
     <div class="cat-tab" data-feed="hotel markt bezetting revenue nederland 2025">Markt</div>
-    <div class="cat-tab active" id="tab-weer" data-feed="weer nederland hotel toerisme zomer">&#127782;&#65039; Weer &amp; Toerisme</div>
-    <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
-    <div class="cat-tab" data-feed="hotel wetgeving Nederland">Wetgeving</div> onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
     <div class="cat-tab" id="tab-lokaal" data-feed="hotel horeca Amsterdam gemeente">&#127968; Amsterdam</div>
+  </div>
   </div>
 
   <!-- Nieuws feed -->
   <div id="weer-widget" class="weer-widget">
     <div class="weer-widget-titel">&#127782;&#65039; Temperatuur &amp; neerslag — 14 dagen Amsterdam</div>
     <div class="weer-grafiek-wrap">
-      <svg id="weer-svg" class="weer-grafiek-svg" viewBox="0 0 800 120" preserveAspectRatio="none">
+      <svg id="weer-svg" class="weer-grafiek-svg" viewBox="0 0 800 120" preserveAspectRatio="xMidYMid meet" style="width:100%;height:120px;overflow:hidden">
         <text x="400" y="65" text-anchor="middle" fill="#9a948c" font-size="12" font-family="sans-serif">Weer laden...</text>
       </svg>
     </div>
