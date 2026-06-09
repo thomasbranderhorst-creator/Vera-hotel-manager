@@ -3,271 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Vera — Voorraad scan</title>
+<title>Vera — Voorraad & Inkoop</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #f4f1ec;
-  --bg2: #eceae4;
-  --card: #ffffff;
-  --border: rgba(0,0,0,0.08);
-  --border2: rgba(0,0,0,0.14);
-  --text: #1a1814;
-  --text2: #5a5650;
-  --text3: #8a8680;
-  --purple: #6355e0;
-  --purple-bg: rgba(99,85,224,0.08);
-  --purple-border: rgba(99,85,224,0.25);
-  --green: #1a8c5a;
-  --green-bg: rgba(26,140,90,0.08);
-  --green-border: rgba(26,140,90,0.25);
-  --amber: #c47c0a;
-  --amber-bg: rgba(196,124,10,0.08);
-  --coral: #d84a30;
-  --coral-bg: rgba(216,74,48,0.08);
+  --bg: #f4f1ec; --bg2: #eceae4; --card: #ffffff;
+  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
+  --text: #1a1814; --text2: #5a5650; --text3: #8a8680;
+  --purple: #6355e0; --purple-bg: rgba(99,85,224,0.08); --purple-border: rgba(99,85,224,0.25);
+  --green: #1a8c5a; --green-bg: rgba(26,140,90,0.08); --green-border: rgba(26,140,90,0.25);
+  --amber: #c47c0a; --amber-bg: rgba(196,124,10,0.08); --amber-border: rgba(196,124,10,0.25);
+  --coral: #d84a30; --coral-bg: rgba(216,74,48,0.08); --coral-border: rgba(216,74,48,0.25);
   --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
   --radius: 12px;
 }
-body { background: var(--bg); font-family: 'DM Sans', -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 40px; }
-
-.header { padding: 16px 20px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 0.5px solid var(--border2); background: var(--card); }
+body { background: var(--bg); font-family: 'DM Sans', -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+.header { padding: 14px 20px; display: flex; align-items: center; gap: 10px; background: var(--card); border-bottom: 0.5px solid var(--border2); position: sticky; top: 0; z-index: 100; }
 .header-back { font-size: 13px; color: var(--purple); text-decoration: none; }
 .header-title { font-size: 15px; font-weight: 600; flex: 1; }
 .header-badge { font-size: 10px; font-family: 'DM Mono', monospace; background: var(--purple-bg); color: var(--purple); border: 0.5px solid var(--purple-border); padding: 2px 8px; border-radius: 20px; }
+.alert-badge { background: var(--coral-bg); color: var(--coral); border-color: var(--coral-border); }
 
-.main { padding: 16px 16px 0; max-width: 480px; margin: 0 auto; }
+.tabs { display: flex; background: var(--card); border-bottom: 0.5px solid var(--border2); padding: 0 12px; overflow-x: auto; }
+.tab { padding: 10px 12px; font-size: 12px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -0.5px; white-space: nowrap; }
+.tab.active { color: var(--purple); border-bottom-color: var(--purple); font-weight: 500; }
 
+.main { padding: 14px; max-width: 540px; margin: 0 auto; }
 .card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden; }
-.card-header { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 8px; }
-.card-title { font-size: 13px; font-weight: 600; }
-.card-body { padding: 16px; }
+.card-header { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 14px 16px; }
 
-/* Upload zone */
-.upload-zone { border: 1.5px dashed var(--border2); border-radius: 10px; padding: 28px 16px; text-align: center; cursor: pointer; transition: all .15s; background: var(--bg); position: relative; }
-.upload-zone:hover, .upload-zone.dragover { border-color: var(--purple); background: var(--purple-bg); }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-.upload-icon { font-size: 32px; margin-bottom: 8px; }
-.upload-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-.upload-sub { font-size: 12px; color: var(--text3); }
-
-/* Camera knop */
-.camera-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 10px; font-family: inherit; }
-.camera-btn:active { opacity: 0.85; }
-
-/* Preview */
-#preview-section { display: none; }
-.preview-img { width: 100%; border-radius: 8px; max-height: 260px; object-fit: cover; }
-.preview-actions { display: flex; gap: 8px; margin-top: 10px; }
-.btn { padding: 10px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: inherit; flex: 1; }
-.btn-primary { background: var(--purple); color: white; }
-.btn-secondary { background: var(--bg2); color: var(--text); border: 0.5px solid var(--border2); }
-
-/* Categorie selector */
-.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.cat-btn { padding: 10px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border2); background: var(--bg); color: var(--text2); font-family: inherit; text-align: left; display: flex; align-items: center; gap: 6px; transition: all .12s; }
+/* Categorie */
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.cat-btn { padding: 9px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border2); background: var(--bg); color: var(--text2); font-family: inherit; text-align: left; display: flex; align-items: center; gap: 6px; transition: all .12s; }
 .cat-btn.active { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
-.cat-btn:hover { border-color: var(--purple-border); }
 
-/* Resultaat */
-#result-section { display: none; }
-.result-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.result-icon { font-size: 24px; }
-.result-title { font-size: 15px; font-weight: 600; }
-.result-sub { font-size: 12px; color: var(--text3); }
+/* Upload */
+.upload-zone { border: 1.5px dashed var(--border2); border-radius: 10px; padding: 24px 16px; text-align: center; cursor: pointer; background: var(--bg); position: relative; transition: all .15s; }
+.upload-zone:hover { border-color: var(--purple); background: var(--purple-bg); }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.camera-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 8px; font-family: inherit; }
 
-.item-list { display: flex; flex-direction: column; gap: 6px; }
-.item-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg); border-radius: 8px; border: 0.5px solid var(--border); }
-.item-icon { font-size: 18px; width: 28px; text-align: center; }
-.item-name { flex: 1; font-size: 13px; font-weight: 500; }
-.item-qty { font-size: 14px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--purple); }
-.item-unit { font-size: 11px; color: var(--text3); }
+/* Item list met leverancier */
+.item-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; background: var(--bg); border-radius: 8px; border: 0.5px solid var(--border); margin-bottom: 6px; }
+.item-row.onder-min { border-color: var(--coral-border); background: var(--coral-bg); }
+.item-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; margin-top: 2px; }
+.item-info { flex: 1; min-width: 0; }
+.item-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.item-lev { font-size: 11px; color: var(--text3); }
+.item-lev select { font-size: 11px; color: var(--purple); background: none; border: none; cursor: pointer; font-family: inherit; padding: 0; }
+.item-right { text-align: right; flex-shrink: 0; }
+.item-qty { font-size: 16px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--purple); }
+.item-unit { font-size: 10px; color: var(--text3); }
+.item-min { font-size: 10px; color: var(--coral); font-family: 'DM Mono', monospace; margin-top: 2px; }
+.conf-bar { height: 3px; border-radius: 2px; background: var(--border2); margin-top: 4px; overflow: hidden; }
+.conf-fill { height: 100%; border-radius: 2px; background: var(--green); }
 
-.confidence-bar { height: 3px; border-radius: 2px; background: var(--border2); margin-top: 4px; overflow: hidden; }
-.confidence-fill { height: 100%; border-radius: 2px; background: var(--green); transition: width .4s; }
+/* Besteladvies */
+.lev-groep { margin-bottom: 16px; }
+.lev-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg2); border-radius: 8px 8px 0 0; border: 0.5px solid var(--border2); }
+.lev-naam { font-size: 13px; font-weight: 600; }
+.lev-email { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+.lev-items { border: 0.5px solid var(--border2); border-top: none; border-radius: 0 0 8px 8px; overflow: hidden; }
+.lev-item-row { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+.lev-item-row:last-child { border: none; }
+.lev-item-naam { flex: 1; }
+.lev-item-heb { font-family: 'DM Mono', monospace; color: var(--coral); font-size: 12px; }
+.lev-item-bestel { font-family: 'DM Mono', monospace; color: var(--green); font-size: 12px; font-weight: 600; }
+.bestel-btn { display: flex; align-items: center; gap: 6px; background: var(--green-bg); border: 0.5px solid var(--green-border); color: var(--green); border-radius: 8px; padding: 8px 14px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: inherit; margin-top: 8px; width: 100%; justify-content: center; }
+.bestel-btn:hover { background: var(--green); color: white; }
+.mail-btn { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+.mail-btn:hover { background: var(--purple); color: white; }
 
-.opmerking-box { background: var(--amber-bg); border: 0.5px solid rgba(196,124,10,0.25); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--amber); margin-top: 10px; line-height: 1.6; }
+/* Leveranciers beheer */
+.lev-beheer-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+.lev-beheer-row:last-child { border: none; }
+.form-input { width: 100%; background: var(--bg); border: 0.5px solid var(--border2); border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: inherit; color: var(--text); outline: none; }
+.form-input:focus { border-color: var(--purple); }
+.form-label { font-size: 12px; font-weight: 500; margin-bottom: 5px; display: block; color: var(--text2); }
+.form-row { margin-bottom: 10px; }
+.btn-primary { background: var(--purple); color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.btn-sm { background: var(--bg2); border: 0.5px solid var(--border2); color: var(--text2); border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; font-family: inherit; }
+.btn-del { background: var(--coral-bg); border-color: var(--coral-border); color: var(--coral); }
 
-.save-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--green); color: white; border: none; border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; font-family: inherit; }
-.save-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Opgeslagen */
-#saved-section { display: none; }
-.saved-banner { background: var(--green-bg); border: 0.5px solid var(--green-border); border-radius: 10px; padding: 16px; text-align: center; }
-.saved-icon { font-size: 32px; margin-bottom: 8px; }
-.saved-title { font-size: 15px; font-weight: 600; color: var(--green); }
-.saved-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
-
-/* Loading */
-.loading-state { text-align: center; padding: 24px; }
-.spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--border2); border-top-color: var(--purple); border-radius: 50%; animation: spin .8s linear infinite; margin-bottom: 12px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-.loading-sub { font-size: 12px; color: var(--text3); }
+/* Notificatie banner */
+.alert-banner { background: var(--coral-bg); border: 0.5px solid var(--coral-border); border-radius: 10px; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.alert-banner-tekst { flex: 1; font-size: 13px; font-weight: 500; color: var(--coral); }
+.alert-banner-sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
 
 /* Geschiedenis */
 .hist-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
 .hist-row:last-child { border: none; }
-.hist-cat { font-size: 16px; width: 24px; }
-.hist-info { flex: 1; }
-.hist-name { font-weight: 500; }
-.hist-time { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
-.hist-count { font-size: 13px; font-weight: 600; color: var(--purple); font-family: 'DM Mono', monospace; }
 
-.empty-state { text-align: center; padding: 20px; color: var(--text3); font-size: 13px; }
+/* Opmerking */
+.opmerking-box { background: var(--amber-bg); border: 0.5px solid var(--amber-border); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: var(--amber); margin-top: 8px; line-height: 1.6; }
+
+.save-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: var(--green); color: white; border: none; border-radius: 10px; padding: 13px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 12px; font-family: inherit; }
+.saved-banner { background: var(--green-bg); border: 0.5px solid var(--green-border); border-radius: 10px; padding: 20px; text-align: center; }
+
+.spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid var(--border2); border-top-color: var(--purple); border-radius: 50%; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.empty-state { text-align: center; padding: 24px; color: var(--text3); font-size: 13px; }
+
+/* Bestelnotitie popup */
+#bestel-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; justify-content: center; }
+#bestel-popup.open { display: flex; }
+.bestel-sheet { background: var(--card); border-radius: 16px 16px 0 0; padding: 20px; width: 100%; max-width: 540px; max-height: 80vh; overflow-y: auto; }
+.bestel-sheet-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+.bestel-tekst { background: var(--bg); border-radius: 8px; padding: 14px; font-size: 13px; font-family: 'DM Mono', monospace; white-space: pre-wrap; line-height: 1.7; margin-bottom: 12px; border: 0.5px solid var(--border2); }
+.sheet-btns { display: flex; gap: 8px; }
+.sheet-btn { flex: 1; padding: 12px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; border: none; }
+.sheet-copy { background: var(--purple); color: white; }
+.sheet-mail { background: var(--green); color: white; }
+.sheet-close { background: var(--bg2); color: var(--text); border: 0.5px solid var(--border2); }
 </style>
 </head>
 <body>
 
 <div class="header">
   <a href="vera-hub.html" class="header-back">← Hub</a>
-  <div class="header-title">Voorraad scan</div>
-  <span class="header-badge">AI Vision</span>
+  <div class="header-title">Voorraad & Inkoop</div>
+  <span class="header-badge" id="alert-badge">AI Vision</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('scan',this)">📷 Scan</div>
+  <div class="tab" onclick="switchTab('bestel',this)">🛒 Besteladvies</div>
+  <div class="tab" onclick="switchTab('leveranciers',this)">🏭 Leveranciers</div>
+  <div class="tab" onclick="switchTab('geschiedenis',this)">🕐 Geschiedenis</div>
 </div>
 
 <div class="main">
 
-  <!-- Scan sectie -->
-  <div class="card" id="scan-card">
-    <div class="card-header">
-      <span>📦</span>
-      <div class="card-title">Nieuwe telling</div>
-    </div>
-    <div class="card-body">
+  <!-- ── SCAN TAB ── -->
+  <div id="tab-scan">
 
-      <div class="cat-grid" id="cat-grid">
-        <button class="cat-btn active" data-cat="drank" onclick="selectCat(this)">🍷 Drank & bar</button>
-        <button class="cat-btn" data-cat="droog" onclick="selectCat(this)">🌾 Droge waren</button>
-        <button class="cat-btn" data-cat="vers" onclick="selectCat(this)">🥬 Vers & koel</button>
-        <button class="cat-btn" data-cat="schoonmaak" onclick="selectCat(this)">🧴 Schoonmaak</button>
-        <button class="cat-btn" data-cat="linen" onclick="selectCat(this)">🛏️ Linnengoed</button>
-        <button class="cat-btn" data-cat="overig" onclick="selectCat(this)">📦 Overig</button>
+    <div id="alert-banner-box" style="display:none" class="alert-banner">
+      <span style="font-size:20px">🔔</span>
+      <div>
+        <div class="alert-banner-tekst" id="alert-banner-tekst">Producten onder minimum</div>
+        <div class="alert-banner-sub" id="alert-banner-sub"></div>
       </div>
-
-      <div class="upload-zone" id="upload-zone">
-        <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
-        <div class="upload-icon">📷</div>
-        <div class="upload-title">Foto uploaden</div>
-        <div class="upload-sub">Kies een afbeelding uit je galerij</div>
-      </div>
-
-      <button class="camera-btn" onclick="openCamera()">
-        📸 Foto maken met camera
-      </button>
-      <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleFile(this)">
+      <button class="btn-sm" onclick="switchTabByName('bestel')">Bekijk →</button>
     </div>
-  </div>
 
-  <!-- Preview -->
-  <div class="card" id="preview-section">
-    <div class="card-header">
-      <span>🖼️</span>
-      <div class="card-title">Foto gereed</div>
-    </div>
-    <div class="card-body">
-      <img id="preview-img" class="preview-img" src="" alt="Voorraad foto">
-      <div class="preview-actions">
-        <button class="btn btn-secondary" onclick="resetScan()">Andere foto</button>
-        <button class="btn btn-primary" onclick="analysePhoto()">✨ Analyseer met Vera</button>
+    <div class="card" id="scan-card">
+      <div class="card-header"><span>📦</span><div class="card-title">Nieuwe telling</div></div>
+      <div class="card-body">
+        <div class="cat-grid">
+          <button class="cat-btn active" data-cat="drank" onclick="selectCat(this)">🍷 Drank & bar</button>
+          <button class="cat-btn" data-cat="droog" onclick="selectCat(this)">🌾 Droge waren</button>
+          <button class="cat-btn" data-cat="vers" onclick="selectCat(this)">🥬 Vers & koel</button>
+          <button class="cat-btn" data-cat="schoonmaak" onclick="selectCat(this)">🧴 Schoonmaak</button>
+          <button class="cat-btn" data-cat="linen" onclick="selectCat(this)">🛏️ Linnengoed</button>
+          <button class="cat-btn" data-cat="overig" onclick="selectCat(this)">📦 Overig</button>
+        </div>
+        <div class="upload-zone">
+          <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
+          <div style="font-size:28px;margin-bottom:6px">📷</div>
+          <div style="font-size:13px;font-weight:500">Foto uploaden</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">Kies uit galerij</div>
+        </div>
+        <button class="camera-btn" onclick="openCamera()">📸 Foto maken met camera</button>
+        <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none" onchange="handleFile(this)">
       </div>
     </div>
-  </div>
 
-  <!-- Loading -->
-  <div class="card" id="loading-section" style="display:none">
-    <div class="card-body loading-state">
-      <div class="spinner"></div>
-      <div class="loading-title">Vera telt de voorraad...</div>
-      <div class="loading-sub" id="loading-sub">Foto analyseren</div>
-    </div>
-  </div>
-
-  <!-- Resultaat -->
-  <div class="card" id="result-section">
-    <div class="card-header">
-      <span>✅</span>
-      <div class="card-title">Telling compleet</div>
-    </div>
-    <div class="card-body">
-      <div class="result-header">
-        <div>
-          <div class="result-title" id="result-title">Drank & bar</div>
-          <div class="result-sub" id="result-sub">0 producten herkend</div>
+    <div class="card" id="preview-card" style="display:none">
+      <div class="card-header"><span>🖼️</span><div class="card-title">Foto gereed</div></div>
+      <div class="card-body">
+        <img id="preview-img" style="width:100%;border-radius:8px;max-height:240px;object-fit:cover" src="" alt="">
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn-sm" style="flex:1;padding:10px" onclick="resetScan()">Andere foto</button>
+          <button style="flex:2;background:var(--purple);color:white;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit" onclick="analysePhoto()">✨ Analyseer met Vera</button>
         </div>
       </div>
-      <div class="item-list" id="item-list"></div>
-      <div class="opmerking-box" id="opmerking-box" style="display:none"></div>
-      <button class="save-btn" id="save-btn" onclick="slaOp()">💾 Opslaan in Vera</button>
     </div>
-  </div>
 
-  <!-- Opgeslagen bevestiging -->
-  <div class="card" id="saved-section">
-    <div class="card-body">
-      <div class="saved-banner">
-        <div class="saved-icon">✅</div>
-        <div class="saved-title">Voorraad opgeslagen</div>
-        <div class="saved-sub" id="saved-sub">Gesynced naar Vera dashboard</div>
+    <div class="card" id="loading-card" style="display:none">
+      <div class="card-body" style="text-align:center;padding:28px">
+        <div class="spinner"></div>
+        <div style="font-size:14px;font-weight:500;margin-top:12px">Vera telt de voorraad...</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:4px" id="loading-sub">Foto analyseren</div>
       </div>
-      <button class="btn btn-secondary" style="margin-top:12px;width:100%" onclick="resetScan()">Nieuwe telling</button>
+    </div>
+
+    <div class="card" id="result-card" style="display:none">
+      <div class="card-header">
+        <span>✅</span>
+        <div class="card-title" id="result-title">Telling compleet</div>
+        <span style="font-size:11px;color:var(--text3)" id="result-sub"></span>
+      </div>
+      <div class="card-body">
+        <div id="item-list"></div>
+        <div class="opmerking-box" id="opmerking-box" style="display:none"></div>
+        <button class="save-btn" id="save-btn" onclick="slaOp()">💾 Opslaan</button>
+        <div id="saved-banner" style="display:none" class="saved-banner">
+          <div style="font-size:28px;margin-bottom:6px">✅</div>
+          <div style="font-size:14px;font-weight:600;color:var(--green)">Opgeslagen</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px" id="saved-sub"></div>
+          <button class="btn-sm" style="margin-top:10px" onclick="resetScan()">Nieuwe telling</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span>🕐</span><div class="card-title">Recente tellingen</div></div>
+      <div class="card-body" style="padding:0 16px">
+        <div id="hist-mini"><div class="empty-state">Nog geen tellingen</div></div>
+      </div>
     </div>
   </div>
 
-  <!-- Geschiedenis -->
-  <div class="card">
-    <div class="card-header">
-      <span>🕐</span>
-      <div class="card-title">Recente tellingen</div>
+  <!-- ── BESTELADVIES TAB ── -->
+  <div id="tab-bestel" style="display:none">
+    <div id="bestel-leeg" class="card" style="display:none">
+      <div class="card-body"><div class="empty-state">🎉 Alle producten boven minimum<br><span style="font-size:11px">Geen bijbestellingen nodig</span></div></div>
     </div>
-    <div class="card-body" style="padding:0 16px">
-      <div id="history-list">
-        <div class="empty-state">Nog geen tellingen — maak een eerste scan</div>
+    <div id="bestel-lijst"></div>
+  </div>
+
+  <!-- ── LEVERANCIERS TAB ── -->
+  <div id="tab-leveranciers" style="display:none">
+    <div class="card">
+      <div class="card-header"><div class="card-title">➕ Leverancier toevoegen</div></div>
+      <div class="card-body">
+        <div class="form-row">
+          <label class="form-label">Naam</label>
+          <input type="text" class="form-input" id="lev-naam" placeholder="bijv. Sligro">
+        </div>
+        <div class="form-row">
+          <label class="form-label">E-mailadres bestelling</label>
+          <input type="email" class="form-input" id="lev-email" placeholder="inkoop@sligro.nl">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Telefoonnummer</label>
+          <input type="tel" class="form-input" id="lev-tel" placeholder="020-1234567">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Klantnummer (optioneel)</label>
+          <input type="text" class="form-input" id="lev-klant" placeholder="bijv. KL-12345">
+        </div>
+        <button class="btn-primary" style="width:100%" onclick="voegLevToe()">Toevoegen</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🏭 Leveranciers</div></div>
+      <div class="card-body" style="padding:0 16px">
+        <div id="lev-lijst"><div class="empty-state">Nog geen leveranciers</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">📦 Producten & minimumvoorraad</div></div>
+      <div class="card-body" style="padding:0 16px">
+        <div style="font-size:12px;color:var(--text3);padding:10px 0 8px;line-height:1.6">Stel per product een minimumvoorraad in. Vera geeft een melding als de telling eronder zit.</div>
+        <div id="product-lijst"><div class="empty-state">Scan producten om ze hier te zien</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GESCHIEDENIS TAB ── -->
+  <div id="tab-geschiedenis" style="display:none">
+    <div class="card">
+      <div class="card-body" style="padding:0 16px">
+        <div id="hist-lijst"><div class="empty-state">Nog geen tellingen</div></div>
       </div>
     </div>
   </div>
 
 </div>
 
-<script>
-const SUPABASE_URL = 'https://nznsimwgjwkdvudcdmup.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ';
-const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
+<!-- Bestelnotitie sheet -->
+<div id="bestel-popup">
+  <div class="bestel-sheet">
+    <div class="bestel-sheet-title" id="bestel-popup-title">Bestelnotitie</div>
+    <div class="bestel-tekst" id="bestel-popup-tekst"></div>
+    <div class="sheet-btns">
+      <button class="sheet-btn sheet-copy" onclick="kopieerBestel()">📋 Kopiëren</button>
+      <button class="sheet-btn sheet-mail" onclick="mailBestel()">📧 E-mail</button>
+      <button class="sheet-btn sheet-close" onclick="sluitPopup()">Sluiten</button>
+    </div>
+  </div>
+</div>
 
+<script src="vera-widget.js"></script>
+<script>
 var selectedCat = 'drank';
 var currentImageBase64 = null;
 var currentResult = null;
-var history = JSON.parse(localStorage.getItem('vera_voorraad_history') || '[]');
+var scanHistory = JSON.parse(localStorage.getItem('vera_voorraad_history') || '[]');
+var leveranciers = JSON.parse(localStorage.getItem('vera_leveranciers') || '[]');
+var productCatalogus = JSON.parse(localStorage.getItem('vera_product_catalogus') || '{}');
+var huidigeLevNaam = '';
+var huidigeLevEmail = '';
 
-const catLabels = {
-  drank: '🍷 Drank & bar',
-  droog: '🌾 Droge waren',
-  vers: '🥬 Vers & koel',
-  schoonmaak: '🧴 Schoonmaak',
-  linen: '🛏️ Linnengoed',
-  overig: '📦 Overig'
-};
+const catLabels = { drank:'🍷 Drank & bar', droog:'🌾 Droge waren', vers:'🥬 Vers & koel', schoonmaak:'🧴 Schoonmaak', linen:'🛏️ Linnengoed', overig:'📦 Overig' };
+const catPrompts = { drank:'flessen wijn, bier, spirits, frisdrank, cocktail ingrediënten', droog:'pakken pasta, rijst, meel, blikken, sauzen, kruiden', vers:'groenten, fruit, zuivel, eieren, vlees, vis', schoonmaak:'schoonmaakmiddelen, desinfectans, papier', linen:'handdoeken, lakens, kussensloops, dekbedovertrekken', overig:'producten en artikelen' };
 
-const catPrompts = {
-  drank: 'flessen wijn, bier, spirits, frisdrank, cocktail ingrediënten, mixers',
-  droog: 'pakken pasta, rijst, meel, blikken, sauzen, kruiden, olie',
-  vers: 'groenten, fruit, zuivel, eieren, vlees, vis, kaas',
-  schoonmaak: 'schoonmaakmiddelen, desinfectans, papier, vuilniszakken',
-  linen: 'handdoeken, lakens, kussensloops, badmatten, dekbedovertrekken',
-  overig: 'producten, artikelen, items op de planken'
-};
+function getApiKey() { return localStorage.getItem('vera_anthropic_key') || ''; }
 
-function getApiKey() {
-  return localStorage.getItem('vera_anthropic_key') || '';
+function switchTab(name, btn) {
+  ['scan','bestel','leveranciers','geschiedenis'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'bestel') renderBesteladvies();
+  if (name === 'leveranciers') renderLeveranciers();
+  if (name === 'geschiedenis') renderGeschiedenis();
+  if (name === 'scan') renderHistMini();
 }
+function switchTabByName(n) { switchTab(n, document.querySelectorAll('.tab')[['scan','bestel','leveranciers','geschiedenis'].indexOf(n)]); }
 
 function selectCat(btn) {
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   selectedCat = btn.dataset.cat;
 }
-
-function openCamera() {
-  document.getElementById('camera-input').click();
-}
+function openCamera() { document.getElementById('camera-input').click(); }
 
 function handleFile(input) {
   var file = input.files[0];
@@ -277,9 +332,8 @@ function handleFile(input) {
     currentImageBase64 = e.target.result.split(',')[1];
     document.getElementById('preview-img').src = e.target.result;
     document.getElementById('scan-card').style.display = 'none';
-    document.getElementById('preview-section').style.display = 'block';
-    document.getElementById('result-section').style.display = 'none';
-    document.getElementById('saved-section').style.display = 'none';
+    document.getElementById('preview-card').style.display = 'block';
+    document.getElementById('result-card').style.display = 'none';
   };
   reader.readAsDataURL(file);
 }
@@ -287,214 +341,363 @@ function handleFile(input) {
 async function analysePhoto() {
   var key = getApiKey();
   if (!key) {
-    key = prompt('Vul je Anthropic API sleutel in (wordt lokaal opgeslagen):');
+    key = prompt('Vul je Anthropic API sleutel in:');
     if (!key) return;
     localStorage.setItem('vera_anthropic_key', key.trim());
     key = key.trim();
   }
+  document.getElementById('preview-card').style.display = 'none';
+  document.getElementById('loading-card').style.display = 'block';
 
-  document.getElementById('preview-section').style.display = 'none';
-  document.getElementById('loading-section').style.display = 'block';
+  var msgs = ['Foto analyseren...','Producten herkennen...','Aantallen tellen...','Leveranciers koppelen...'];
+  var mi = 0;
+  var mt = setInterval(function() { mi=(mi+1)%msgs.length; document.getElementById('loading-sub').textContent=msgs[mi]; }, 1000);
 
-  var loadingMessages = [
-    'Foto analyseren...',
-    'Producten herkennen...',
-    'Aantallen tellen...',
-    'Resultaat verwerken...'
-  ];
-  var msgIdx = 0;
-  var msgInterval = setInterval(function() {
-    msgIdx = (msgIdx + 1) % loadingMessages.length;
-    document.getElementById('loading-sub').textContent = loadingMessages[msgIdx];
-  }, 1200);
-
-  var prompt = `Je bent een nauwkeurige voorraadteller voor een hotel. Analyseer deze foto van de ${catLabels[selectedCat]} voorraadkast.
-
-Tel alle zichtbare producten (${catPrompts[selectedCat]}).
-
-Geef je antwoord ALLEEN als JSON, geen andere tekst:
-{
-  "items": [
-    {
-      "naam": "productnaam",
-      "emoji": "passend emoji",
-      "aantal": getal,
-      "eenheid": "flessen/stuks/dozen/kg/liter/rollen",
-      "betrouwbaarheid": getal tussen 0 en 1
-    }
-  ],
-  "opmerking": "optionele notitie over wat onduidelijk was of buiten beeld viel, of null",
-  "totaal_items": getal
-}
-
-Wees conservatief: als je niet zeker bent van een getal, schat dan naar beneden. Als iets niet zichtbaar is, tel het niet mee.`;
+  // Bouw leveranciers context voor de prompt
+  var levNamen = leveranciers.map(l => l.naam).join(', ') || 'geen bekende leveranciers';
 
   try {
     var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
+        max_tokens: 1500,
         messages: [{
           role: 'user',
           content: [
-            {
-              type: 'image',
-              source: {
-                type: 'base64',
-                media_type: 'image/jpeg',
-                data: currentImageBase64
-              }
-            },
-            { type: 'text', text: prompt }
+            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: currentImageBase64 } },
+            { type: 'text', text: 'Tel alle zichtbare producten in deze voorraadkast (categorie: ' + catLabels[selectedCat] + ', producten zoals: ' + catPrompts[selectedCat] + ').\n\nBekende leveranciers van dit hotel: ' + levNamen + '\n\nGeef ALLEEN JSON:\n{\n  "items": [\n    {\n      "naam": "exacte productnaam",\n      "emoji": "emoji",\n      "aantal": getal,\n      "eenheid": "flessen/stuks/dozen/kg",\n      "betrouwbaarheid": 0.0-1.0,\n      "leverancier": "naam van bekende leverancier of beste schatting op basis van merk/type of null"\n    }\n  ],\n  "opmerking": "notitie of null",\n  "totaal_items": getal\n}\n\nKoppel elk product aan een leverancier als je die herkent uit de lijst of op basis van het merk. Puur JSON, geen markdown.' }
           ]
         }]
       })
     });
-
-    clearInterval(msgInterval);
+    clearInterval(mt);
     var data = await res.json();
     var text = data.content[0].text;
-
-    // Strip JSON uit response
-    var jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('Geen JSON in response');
-    currentResult = JSON.parse(jsonMatch[0]);
-
-    document.getElementById('loading-section').style.display = 'none';
+    var m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('Geen JSON');
+    currentResult = JSON.parse(m[0]);
+    document.getElementById('loading-card').style.display = 'none';
     toonResultaat(currentResult);
-
   } catch(e) {
-    clearInterval(msgInterval);
-    document.getElementById('loading-section').style.display = 'none';
-    document.getElementById('preview-section').style.display = 'block';
-    alert('Fout bij analyse: ' + e.message);
+    clearInterval(mt);
+    document.getElementById('loading-card').style.display = 'none';
+    document.getElementById('preview-card').style.display = 'block';
+    alert('Fout: ' + e.message);
   }
 }
 
 function toonResultaat(result) {
   var items = result.items || [];
   document.getElementById('result-title').textContent = catLabels[selectedCat];
-  document.getElementById('result-sub').textContent = items.length + ' producten herkend · ' + result.totaal_items + ' stuks totaal';
+  document.getElementById('result-sub').textContent = items.length + ' producten';
 
-  var html = '';
-  items.forEach(function(item) {
+  var html = items.map(function(item) {
     var conf = Math.round((item.betrouwbaarheid || 0.8) * 100);
-    html += '<div class="item-row">';
-    html += '<div class="item-icon">' + (item.emoji || '📦') + '</div>';
-    html += '<div style="flex:1"><div class="item-name">' + item.naam + '</div>';
-    html += '<div class="confidence-bar"><div class="confidence-fill" style="width:' + conf + '%"></div></div></div>';
-    html += '<div style="text-align:right"><div class="item-qty">' + item.aantal + '</div>';
-    html += '<div class="item-unit">' + (item.eenheid || 'stuks') + '</div></div>';
-    html += '</div>';
-  });
-  document.getElementById('item-list').innerHTML = html || '<div class="empty-state">Geen producten herkend — probeer een scherpere foto</div>';
+    var catalogusItem = productCatalogus[item.naam] || {};
+    var min = catalogusItem.minimum || 0;
+    var onderMin = min > 0 && item.aantal < min;
+    var levOpties = '<option value="">Onbekend</option>' + leveranciers.map(l => '<option' + (item.leverancier === l.naam ? ' selected' : '') + '>' + l.naam + '</option>').join('');
+    return '<div class="item-row' + (onderMin ? ' onder-min' : '') + '" data-naam="' + item.naam + '">' +
+      '<div class="item-icon">' + (item.emoji || '📦') + '</div>' +
+      '<div class="item-info">' +
+        '<div class="item-name">' + item.naam + (onderMin ? ' 🔔' : '') + '</div>' +
+        '<div class="item-lev">Leverancier: <select onchange="updateLeverancier(\'' + item.naam.replace(/'/g,"\\'")+'\',this.value)">' + levOpties + '</select></div>' +
+        '<div class="conf-bar"><div class="conf-fill" style="width:' + conf + '%"></div></div>' +
+      '</div>' +
+      '<div class="item-right">' +
+        '<div class="item-qty">' + item.aantal + '</div>' +
+        '<div class="item-unit">' + (item.eenheid || 'stuks') + '</div>' +
+        (onderMin ? '<div class="item-min">min: ' + min + '</div>' : '') +
+      '</div>' +
+      '</div>';
+  }).join('');
+
+  document.getElementById('item-list').innerHTML = html || '<div class="empty-state">Geen producten herkend</div>';
 
   var opm = document.getElementById('opmerking-box');
-  if (result.opmerking) {
-    opm.textContent = '⚠ ' + result.opmerking;
-    opm.style.display = 'block';
-  } else {
-    opm.style.display = 'none';
-  }
+  if (result.opmerking) { opm.textContent = '⚠ ' + result.opmerking; opm.style.display = 'block'; }
+  else opm.style.display = 'none';
 
-  document.getElementById('result-section').style.display = 'block';
+  document.getElementById('save-btn').style.display = 'flex';
+  document.getElementById('saved-banner').style.display = 'none';
+  document.getElementById('result-card').style.display = 'block';
+
+  // Check alerts
+  checkAlerts(items);
 }
 
-async function slaOp() {
+function updateLeverancier(naam, lev) {
+  if (!productCatalogus[naam]) productCatalogus[naam] = {};
+  productCatalogus[naam].leverancier = lev;
+  localStorage.setItem('vera_product_catalogus', JSON.stringify(productCatalogus));
+}
+
+function checkAlerts(items) {
+  var onderMin = items.filter(function(item) {
+    var cat = productCatalogus[item.naam] || {};
+    return cat.minimum && item.aantal < cat.minimum;
+  });
+  var badge = document.getElementById('alert-badge');
+  var banner = document.getElementById('alert-banner-box');
+  if (onderMin.length > 0) {
+    badge.textContent = onderMin.length + ' ⚠';
+    badge.className = 'header-badge alert-badge';
+    banner.style.display = 'flex';
+    document.getElementById('alert-banner-tekst').textContent = onderMin.length + ' product' + (onderMin.length > 1 ? 'en' : '') + ' onder minimum';
+    document.getElementById('alert-banner-sub').textContent = onderMin.map(i => i.naam).join(', ');
+  } else {
+    badge.textContent = 'AI Vision';
+    badge.className = 'header-badge';
+    banner.style.display = 'none';
+  }
+}
+
+function slaOp() {
   if (!currentResult) return;
   var btn = document.getElementById('save-btn');
-  btn.disabled = true;
-  btn.textContent = 'Opslaan...';
+  btn.style.display = 'none';
+
+  // Leveranciers uit de DOM ophalen na eventuele aanpassingen
+  var items = currentResult.items || [];
+  document.querySelectorAll('#item-list .item-row').forEach(function(row, i) {
+    var sel = row.querySelector('select');
+    if (sel && items[i]) items[i].leverancier = sel.value || items[i].leverancier;
+  });
 
   var entry = {
     id: Date.now(),
     categorie: selectedCat,
     label: catLabels[selectedCat],
     tijdstip: new Date().toISOString(),
-    items: currentResult.items,
+    items: items,
     totaal: currentResult.totaal_items
   };
 
-  // Altijd opslaan in localStorage
-  history.unshift(entry);
-  if (history.length > 20) history = history.slice(0, 20);
-  localStorage.setItem('vera_voorraad_history', JSON.stringify(history));
+  // Update catalogus met leveranciers
+  items.forEach(function(item) {
+    if (!productCatalogus[item.naam]) productCatalogus[item.naam] = {};
+    if (item.leverancier) productCatalogus[item.naam].leverancier = item.leverancier;
+    if (!productCatalogus[item.naam].minimum) productCatalogus[item.naam].minimum = 0;
+  });
+  localStorage.setItem('vera_product_catalogus', JSON.stringify(productCatalogus));
 
-  // Probeer Supabase met timeout — localStorage is altijd leidend
-  try {
-    var controller = new AbortController();
-    var timeout = setTimeout(function() { controller.abort(); }, 3000);
-    await fetch(SUPABASE_URL + '/rest/v1/voorraad_tellingen', {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        hotel_id: HOTEL_ID,
-        categorie: selectedCat,
-        items: currentResult.items,
-        totaal_items: currentResult.totaal_items,
-        opmerking: currentResult.opmerking,
-        geteld_door: 'medewerker',
-        geteld_op: new Date().toISOString()
-      })
-    });
-    clearTimeout(timeout);
-  } catch(e) {}
+  scanHistory.unshift(entry);
+  if (scanHistory.length > 50) scanHistory = scanHistory.slice(0, 50);
+  localStorage.setItem('vera_voorraad_history', JSON.stringify(scanHistory));
 
-  // Altijd doorgaan naar bevestiging
-  document.getElementById('result-section').style.display = 'none';
-  document.getElementById('saved-section').style.display = 'block';
-  document.getElementById('saved-sub').textContent = entry.items.length + ' producten · ' + catLabels[selectedCat];
-  btn.disabled = false;
-
-  renderHistory();
+  document.getElementById('saved-banner').style.display = 'block';
+  document.getElementById('saved-sub').textContent = items.length + ' producten · ' + catLabels[selectedCat];
+  renderHistMini();
 }
 
 function resetScan() {
-  currentImageBase64 = null;
-  currentResult = null;
+  currentImageBase64 = null; currentResult = null;
   document.getElementById('file-input').value = '';
   document.getElementById('camera-input').value = '';
   document.getElementById('scan-card').style.display = 'block';
-  document.getElementById('preview-section').style.display = 'none';
-  document.getElementById('loading-section').style.display = 'none';
-  document.getElementById('result-section').style.display = 'none';
-  document.getElementById('saved-section').style.display = 'none';
-  document.getElementById('save-btn').disabled = false;
-  document.getElementById('save-btn').textContent = '💾 Opslaan in Vera';
+  document.getElementById('preview-card').style.display = 'none';
+  document.getElementById('loading-card').style.display = 'none';
+  document.getElementById('result-card').style.display = 'none';
+  document.getElementById('save-btn').style.display = 'flex';
 }
 
-function renderHistory() {
-  var el = document.getElementById('history-list');
-  if (history.length === 0) {
-    el.innerHTML = '<div class="empty-state">Nog geen tellingen — maak een eerste scan</div>';
+// ── BESTELADVIES ──
+function renderBesteladvies() {
+  if (scanHistory.length === 0) { document.getElementById('bestel-leeg').style.display = 'block'; document.getElementById('bestel-lijst').innerHTML = ''; return; }
+
+  // Laatste telling per product
+  var laatste = {};
+  scanHistory.forEach(function(scan) {
+    (scan.items || []).forEach(function(item) {
+      if (!laatste[item.naam]) laatste[item.naam] = { ...item, geteld_op: scan.tijdstip };
+    });
+  });
+
+  // Producten onder minimum, gegroepeerd per leverancier
+  var perLev = {};
+  Object.values(laatste).forEach(function(item) {
+    var cat = productCatalogus[item.naam] || {};
+    var min = cat.minimum || 0;
+    if (min > 0 && item.aantal < min) {
+      var lev = cat.leverancier || item.leverancier || 'Onbekend';
+      if (!perLev[lev]) perLev[lev] = [];
+      var bestelAantal = min * 2 - item.aantal; // bestel tot 2x minimum
+      perLev[lev].push({ ...item, minimum: min, bestelAantal: Math.max(1, bestelAantal) });
+    }
+  });
+
+  var levNamen = Object.keys(perLev);
+  if (levNamen.length === 0) {
+    document.getElementById('bestel-leeg').style.display = 'block';
+    document.getElementById('bestel-lijst').innerHTML = '';
     return;
   }
-  el.innerHTML = history.slice(0, 8).map(function(h) {
-    var d = new Date(h.tijdstip);
-    var tijd = d.toLocaleDateString('nl-NL', {day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit'});
-    return '<div class="hist-row">' +
-      '<div class="hist-cat">' + (h.label.split(' ')[0]) + '</div>' +
-      '<div class="hist-info"><div class="hist-name">' + h.label.substring(2) + '</div>' +
-      '<div class="hist-time">' + tijd + '</div></div>' +
-      '<div class="hist-count">' + h.totaal + ' stuks</div>' +
+  document.getElementById('bestel-leeg').style.display = 'none';
+
+  var html = levNamen.map(function(lev) {
+    var levInfo = leveranciers.find(l => l.naam === lev) || {};
+    var items = perLev[lev];
+    var itemsHtml = items.map(function(item) {
+      return '<div class="lev-item-row">' +
+        '<span class="lev-item-naam">' + (item.emoji||'📦') + ' ' + item.naam + '</span>' +
+        '<span class="lev-item-heb">heeft: ' + item.aantal + '</span>' +
+        '<span class="lev-item-bestel">bestel: +' + item.bestelAantal + '</span>' +
+        '</div>';
+    }).join('');
+    return '<div class="lev-groep">' +
+      '<div class="lev-header">' +
+        '<div><div class="lev-naam">' + lev + '</div>' + (levInfo.email ? '<div class="lev-email">' + levInfo.email + '</div>' : '') + '</div>' +
+        '<span style="font-size:12px;color:var(--coral);font-weight:600">' + items.length + ' product' + (items.length>1?'en':'') + '</span>' +
+      '</div>' +
+      '<div class="lev-items">' + itemsHtml + '</div>' +
+      '<div style="display:flex;gap:6px;margin-top:6px">' +
+        '<button class="bestel-btn" onclick="openBestelPopup(\'' + lev + '\')">📋 Bestelnotitie maken</button>' +
+        (levInfo.email ? '<button class="bestel-btn mail-btn" onclick="openBestelPopup(\'' + lev + '\',true)">📧 Direct e-mailen</button>' : '') +
+      '</div>' +
+      '</div>';
+  }).join('');
+
+  document.getElementById('bestel-lijst').innerHTML = html;
+}
+
+function openBestelPopup(levNaam, directMail) {
+  var levInfo = leveranciers.find(l => l.naam === levNaam) || {};
+  var laatste = {};
+  scanHistory.forEach(function(scan) {
+    (scan.items || []).forEach(function(item) {
+      if (!laatste[item.naam]) laatste[item.naam] = item;
+    });
+  });
+  var items = Object.values(laatste).filter(function(item) {
+    var cat = productCatalogus[item.naam] || {};
+    var lev = cat.leverancier || item.leverancier || 'Onbekend';
+    return lev === levNaam && cat.minimum && item.aantal < cat.minimum;
+  });
+
+  var datum = new Date().toLocaleDateString('nl-NL', {day:'numeric',month:'long',year:'numeric'});
+  var tekst = 'Bestelling Hotel De Klok\n' + datum + '\n';
+  if (levInfo.klant) tekst += 'Klantnummer: ' + levInfo.klant + '\n';
+  tekst += '\nGeachte ' + levNaam + ',\n\nHierbij onze bestelling:\n\n';
+  items.forEach(function(item) {
+    var cat = productCatalogus[item.naam] || {};
+    var min = cat.minimum || 0;
+    var bestel = Math.max(1, min * 2 - item.aantal);
+    tekst += '- ' + item.naam + ': ' + bestel + ' ' + (item.eenheid||'stuks') + '\n';
+  });
+  tekst += '\nMet vriendelijke groet,\nHotel De Klok';
+
+  huidigeLevNaam = levNaam;
+  huidigeLevEmail = levInfo.email || '';
+  document.getElementById('bestel-popup-title').textContent = 'Bestelling bij ' + levNaam;
+  document.getElementById('bestel-popup-tekst').textContent = tekst;
+  document.getElementById('bestel-popup').classList.add('open');
+  if (directMail) mailBestel();
+}
+
+function kopieerBestel() {
+  var tekst = document.getElementById('bestel-popup-tekst').textContent;
+  navigator.clipboard.writeText(tekst).then(function() { alert('✅ Gekopieerd naar klembord'); });
+}
+function mailBestel() {
+  var tekst = document.getElementById('bestel-popup-tekst').textContent;
+  var subject = encodeURIComponent('Bestelling Hotel De Klok');
+  var body = encodeURIComponent(tekst);
+  window.location.href = 'mailto:' + (huidigeLevEmail || '') + '?subject=' + subject + '&body=' + body;
+}
+function sluitPopup() { document.getElementById('bestel-popup').classList.remove('open'); }
+
+// ── LEVERANCIERS ──
+function voegLevToe() {
+  var naam = document.getElementById('lev-naam').value.trim();
+  if (!naam) { alert('Vul een naam in'); return; }
+  leveranciers.push({ naam, email: document.getElementById('lev-email').value.trim(), tel: document.getElementById('lev-tel').value.trim(), klant: document.getElementById('lev-klant').value.trim() });
+  localStorage.setItem('vera_leveranciers', JSON.stringify(leveranciers));
+  document.getElementById('lev-naam').value = '';
+  document.getElementById('lev-email').value = '';
+  document.getElementById('lev-tel').value = '';
+  document.getElementById('lev-klant').value = '';
+  renderLeveranciers();
+}
+
+function verwijderLev(idx) {
+  if (!confirm('Verwijder ' + leveranciers[idx].naam + '?')) return;
+  leveranciers.splice(idx, 1);
+  localStorage.setItem('vera_leveranciers', JSON.stringify(leveranciers));
+  renderLeveranciers();
+}
+
+function renderLeveranciers() {
+  var el = document.getElementById('lev-lijst');
+  if (leveranciers.length === 0) { el.innerHTML = '<div class="empty-state">Nog geen leveranciers</div>'; }
+  else {
+    el.innerHTML = leveranciers.map(function(l, i) {
+      return '<div class="lev-beheer-row">' +
+        '<div style="flex:1"><div style="font-size:13px;font-weight:500">' + l.naam + '</div>' +
+        (l.email ? '<div style="font-size:11px;color:var(--text3)">' + l.email + '</div>' : '') +
+        (l.tel ? '<div style="font-size:11px;color:var(--text3)">' + l.tel + '</div>' : '') + '</div>' +
+        '<button class="btn-sm btn-del" onclick="verwijderLev(' + i + ')">✕</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  // Product catalogus
+  var prodEl = document.getElementById('product-lijst');
+  var producten = Object.keys(productCatalogus);
+  if (producten.length === 0) { prodEl.innerHTML = '<div class="empty-state">Scan producten om ze hier te zien</div>'; return; }
+
+  var levOpties = '<option value="">Onbekend</option>' + leveranciers.map(l => '<option>' + l.naam + '</option>').join('');
+  prodEl.innerHTML = producten.map(function(naam) {
+    var p = productCatalogus[naam];
+    return '<div style="padding:10px 0;border-bottom:0.5px solid var(--border)">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+        '<span style="font-size:13px;font-weight:500;flex:1">' + naam + '</span>' +
+        '<input type="number" min="0" value="' + (p.minimum||0) + '" style="width:56px;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;padding:4px 8px;font-size:12px;font-family:\'DM Mono\',monospace;text-align:center" onchange="setMinimum(\'' + naam.replace(/'/g,"\\'") + '\',this.value)" title="Minimumvoorraad">' +
+        '<span style="font-size:10px;color:var(--text3)">min</span>' +
+      '</div>' +
+      '<select class="form-input" style="font-size:12px;padding:6px 10px" onchange="updateLeverancier(\'' + naam.replace(/'/g,"\\'") + '\',this.value)">' + levOpties.replace('value="' + (p.leverancier||'') + '"', 'value="' + (p.leverancier||'') + '" selected') + '</select>' +
       '</div>';
   }).join('');
 }
 
-renderHistory();
+function setMinimum(naam, val) {
+  if (!productCatalogus[naam]) productCatalogus[naam] = {};
+  productCatalogus[naam].minimum = parseInt(val) || 0;
+  localStorage.setItem('vera_product_catalogus', JSON.stringify(productCatalogus));
+}
+
+// ── GESCHIEDENIS ──
+function renderGeschiedenis() {
+  var el = document.getElementById('hist-lijst');
+  if (scanHistory.length === 0) { el.innerHTML = '<div class="empty-state">Nog geen tellingen</div>'; return; }
+  el.innerHTML = scanHistory.map(function(h) {
+    var d = new Date(h.tijdstip);
+    var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="hist-row">' +
+      '<span style="font-size:16px">' + h.label.split(' ')[0] + '</span>' +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:500">' + h.label.substring(2) + '</div>' +
+      '<div style="font-size:11px;color:var(--text3);font-family:\'DM Mono\',monospace">' + tijd + '</div></div>' +
+      '<div style="font-size:13px;font-weight:600;font-family:\'DM Mono\',monospace;color:var(--purple)">' + (h.totaal||h.items?.length||0) + ' stuks</div>' +
+      '</div>';
+  }).join('');
+}
+
+function renderHistMini() {
+  var el = document.getElementById('hist-mini');
+  if (scanHistory.length === 0) { el.innerHTML = '<div class="empty-state">Nog geen tellingen</div>'; return; }
+  el.innerHTML = scanHistory.slice(0,4).map(function(h) {
+    var d = new Date(h.tijdstip);
+    var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+    return '<div class="hist-row">' +
+      '<span>' + h.label.split(' ')[0] + '</span>' +
+      '<div style="flex:1;font-size:12px">' + h.label.substring(2) + '<br><span style="font-size:10px;color:var(--text3)">' + tijd + '</span></div>' +
+      '<span style="font-size:12px;font-weight:600;color:var(--purple);font-family:\'DM Mono\',monospace">' + (h.totaal||0) + ' st</span>' +
+      '</div>';
+  }).join('');
+}
+
+renderHistMini();
 </script>
 </body>
 </html>
