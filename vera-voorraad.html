@@ -427,10 +427,13 @@ async function slaOp() {
   if (history.length > 20) history = history.slice(0, 20);
   localStorage.setItem('vera_voorraad_history', JSON.stringify(history));
 
-  // Probeer Supabase — stil falen is OK
+  // Probeer Supabase met timeout — localStorage is altijd leidend
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/voorraad_tellingen', {
+    var controller = new AbortController();
+    var timeout = setTimeout(function() { controller.abort(); }, 3000);
+    await fetch(SUPABASE_URL + '/rest/v1/voorraad_tellingen', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
@@ -447,6 +450,7 @@ async function slaOp() {
         geteld_op: new Date().toISOString()
       })
     });
+    clearTimeout(timeout);
   } catch(e) {}
 
   // Altijd doorgaan naar bevestiging
