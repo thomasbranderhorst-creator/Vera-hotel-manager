@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Toby — Housekeeping kwaliteit</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f4f1ec; --bg2: #eceae4; --card: #ffffff;
+  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
+  --text: #1a1814; --text2: #5a5650; --text3: #8a8680;
+  --purple: #6355e0; --purple-bg: rgba(99,85,224,0.08); --purple-border: rgba(99,85,224,0.25);
+  --green: #1a8c5a; --green-bg: rgba(26,140,90,0.08); --green-border: rgba(26,140,90,0.25);
+  --amber: #c47c0a; --amber-bg: rgba(196,124,10,0.08); --amber-border: rgba(196,124,10,0.25);
+  --coral: #d84a30; --coral-bg: rgba(216,74,48,0.08); --coral-border: rgba(216,74,48,0.25);
+  --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
+  --radius: 12px;
+}
+body { background: var(--bg); font-family: 'DM Sans', -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+
+.header { padding: 14px 20px; display: flex; align-items: center; gap: 10px; background: var(--card); border-bottom: 0.5px solid var(--border2); position: sticky; top: 0; z-index: 100; }
+.header-back { font-size: 13px; color: var(--purple); text-decoration: none; white-space: nowrap; }
+.header-title { font-size: 15px; font-weight: 600; flex: 1; }
+.header-sla { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.sla-ok { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
+.sla-warn { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-border); }
+.sla-fail { background: var(--coral-bg); color: var(--coral); border: 0.5px solid var(--coral-border); }
+
+.tabs { display: flex; background: var(--card); border-bottom: 0.5px solid var(--border2); padding: 0 16px; }
+.tab { padding: 10px 14px; font-size: 13px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -0.5px; white-space: nowrap; }
+.tab.active { color: var(--purple); border-bottom-color: var(--purple); font-weight: 500; }
+
+.main { padding: 14px 14px 0; max-width: 600px; margin: 0 auto; }
+
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden; }
+.card-header { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card-title { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.card-body { padding: 14px 16px; }
+
+/* Score dashboard */
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+.score-card { background: var(--bg); border-radius: 10px; padding: 14px 12px; text-align: center; border: 0.5px solid var(--border2); }
+.score-val { font-size: 26px; font-weight: 700; font-family: 'DM Mono', monospace; }
+.score-lbl { font-size: 10px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+.score-delta { font-size: 10px; font-family: 'DM Mono', monospace; margin-top: 4px; }
+.delta-up { color: var(--green); }
+.delta-down { color: var(--coral); }
+.delta-flat { color: var(--text3); }
+
+.sla-bar { background: var(--bg); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.sla-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; }
+.sla-bar-label { font-weight: 500; }
+.sla-bar-val { font-family: 'DM Mono', monospace; color: var(--purple); }
+.bar-track { height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width .5s; }
+
+/* Melding formulier */
+.form-row { margin-bottom: 12px; }
+.form-label { font-size: 12px; font-weight: 500; margin-bottom: 6px; display: block; color: var(--text2); }
+.form-input { width: 100%; background: var(--bg); border: 0.5px solid var(--border2); border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; color: var(--text); outline: none; }
+.form-input:focus { border-color: var(--purple); background: white; }
+textarea.form-input { min-height: 80px; resize: vertical; }
+select.form-input { cursor: pointer; }
+
+.severity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.sev-btn { padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border2); background: var(--bg); font-family: inherit; text-align: center; transition: all .12s; }
+.sev-btn.active-minor { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
+.sev-btn.active-major { background: var(--coral-bg); border-color: var(--coral-border); color: var(--coral); }
+.sev-btn.active-critical { background: var(--coral-bg); border-color: var(--coral); color: var(--coral); font-weight: 700; }
+
+.upload-zone { border: 1.5px dashed var(--border2); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--bg); position: relative; margin-bottom: 12px; }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.upload-zone:hover { border-color: var(--purple); }
+.photo-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.photo-thumb { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; border: 0.5px solid var(--border2); }
+.photo-thumb-del { position: relative; }
+.photo-del-btn { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; border-radius: 50%; background: var(--coral); border: none; color: white; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+.ai-analyse { background: var(--purple-bg); border: 0.5px solid var(--purple-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: var(--text2); line-height: 1.7; }
+.ai-analyse-header { font-size: 11px; font-weight: 600; color: var(--purple); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
+.submit-btn { width: 100%; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Log lijst */
+.log-item { border-bottom: 0.5px solid var(--border); padding: 12px 0; }
+.log-item:last-child { border: none; }
+.log-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.log-kamer { font-size: 13px; font-weight: 600; }
+.log-tijd { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-left: auto; }
+.log-hk { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--bg2); color: var(--text2); }
+.sev-badge { font-size: 10px; padding: 2px 8px; border-radius: 12px; font-weight: 500; }
+.sev-minor { background: var(--amber-bg); color: var(--amber); }
+.sev-major { background: var(--coral-bg); color: var(--coral); }
+.sev-critical { background: var(--coral); color: white; }
+.log-tekst { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 6px; }
+.log-ai { font-size: 11px; color: var(--purple); font-style: italic; }
+.log-fotos { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.log-foto { width: 56px; height: 56px; border-radius: 6px; object-fit: cover; border: 0.5px solid var(--border2); cursor: pointer; }
+
+/* HK performance tabel */
+.perf-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+.perf-row:last-child { border: none; }
+.perf-naam { font-size: 13px; font-weight: 500; flex: 1; }
+.perf-meldingen { font-size: 12px; color: var(--text3); text-align: center; width: 60px; }
+.perf-score { font-size: 13px; font-weight: 600; font-family: 'DM Mono', monospace; width: 48px; text-align: right; }
+.perf-trend { font-size: 18px; width: 24px; text-align: center; }
+
+/* Filters */
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.filter-btn { font-size: 11px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--border2); background: var(--bg); cursor: pointer; font-family: inherit; color: var(--text2); }
+.filter-btn.active { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
+
+/* Spinner */
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state { text-align: center; padding: 24px; color: var(--text3); font-size: 13px; }
+
+/* Lightbox */
+#lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; align-items: center; justify-content: center; }
+#lightbox.open { display: flex; }
+#lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
+#lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 28px; cursor: pointer; background: none; border: none; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="toby-hub.html" class="header-back">← Hub</a>
+  <div class="header-title">HK Kwaliteitscontrole</div>
+  <span class="header-sla" id="sla-badge">SLA laden...</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('dashboard',this)">Dashboard</div>
+  <div class="tab" onclick="switchTab('melding',this)">+ Melding</div>
+  <div class="tab" onclick="switchTab('log',this)">Log</div>
+  <div class="tab" onclick="switchTab('performance',this)">Performance</div>
+  <div class="tab" onclick="location.href='toby-hk-inspectie.html'">🔍 Inspectie</div>
+</div>
+
+<div class="main">
+
+  <!-- ── TAB: DASHBOARD ── -->
+  <div id="tab-dashboard">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📊 Scores & SLA</div>
+        <span style="font-size:11px;color:var(--text3)" id="periode-label">Deze maand</span>
+      </div>
+      <div class="card-body">
+        <div class="score-grid">
+          <div class="score-card">
+            <div class="score-val" id="score-revinate" style="color:var(--green)">—</div>
+            <div class="score-lbl">Revinate gem.</div>
+            <div class="score-delta" id="delta-revinate">laden...</div>
+          </div>
+          <div class="score-card">
+            <div class="score-val" id="score-sla">9.0</div>
+            <div class="score-lbl">SLA minimum</div>
+            <div class="score-delta" style="color:var(--text3)">contractnorm</div>
+          </div>
+          <div class="score-card">
+            <div class="score-val" id="score-meldingen" style="color:var(--coral)">—</div>
+            <div class="score-lbl">Meldingen</div>
+            <div class="score-delta" id="delta-meldingen">laden...</div>
+          </div>
+        </div>
+
+        <div class="sla-bar">
+          <div class="sla-bar-header">
+            <span class="sla-bar-label">SLA voortgang</span>
+            <span class="sla-bar-val" id="sla-progress-val">—</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill" id="sla-bar-fill" style="width:0%;background:var(--green)"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:var(--bg);border-radius:8px;padding:12px;border:0.5px solid var(--border2)">
+            <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Kritiek deze week</div>
+            <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--coral)" id="count-critical">—</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">meldingen</div>
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:12px;border:0.5px solid var(--border2)">
+            <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Kamers in log</div>
+            <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--amber)" id="count-kamers">—</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">unieke kamers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">⚠️ Recente kritieke meldingen</div>
+        <span style="font-size:12px;color:var(--purple);cursor:pointer" onclick="switchTabByName('log')">Alle →</span>
+      </div>
+      <div class="card-body" style="padding:0 16px">
+        <div id="recent-critical-list">
+          <div class="empty-state">Geen kritieke meldingen — goed bezig!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: MELDING ── -->
+  <div id="tab-melding" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📷 Nieuwe kwaliteitsmelding</div>
+      </div>
+      <div class="card-body">
+
+        <div class="form-row">
+          <label class="form-label">Kamernummer *</label>
+          <input type="text" class="form-input" id="f-kamer" placeholder="bijv. 12 of 204">
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Housekeeper</label>
+          <select class="form-input" id="f-hk">
+            <option value="">— Onbekend / Toby bepaalt via Mews —</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Ernst van de bevinding</label>
+          <div class="severity-grid">
+            <button class="sev-btn" data-sev="minor" onclick="selectSev(this,'minor')">⚠️ Minor<br><span style="font-size:10px;font-weight:400">Schoon maar onnauwkeurig</span></button>
+            <button class="sev-btn" data-sev="major" onclick="selectSev(this,'major')">🔴 Major<br><span style="font-size:10px;font-weight:400">Hygiëne of veiligheid</span></button>
+            <button class="sev-btn" data-sev="critical" onclick="selectSev(this,'critical')">🚨 Kritiek<br><span style="font-size:10px;font-weight:400">Kamer niet te verhuren</span></button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Categorie</label>
+          <select class="form-input" id="f-cat">
+            <option value="badkamer">🚿 Badkamer</option>
+            <option value="beddengoed">🛏️ Beddengoed & linnengoed</option>
+            <option value="vloer">🧹 Vloer & tapijt</option>
+            <option value="ramen">🪟 Ramen & spiegels</option>
+            <option value="minibar">🧃 Minibar & supplies</option>
+            <option value="schade">⚒️ Schade aan inventaris</option>
+            <option value="geur">👃 Geur / ventilatie</option>
+            <option value="overig">📋 Overig</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Omschrijving</label>
+          <textarea class="form-input" id="f-omschrijving" placeholder="Wat is er precies niet in orde? Wees specifiek."></textarea>
+        </div>
+
+        <div class="form-row">
+          <label class="form-label">Foto's (max 4)</label>
+          <div class="upload-zone" id="upload-zone">
+            <input type="file" id="foto-input" accept="image/*" multiple onchange="handleFotos(this)">
+            <div style="font-size:24px;margin-bottom:6px">📸</div>
+            <div style="font-size:13px;font-weight:500">Foto's toevoegen</div>
+            <div style="font-size:11px;color:var(--text3);margin-top:2px">Camera of galerij</div>
+          </div>
+          <div class="photo-preview" id="photo-preview"></div>
+        </div>
+
+        <div id="ai-analyse-box" style="display:none" class="ai-analyse">
+          <div class="ai-analyse-header">Toby analyse</div>
+          <div id="ai-analyse-tekst"></div>
+        </div>
+
+        <button class="submit-btn" id="submit-btn" onclick="submitMelding()">Melding opslaan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: LOG ── -->
+  <div id="tab-log" style="display:none">
+    <div class="filter-row" id="filter-row">
+      <button class="filter-btn active" data-filter="all" onclick="filterLog(this,'all')">Alles</button>
+      <button class="filter-btn" data-filter="critical" onclick="filterLog(this,'critical')">🚨 Kritiek</button>
+      <button class="filter-btn" data-filter="major" onclick="filterLog(this,'major')">🔴 Major</button>
+      <button class="filter-btn" data-filter="minor" onclick="filterLog(this,'minor')">⚠️ Minor</button>
+    </div>
+    <div class="card">
+      <div class="card-body" style="padding:0 16px">
+        <div id="log-list">
+          <div class="empty-state">Nog geen meldingen — maak een eerste melding via + Melding</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: PERFORMANCE ── -->
+  <div id="tab-performance" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">👥 Housekeeper overzicht</div>
+      </div>
+      <div class="card-body" style="padding:0 16px">
+        <div id="perf-list">
+          <div class="empty-state">Voeg housekeepers toe via het formulier om performance bij te houden</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">⚙️ Instellingen</div>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <label class="form-label">SLA minimum score (Revinate/Google)</label>
+          <input type="number" class="form-input" id="sla-input" value="9.0" min="1" max="10" step="0.1" onchange="saveSla()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">HK bedrijfsnaam</label>
+          <input type="text" class="form-input" id="hk-bedrijf" placeholder="bijv. CleanPro BV" onchange="saveSettings()">
+        </div>
+        <div class="form-row">
+          <label class="form-label">Housekeepers (één per regel)</label>
+          <textarea class="form-input" id="hk-namen" placeholder="Anna de Vries&#10;Mohammed El Amin&#10;Sarah Jansen" onchange="saveSettings()"></textarea>
+        </div>
+        <button class="submit-btn" onclick="saveSettings();renderAll()">Opslaan</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="toby-widget.js"></script>
+<script>
+const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
+
+// State
+var meldingen = JSON.parse(localStorage.getItem('toby_hk_meldingen') || '[]');
+var settings = JSON.parse(localStorage.getItem('toby_hk_settings') || '{"sla":9.0,"bedrijf":"","namen":"","revinateScore":8.7,"revinateVorige":8.5}');
+var fotos = []; // base64 array
+var selectedSev = null;
+var activeFilter = 'all';
+
+function getApiKey() { return localStorage.getItem('toby_anthropic_key') || ''; }
+
+function switchTab(name, btn) {
+  ['dashboard','melding','log','performance'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'log') renderLog();
+  if (name === 'performance') renderPerf();
+  if (name === 'dashboard') renderDashboard();
+}
+function switchTabByName(name) {
+  var tabs = document.querySelectorAll('.tab');
+  var map = {log:2, performance:3, melding:1, dashboard:0};
+  switchTab(name, tabs[map[name]]);
+}
+
+function selectSev(btn, sev) {
+  document.querySelectorAll('.sev-btn').forEach(b => {
+    b.classList.remove('active-minor','active-major','active-critical');
+  });
+  btn.classList.add('active-' + sev);
+  selectedSev = sev;
+}
+
+function handleFotos(input) {
+  var files = Array.from(input.files).slice(0, 4);
+  fotos = [];
+  var preview = document.getElementById('photo-preview');
+  preview.innerHTML = '';
+  files.forEach(function(file, i) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      fotos.push(e.target.result.split(',')[1]);
+      var wrap = document.createElement('div');
+      wrap.className = 'photo-thumb-del';
+      var img = document.createElement('img');
+      img.className = 'photo-thumb';
+      img.src = e.target.result;
+      var del = document.createElement('button');
+      del.className = 'photo-del-btn';
+      del.textContent = '×';
+      del.onclick = function() { fotos.splice(i,1); wrap.remove(); };
+      wrap.appendChild(img);
+      wrap.appendChild(del);
+      preview.appendChild(wrap);
+      // Auto-analyseer na eerste foto
+      if (fotos.length === 1) analysePhotoAI(e.target.result.split(',')[1]);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function analysePhotoAI(base64) {
+  var key = getApiKey();
+  if (!key) return;
+  var box = document.getElementById('ai-analyse-box');
+  var tekst = document.getElementById('ai-analyse-tekst');
+  box.style.display = 'block';
+  tekst.textContent = 'Toby analyseert de foto...';
+  var cat = document.getElementById('f-cat').value;
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
+            { type: 'text', text: 'Dit is een foto van een hotelkamer (categorie: ' + cat + '). Beoordeel de reinheid en kwaliteit van het housekeeping werk. Geef een korte professionele analyse in 2-3 zinnen: wat is er niet in orde, hoe ernstig is het, en wat moet er gedaan worden. Spreek Nederlands.' }
+          ]
+        }]
+      })
+    });
+    var data = await res.json();
+    tekst.textContent = data.content[0].text;
+    // Auto-invullen omschrijving als die leeg is
+    var omschr = document.getElementById('f-omschrijving');
+    if (!omschr.value) omschr.value = data.content[0].text;
+  } catch(e) {
+    tekst.textContent = 'Analyse niet beschikbaar — vul handmatig in.';
+  }
+}
+
+function submitMelding() {
+  var kamer = document.getElementById('f-kamer').value.trim();
+  if (!kamer) { alert('Vul een kamernummer in'); return; }
+  if (!selectedSev) { alert('Kies een ernst'); return; }
+
+  var hkSelect = document.getElementById('f-hk');
+  var melding = {
+    id: Date.now(),
+    kamer: kamer,
+    housekeeper: hkSelect.value || 'Onbekend',
+    ernst: selectedSev,
+    categorie: document.getElementById('f-cat').value,
+    omschrijving: document.getElementById('f-omschrijving').value,
+    ai_analyse: document.getElementById('ai-analyse-tekst').textContent || null,
+    fotos: [...fotos],
+    tijdstip: new Date().toISOString()
+  };
+
+  meldingen.unshift(melding);
+  localStorage.setItem('toby_hk_meldingen', JSON.stringify(meldingen));
+
+  // Reset form
+  document.getElementById('f-kamer').value = '';
+  document.getElementById('f-omschrijving').value = '';
+  document.getElementById('f-hk').value = '';
+  document.getElementById('photo-preview').innerHTML = '';
+  document.getElementById('ai-analyse-box').style.display = 'none';
+  document.querySelectorAll('.sev-btn').forEach(b => b.classList.remove('active-minor','active-major','active-critical'));
+  fotos = [];
+  selectedSev = null;
+
+  alert('✅ Melding opgeslagen');
+  switchTabByName('log');
+}
+
+function filterLog(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = filter;
+  renderLog();
+}
+
+function renderLog() {
+  var list = document.getElementById('log-list');
+  var items = activeFilter === 'all' ? meldingen : meldingen.filter(m => m.ernst === activeFilter);
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty-state">Geen meldingen gevonden</div>';
+    return;
+  }
+  list.innerHTML = items.map(function(m) {
+    var d = new Date(m.tijdstip);
+    var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
+    var sevLabel = m.ernst === 'critical' ? '🚨 Kritiek' : m.ernst === 'major' ? '🔴 Major' : '⚠️ Minor';
+    var fotosHtml = m.fotos && m.fotos.length ? '<div class="log-fotos">' + m.fotos.map(function(f) {
+      return '<img class="log-foto" src="data:image/jpeg;base64,' + f + '" onclick="openLightbox(\'data:image/jpeg;base64,' + f + '\')">';
+    }).join('') + '</div>' : '';
+    return '<div class="log-item">' +
+      '<div class="log-header">' +
+      '<span class="log-kamer">Kamer ' + m.kamer + '</span>' +
+      '<span class="sev-badge sev-' + m.ernst + '">' + sevLabel + '</span>' +
+      (m.housekeeper !== 'Onbekend' ? '<span class="log-hk">👤 ' + m.housekeeper + '</span>' : '') +
+      '<span class="log-tijd">' + tijd + '</span>' +
+      '</div>' +
+      '<div class="log-tekst">' + (m.omschrijving || '—') + '</div>' +
+      (m.ai_analyse ? '<div class="log-ai">✨ ' + m.ai_analyse + '</div>' : '') +
+      fotosHtml +
+      '</div>';
+  }).join('');
+}
+
+function renderPerf() {
+  var namen = (settings.namen || '').split('\n').map(s => s.trim()).filter(Boolean);
+  if (namen.length === 0) {
+    document.getElementById('perf-list').innerHTML = '<div class="empty-state">Voeg housekeepers toe via Instellingen</div>';
+    return;
+  }
+  document.getElementById('hk-bedrijf').value = settings.bedrijf || '';
+  document.getElementById('hk-namen').value = settings.namen || '';
+  document.getElementById('sla-input').value = settings.sla || 9.0;
+
+  // Bouw HK dropdown
+  var sel = document.getElementById('f-hk');
+  sel.innerHTML = '<option value="">— Onbekend / Toby bepaalt via Mews —</option>';
+  namen.forEach(function(n) { sel.innerHTML += '<option value="' + n + '">' + n + '</option>'; });
+
+  var html = namen.map(function(naam) {
+    var eigen = meldingen.filter(m => m.housekeeper === naam);
+    var critical = eigen.filter(m => m.ernst === 'critical').length;
+    var major = eigen.filter(m => m.ernst === 'major').length;
+    var score = eigen.length === 0 ? '—' : Math.max(0, 10 - critical * 2 - major * 0.5).toFixed(1);
+    var trend = eigen.length === 0 ? '—' : critical > 2 ? '📉' : critical === 0 ? '📈' : '➡️';
+    return '<div class="perf-row">' +
+      '<div class="perf-naam">' + naam + '</div>' +
+      '<div class="perf-meldingen">' + eigen.length + ' meldingen</div>' +
+      '<div class="perf-trend">' + trend + '</div>' +
+      '<div class="perf-score" style="color:' + (score === '—' ? 'var(--text3)' : parseFloat(score) >= settings.sla ? 'var(--green)' : 'var(--coral)') + '">' + score + '</div>' +
+      '</div>';
+  }).join('');
+  document.getElementById('perf-list').innerHTML = html;
+}
+
+function renderDashboard() {
+  var score = settings.revinateScore || 8.7;
+  var vorige = settings.revinateVorige || 8.5;
+  var sla = settings.sla || 9.0;
+  var delta = (score - vorige).toFixed(1);
+
+  document.getElementById('score-revinate').textContent = score.toFixed(1);
+  document.getElementById('score-revinate').style.color = score >= sla ? 'var(--green)' : 'var(--coral)';
+  document.getElementById('delta-revinate').textContent = (delta >= 0 ? '▲ +' : '▼ ') + delta + ' vs vorige maand';
+  document.getElementById('delta-revinate').className = 'score-delta ' + (delta >= 0 ? 'delta-up' : 'delta-down');
+  document.getElementById('score-sla').textContent = sla.toFixed(1);
+
+  var week = new Date(); week.setDate(week.getDate() - 7);
+  var dezeWeek = meldingen.filter(m => new Date(m.tijdstip) >= week);
+  var critical = dezeWeek.filter(m => m.ernst === 'critical').length;
+  var kamers = new Set(meldingen.map(m => m.kamer)).size;
+
+  document.getElementById('score-meldingen').textContent = meldingen.length;
+  document.getElementById('count-critical').textContent = critical;
+  document.getElementById('count-kamers').textContent = kamers;
+  document.getElementById('delta-meldingen').textContent = dezeWeek.length + ' deze week';
+
+  // SLA bar
+  var pct = Math.min(100, Math.round((score / sla) * 100));
+  document.getElementById('sla-bar-fill').style.width = pct + '%';
+  document.getElementById('sla-bar-fill').style.background = score >= sla ? 'var(--green)' : score >= sla - 0.5 ? 'var(--amber)' : 'var(--coral)';
+  document.getElementById('sla-progress-val').textContent = score.toFixed(1) + ' / ' + sla.toFixed(1);
+
+  // SLA badge in header
+  var badge = document.getElementById('sla-badge');
+  if (score >= sla) { badge.textContent = 'SLA ✓'; badge.className = 'header-sla sla-ok'; }
+  else if (score >= sla - 0.3) { badge.textContent = 'SLA ⚠'; badge.className = 'header-sla sla-warn'; }
+  else { badge.textContent = 'SLA ✗'; badge.className = 'header-sla sla-fail'; }
+
+  // Kritieke meldingen
+  var kritiek = meldingen.filter(m => m.ernst === 'critical').slice(0, 3);
+  var rcl = document.getElementById('recent-critical-list');
+  if (kritiek.length === 0) {
+    rcl.innerHTML = '<div class="empty-state" style="padding:16px">Geen kritieke meldingen — goed bezig! 🎉</div>';
+  } else {
+    rcl.innerHTML = kritiek.map(function(m) {
+      var d = new Date(m.tijdstip);
+      var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+      return '<div class="log-item"><div class="log-header"><span class="log-kamer">Kamer ' + m.kamer + '</span><span class="sev-badge sev-critical">🚨 Kritiek</span><span class="log-tijd">' + tijd + '</span></div><div class="log-tekst">' + (m.omschrijving || '—') + '</div></div>';
+    }).join('');
+  }
+}
+
+function saveSla() {
+  settings.sla = parseFloat(document.getElementById('sla-input').value) || 9.0;
+  localStorage.setItem('toby_hk_settings', JSON.stringify(settings));
+}
+function saveSettings() {
+  settings.bedrijf = document.getElementById('hk-bedrijf').value;
+  settings.namen = document.getElementById('hk-namen').value;
+  settings.sla = parseFloat(document.getElementById('sla-input').value) || 9.0;
+  localStorage.setItem('toby_hk_settings', JSON.stringify(settings));
+}
+function renderAll() { renderDashboard(); renderPerf(); renderLog(); }
+
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+// Init
+renderDashboard();
+</script>
+</body>
+</html>
