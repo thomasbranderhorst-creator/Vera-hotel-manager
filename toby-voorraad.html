@@ -516,7 +516,7 @@ Hotel De Klok';
 document.getElementById('pop-copy').addEventListener('click',function(){navigator.clipboard.writeText(document.getElementById('pop-tekst').textContent).then(function(){alert('✅ Gekopieerd');});});
 document.getElementById('pop-mail').addEventListener('click',mailPop);
 document.getElementById('pop-close').addEventListener('click',function(){document.getElementById('popup').classList.remove('on');});
-function mailPop(){var t=document.getElementById('pop-tekst').textContent;window.location.href='mailto:'+(popLev.email||')+'?subject='+encodeURIComponent('Bestelling Hotel De Klok')+'&body='+encodeURIComponent(t);}
+function mailPop(){var t=document.getElementById('pop-tekst').textContent;window.location.href='mailto:'+(popLev.email||'')+'?subject='+encodeURIComponent('Bestelling Hotel De Klok')+'&body='+encodeURIComponent(t);}
 
 // ── LEVERANCIERS ──
 document.getElementById('btn-lev-add').addEventListener('click',function(){
