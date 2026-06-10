@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toby — Reputatie</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--bg2:#faf8f4;--bg3:#fff;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);
+  --text:#1a1814;--text2:#4a4640;--text3:#9a948c;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
+  --purple:#6355e0;--purple-bg:rgba(99,85,224,0.08);--purple-border:rgba(99,85,224,0.2);
+  --green:#2a9d5c;--green-bg:rgba(42,157,92,0.08);--green-border:rgba(42,157,92,0.2);
+  --amber:#c47c0a;--amber-bg:rgba(196,124,10,0.08);--amber-border:rgba(196,124,10,0.2);
+  --coral:#d44c3a;--coral-bg:rgba(212,76,58,0.08);--coral-border:rgba(212,76,58,0.2);
+  --blue:#2563c4;--blue-bg:rgba(37,99,196,0.08);--blue-border:rgba(37,99,196,0.2);
+  --gold:#c49a0a;--gold-bg:rgba(196,154,10,0.1);
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(244,241,236,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:14px;height:52px;box-shadow:var(--shadow)}
+.logo-mark{width:28px;height:28px;border-radius:6px;background:var(--purple-bg);border:1px solid var(--purple-border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--purple)}
+.logo-name{font-size:14px;font-weight:600;color:var(--text)}
+.topbar-div{width:1px;height:18px;background:var(--border2)}
+.topbar-page{font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.hotel-badge{font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-family:'DM Mono',monospace;box-shadow:var(--shadow)}
+.back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text2);text-decoration:none;box-shadow:var(--shadow)}
+.back-link:hover{border-color:var(--purple-border);color:var(--purple)}
+.integratie-badge{font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:20px;border:1px solid var(--green-border);background:var(--green-bg);color:var(--green);box-shadow:var(--shadow)}
+
+.main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
+.page-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+
+/* Score kaarten */
+.score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.score-kaart{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.score-platform{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.score-getal{font-size:36px;font-weight:600;font-family:'DM Mono',monospace;margin-bottom:4px}
+.score-max{font-size:11px;color:var(--text3)}
+.score-delta{font-size:11px;font-family:'DM Mono',monospace;margin-top:4px}
+.score-delta.up{color:var(--green)}
+.score-delta.down{color:var(--coral)}
+.sterren{color:var(--gold);font-size:14px;margin-bottom:4px}
+
+/* Vera signaal */
+.vera-sig{border-radius:10px;padding:13px 18px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow)}
+.vera-sig.amber{background:var(--amber-bg);border:1px solid var(--amber-border)}
+.vera-sig.coral{background:var(--coral-bg);border:1px solid var(--coral-border)}
+.vera-sig.groen{background:var(--green-bg);border:1px solid var(--green-border)}
+.vera-sig.purple{background:var(--purple-bg);border:1px solid var(--purple-border)}
+.vera-sig-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.vera-sig-tekst{font-size:12px;color:var(--text2);line-height:1.6}
+.vera-sig-tekst strong{color:var(--text)}
+
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:4px;box-shadow:var(--shadow)}
+.tab{flex:1;text-align:center;padding:7px;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;border-radius:7px;transition:all .15s}
+.tab.active{background:var(--bg3);color:var(--text);box-shadow:var(--shadow)}
+.view{display:none}.view.active{display:block}
+
+/* Layout */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.full-col{margin-bottom:10px}
+.kaart{background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.kaart-header{padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.kaart-titel{font-size:12px;font-weight:600;color:var(--text)}
+
+/* Trend grafiek */
+.trend-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:16px;align-items:flex-end;height:100px}
+.trend-col{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.trend-balk{width:100%;border-radius:3px 3px 0 0;min-height:4px}
+.trend-lbl{font-size:8px;font-family:'DM Mono',monospace;color:var(--text3);text-align:center}
+.trend-val{font-size:9px;font-family:'DM Mono',monospace;color:var(--text3)}
+
+/* Thema analyse */
+.thema-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:16px}
+.thema-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px}
+.thema-lbl{font-size:12px;font-weight:500;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.thema-balk-wrap{background:var(--bg);border-radius:3px;height:6px;overflow:hidden;margin-bottom:4px}
+.thema-balk{height:100%;border-radius:3px}
+.thema-count{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+
+/* Reviews */
+.review-row{padding:14px 16px;border-bottom:1px solid var(--border)}
+.review-row:last-child{border-bottom:none}
+.review-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.review-platform{font-size:10px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:20px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.review-score{font-family:'DM Mono',monospace;font-size:12px;font-weight:600}
+.review-datum{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3)}
+.review-tekst{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px;font-style:italic}
+.review-reactie{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--text2);line-height:1.5}
+.review-reactie-lbl{font-size:10px;font-family:'DM Mono',monospace;color:var(--purple);margin-bottom:4px}
+.onbeantwoord-badge{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--amber);display:flex;align-items:center;gap:6px}
+
+.section-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;padding:14px 0 8px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);border-radius:8px;padding:10px 18px;font-size:12px;color:var(--bg);z-index:300;opacity:0;transition:opacity .2s;pointer-events:none;font-family:'DM Mono',monospace;white-space:nowrap}
+.toast.show{opacity:1}
+@media(max-width:700px){.score-strip{grid-template-columns:1fr 1fr}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="toby-hub.html" class="back-link">&#8592; Centrale Hub</a>
+  <div class="logo-mark">V</div>
+  <div class="logo-name">Toby</div>
+  <div class="topbar-div"></div>
+  <div class="topbar-page">Reputatie</div>
+  <div class="topbar-right">
+    <span class="integratie-badge">&#9679; Revinate</span>
+    <div class="hotel-badge">Hotel De Klok</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-title">Reputatie</div>
+  <div class="page-sub">Reviews, scores en sentiment — via Revinate &amp; directe platform koppelingen</div>
+
+  <!-- Score strip -->
+  <div class="score-strip">
+    <div class="score-kaart" style="border-color:var(--green-border)">
+      <div class="score-platform">Booking.com</div>
+      <div class="score-getal" style="color:var(--green)">8.7</div>
+      <div class="score-max">van 10</div>
+      <div class="score-delta up">&#8593; +0.2 vs vorige maand</div>
+    </div>
+    <div class="score-kaart" style="border-color:var(--green-border)">
+      <div class="score-platform">Google</div>
+      <div class="sterren">&#11088;&#11088;&#11088;&#11088;&#11088;</div>
+      <div class="score-getal" style="color:var(--green)">4.6</div>
+      <div class="score-max">van 5 · 284 reviews</div>
+      <div class="score-delta up">&#8593; stabiel</div>
+    </div>
+    <div class="score-kaart">
+      <div class="score-platform">TripAdvisor</div>
+      <div class="sterren">&#11088;&#11088;&#11088;&#11088;&#9734;</div>
+      <div class="score-getal" style="color:var(--amber)">4.2</div>
+      <div class="score-max">van 5 · 156 reviews</div>
+      <div class="score-delta down">&#8595; -0.1 vs vorige maand</div>
+    </div>
+    <div class="score-kaart" style="border-color:var(--amber-border)">
+      <div class="score-platform">Onbeantwoord</div>
+      <div class="score-getal" style="color:var(--amber)">3</div>
+      <div class="score-max">reviews wachten op reactie</div>
+      <div class="score-delta" style="color:var(--amber)">&#9888; Actie vereist</div>
+    </div>
+  </div>
+
+  <!-- Vera signalen -->
+  <div class="vera-sig purple">
+    <div class="vera-sig-icon">&#10024;</div>
+    <div class="vera-sig-tekst"><strong>Toby ziet patroon:</strong> 68% van de negatieve reviews noemt "wifi op de kamers". Dit is structureel — niet incidenteel. Overweeg een infrastructuurupgrade of vermelding in de verwachtingen bij boeking.</div>
+  </div>
+  <div class="vera-sig amber">
+    <div class="vera-sig-icon">&#9888;&#65039;</div>
+    <div class="vera-sig-tekst"><strong>3 onbeantwoorde reviews</strong> — waarvan 2 negatiever dan 7/10. Booking.com algoritme beloont snelle reacties met betere zichtbaarheid. Vera heeft concept-antwoorden klaargezet.</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active" data-v="trend">Trend</div>
+    <div class="tab" data-v="themas">Thema's</div>
+    <div class="tab" data-v="reviews">Recente reviews</div>
+  </div>
+
+  <!-- Trend -->
+  <div class="view active" id="view-trend">
+    <div class="two-col">
+      <div class="kaart">
+        <div class="kaart-header"><div class="kaart-titel">&#128200; Booking.com score — 8 weken</div></div>
+        <div class="trend-grid" id="trend-booking"></div>
+      </div>
+      <div class="kaart">
+        <div class="kaart-header"><div class="kaart-titel">&#128200; Google score — 8 weken</div></div>
+        <div class="trend-grid" id="trend-google"></div>
+      </div>
+    </div>
+    <div class="kaart">
+      <div class="kaart-header"><div class="kaart-titel">&#128202; Aantal reviews per week</div></div>
+      <div class="trend-grid" id="trend-aantal" style="height:80px"></div>
+    </div>
+  </div>
+
+  <!-- Themas -->
+  <div class="view" id="view-themas">
+    <div class="two-col">
+      <div class="kaart">
+        <div class="kaart-header"><div class="kaart-titel">&#128077; Meest genoemde positief</div></div>
+        <div class="thema-grid">
+          <div class="thema-item">
+            <div class="thema-lbl">&#128205; Locatie</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:91%;background:var(--green)"></div></div>
+            <div class="thema-count">91% positief · 124 vermeldingen</div>
+          </div>
+          <div class="thema-item">
+            <div class="thema-lbl">&#128104;&#8205;&#128188; Personeel</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:86%;background:var(--green)"></div></div>
+            <div class="thema-count">86% positief · 108 vermeldingen</div>
+          </div>
+          <div class="thema-item">
+            <div class="thema-lbl">&#127761; Ontbijt</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:78%;background:var(--green)"></div></div>
+            <div class="thema-count">78% positief · 89 vermeldingen</div>
+          </div>
+          <div class="thema-item">
+            <div class="thema-lbl">&#129107; Kamers</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:72%;background:var(--green)"></div></div>
+            <div class="thema-count">72% positief · 94 vermeldingen</div>
+          </div>
+        </div>
+      </div>
+      <div class="kaart">
+        <div class="kaart-header"><div class="kaart-titel">&#128078; Meest genoemde negatief</div></div>
+        <div class="thema-grid">
+          <div class="thema-item" style="border-color:var(--coral-border)">
+            <div class="thema-lbl">&#128246; Wifi</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:68%;background:var(--coral)"></div></div>
+            <div class="thema-count">68% negatief · 52 vermeldingen</div>
+          </div>
+          <div class="thema-item" style="border-color:var(--amber-border)">
+            <div class="thema-lbl">&#127774; Geluid</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:34%;background:var(--amber)"></div></div>
+            <div class="thema-count">34% negatief · 28 vermeldingen</div>
+          </div>
+          <div class="thema-item" style="border-color:var(--amber-border)">
+            <div class="thema-lbl">&#128663; Parkeren</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:28%;background:var(--amber)"></div></div>
+            <div class="thema-count">28% negatief · 22 vermeldingen</div>
+          </div>
+          <div class="thema-item">
+            <div class="thema-lbl">&#9201;&#65039; Check-in</div>
+            <div class="thema-balk-wrap"><div class="thema-balk" style="width:18%;background:var(--blue)"></div></div>
+            <div class="thema-count">18% negatief · 14 vermeldingen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews -->
+  <div class="view" id="view-reviews">
+    <div class="kaart">
+      <div class="kaart-header">
+        <div class="kaart-titel">&#128172; Recente reviews</div>
+        <div style="font-size:11px;color:var(--amber);font-family:'DM Mono',monospace">3 onbeantwoord</div>
+      </div>
+
+      <div class="review-row">
+        <div class="review-meta">
+          <span class="review-platform">Booking.com</span>
+          <span class="review-score" style="color:var(--coral)">6.0</span>
+          <span class="review-datum">5 jun 2026</span>
+          <span style="margin-left:auto"><div class="onbeantwoord-badge">&#9888;&#65039; Nog niet beantwoord</div></span>
+        </div>
+        <div class="review-tekst">"Mooie locatie en vriendelijk personeel, maar de wifi werkte amper op onze kamer. Voor de prijs die we betaalden vonden we dat teleurstellend."</div>
+        <div style="margin-top:8px">
+          <div style="font-size:10px;font-family:'DM Mono',monospace;color:var(--purple);margin-bottom:4px">&#10024; Vera concept-antwoord:</div>
+          <div style="font-size:11px;color:var(--text2);background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:8px 12px;line-height:1.6">Beste gast, hartelijk dank voor uw feedback. Wij zijn blij dat u onze locatie en ons personeel als positief heeft ervaren. Het spijt ons dat de wifi-verbinding niet aan uw verwachtingen voldeed. Wij werken momenteel aan een upgrade van onze netwerkinfrastructuur. We hopen u opnieuw te mogen verwelkomen.</div>
+          <button onclick="showToast('Antwoord verzonden via Booking.com')" style="margin-top:8px;background:var(--purple);border:none;border-radius:6px;padding:6px 14px;font-size:11px;font-weight:500;color:white;cursor:pointer">Verzenden</button>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <div class="review-meta">
+          <span class="review-platform" style="background:var(--green-bg);color:var(--green);border-color:var(--green-border)">Google</span>
+          <span class="review-score" style="color:var(--green)">4.8/5</span>
+          <span class="review-datum">3 jun 2026</span>
+        </div>
+        <div class="review-tekst">"Fantastisch hotel! Perfecte locatie in Amsterdam, vriendelijk en behulpzaam personeel. Ontbijt was heerlijk en ruim. Zeker een aanrader!"</div>
+        <div class="review-reactie">
+          <div class="review-reactie-lbl">Reactie geplaatst</div>
+          Dank u voor uw geweldige review! We zijn blij dat u een fijne tijd bij ons heeft gehad. Tot de volgende keer!
+        </div>
+      </div>
+
+      <div class="review-row">
+        <div class="review-meta">
+          <span class="review-platform">Booking.com</span>
+          <span class="review-score" style="color:var(--amber)">7.5</span>
+          <span class="review-datum">1 jun 2026</span>
+          <span style="margin-left:auto"><div class="onbeantwoord-badge">&#9888;&#65039; Nog niet beantwoord</div></span>
+        </div>
+        <div class="review-tekst">"Prima hotel voor een overnachting. Kamer was schoon en bed comfortabel. Wifi was wat wisselvallig. Personeel was erg aardig."</div>
+        <div style="margin-top:8px">
+          <button onclick="showToast('Antwoord concept geladen')" style="background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:6px 14px;font-size:11px;color:var(--text2);cursor:pointer">&#10024; Vera concept laden</button>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <div class="review-meta">
+          <span class="review-platform" style="background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)">TripAdvisor</span>
+          <span class="review-score" style="color:var(--green)">4/5</span>
+          <span class="review-datum">28 mei 2026</span>
+        </div>
+        <div class="review-tekst">"Goed hotel in het centrum. Kamer was gezellig ingericht. Het parkeren in de buurt is een uitdaging maar dat is Amsterdam. Zeker voor herhaling vatbaar."</div>
+        <div class="review-reactie">
+          <div class="review-reactie-lbl">Reactie geplaatst</div>
+          Bedankt voor uw fijne review en de begrip voor de parkeersituatie — dat is inderdaad een uitdaging in het centrum. Graag tot ziens!
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+    this.classList.add('active');
+    document.getElementById('view-' + this.dataset.v).classList.add('active');
+  });
+});
+
+// Trend grafieken
+var bookingScores = [8.1, 8.3, 8.0, 8.4, 8.2, 8.6, 8.5, 8.7];
+var googleScores = [4.2, 4.3, 4.1, 4.4, 4.3, 4.5, 4.4, 4.6];
+var aantalReviews = [12, 9, 14, 11, 13, 10, 15, 8];
+
+function renderTrend(elId, scores, min, max, kleur) {
+  var el = document.getElementById(elId);
+  el.innerHTML = scores.map(function(s, i) {
+    var hoogte = Math.round((s - min) / (max - min) * 60) + 10;
+    var isLast = i === scores.length - 1;
+    return '<div class="trend-col">' +
+      '<div class="trend-balk" style="height:' + hoogte + 'px;background:' + (isLast ? kleur : kleur + '66') + ';border-radius:3px 3px 0 0"></div>' +
+      '<div class="trend-lbl">W' + (i+1) + '</div>' +
+      '<div class="trend-val">' + s + '</div>' +
+    '</div>';
+  }).join('');
+}
+
+renderTrend('trend-booking', bookingScores, 7.5, 9.5, 'var(--blue)');
+renderTrend('trend-google', googleScores, 3.8, 5.0, 'var(--amber)');
+renderTrend('trend-aantal', aantalReviews, 0, 20, 'var(--purple)');
+
+var toastT;
+function showToast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},3000);}
+</script>
+<script src="toby-widget.js"></script>
+</body>
+</html>
