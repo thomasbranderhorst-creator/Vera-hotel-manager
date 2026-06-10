@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toby — Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--bg2:#181b24;--bg3:#1e2235;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#e8e4dc;--text2:#b0acaa;--text3:#6a6660;
+  --purple:#7c6ff7;--pbg:rgba(124,111,247,0.1);--pbo:rgba(124,111,247,0.3);
+  --teal:#2dd4a0;--tbg:rgba(45,212,160,0.08);--tbo:rgba(45,212,160,0.25);
+  --amber:#f5a623;--abg:rgba(245,166,35,0.08);--abo:rgba(245,166,35,0.25);
+  --coral:#ff7060;--cbg:rgba(255,112,96,0.08);--cbo:rgba(255,112,96,0.25);
+  --green:#5ec96e;--gbg:rgba(94,201,110,0.08);--gbo:rgba(94,201,110,0.25);
+}
+body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:var(--text);line-height:1.6}
+.nav{position:sticky;top:0;z-index:100;background:rgba(15,17,23,0.92);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:14px;font-weight:500;letter-spacing:0.05em}
+.nav-tabs{display:flex;gap:4px}
+.nav-tab{font-size:12px;padding:6px 14px;border-radius:20px;cursor:pointer;color:var(--text3);border:0.5px solid transparent;transition:all .15s}
+.nav-tab.active,.nav-tab:hover{color:var(--text);background:var(--bg3);border-color:var(--border2)}
+.nav-back{font-size:12px;color:var(--text3);text-decoration:none;font-family:'DM Mono',monospace}
+.nav-back:hover{color:var(--text)}
+
+.page{display:none;max-width:860px;margin:0 auto;padding:48px 24px 80px}
+.page.active{display:block}
+
+/* Hero */
+.hero{text-align:center;padding:40px 0 60px}
+.hero-tag{font-size:11px;font-family:'DM Mono',monospace;letter-spacing:0.18em;color:var(--text3);text-transform:uppercase;margin-bottom:20px}
+.hero-title{font-size:clamp(32px,5vw,56px);font-weight:300;line-height:1.15;letter-spacing:-0.03em;margin-bottom:20px}
+.hero-title em{font-style:italic;color:var(--text3)}
+.hero-sub{font-size:16px;color:var(--text2);max-width:480px;margin:0 auto 40px;line-height:1.7;font-weight:300}
+.hero-tagline{display:inline-block;font-size:13px;font-family:'DM Mono',monospace;color:var(--purple);border:0.5px solid var(--pbo);background:var(--pbg);padding:8px 20px;border-radius:20px;letter-spacing:0.05em}
+
+/* Secties */
+.section{margin-bottom:56px}
+.section-label{font-size:10px;font-family:'DM Mono',monospace;letter-spacing:0.2em;color:var(--text3);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:0.5px;background:var(--border)}
+.section-title{font-size:22px;font-weight:400;margin-bottom:10px;letter-spacing:-0.02em}
+.section-sub{font-size:14px;color:var(--text2);max-width:560px;line-height:1.7;margin-bottom:24px}
+
+/* Kaarten */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:20px}
+.card-icon{font-size:22px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;margin-bottom:6px}
+.card-body{font-size:12px;color:var(--text2);line-height:1.7}
+.card.purple{border-color:var(--pbo);background:var(--pbg)}
+.card.teal{border-color:var(--tbo);background:var(--tbg)}
+.card.amber{border-color:var(--abo);background:var(--abg)}
+.card.coral{border-color:var(--cbo);background:var(--cbg)}
+.card.green{border-color:var(--gbo);background:var(--gbg)}
+
+/* Roadmap kaart */
+.roadmap-item{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.roadmap-header{padding:14px 18px;display:flex;align-items:center;gap:12px;border-bottom:0.5px solid var(--border)}
+.roadmap-icon{font-size:18px}
+.roadmap-naam{font-size:13px;font-weight:600}
+.roadmap-status{font-size:10px;font-family:'DM Mono',monospace;padding:2px 10px;border-radius:10px;margin-left:auto}
+.status-concept{background:var(--abg);color:var(--amber);border:0.5px solid var(--abo)}
+.status-bouw{background:var(--pbg);color:var(--purple);border:0.5px solid var(--pbo)}
+.status-live{background:var(--gbg);color:var(--green);border:0.5px solid var(--gbo)}
+.roadmap-body{padding:14px 18px;font-size:12px;color:var(--text2);line-height:1.7}
+.roadmap-vereist{margin-top:8px;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace}
+
+/* Doelgroep */
+.persona{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start}
+.persona-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.persona-rol{font-size:13px;font-weight:600;margin-bottom:4px}
+.persona-haakje{font-size:13px;color:var(--text2);font-style:italic;line-height:1.6}
+
+/* GOP uitleg */
+.gop-stack{display:flex;flex-direction:column;gap:6px}
+.gop-rij{padding:12px 16px;border-radius:8px;font-size:13px;display:flex;align-items:center;gap:12px}
+.gop-rij.in-scope{background:var(--tbg);border:0.5px solid var(--tbo);color:var(--teal)}
+.gop-rij.out-scope{background:var(--bg2);border:0.5px solid var(--border);color:var(--text3);opacity:0.6}
+.gop-label{flex:1}
+.gop-badge{font-size:10px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:10px}
+.in-scope .gop-badge{background:var(--tbo);color:var(--teal)}
+.out-scope .gop-badge{background:var(--border);color:var(--text3)}
+
+/* Brand standard */
+.bs-diagram{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
+.bs-row{display:grid;grid-template-columns:1fr 40px 1fr;gap:0;align-items:center;margin-bottom:8px}
+.bs-belofte{padding:10px 14px;background:var(--pbg);border:0.5px solid var(--pbo);border-radius:8px;font-size:12px;color:var(--text2)}
+.bs-arrow{text-align:center;color:var(--text3);font-size:16px}
+.bs-realiteit-ok{padding:10px 14px;background:var(--gbg);border:0.5px solid var(--gbo);border-radius:8px;font-size:12px;color:var(--green)}
+.bs-realiteit-fail{padding:10px 14px;background:var(--cbg);border:0.5px solid var(--cbo);border-radius:8px;font-size:12px;color:var(--coral)}
+.bs-center-label{text-align:center;font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-bottom:16px;letter-spacing:0.1em}
+
+/* Quote */
+.quote{background:var(--bg2);border-left:2px solid var(--purple);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;font-size:14px;color:var(--text2);font-style:italic;line-height:1.7}
+.quote cite{display:block;font-style:normal;font-size:11px;color:var(--text3);margin-top:8px;font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="toby-login.html" class="nav-back">← Toby</a>
+  <div class="nav-logo">Toby</div>
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="goTab('concept',this)">Concept</div>
+    <div class="nav-tab" onclick="goTab('voor-wie',this)">Voor wie</div>
+    <div class="nav-tab" onclick="goTab('financieel',this)">Financieel</div>
+    <div class="nav-tab" onclick="goTab('roadmap',this)">Roadmap</div>
+  </div>
+</nav>
+
+<!-- ── CONCEPT ── -->
+<div class="page active" id="page-concept">
+  <div class="hero">
+    <div class="hero-tag">Toby · Hotel Intelligence</div>
+    <h1 class="hero-title">De helikopterview<br>die elke manager<br><em>verdient</em></h1>
+    <p class="hero-sub">Toby verbindt de systemen die jouw hotel al heeft en geeft je één operationeel overzicht — zonder extra werk, zonder implementatie.</p>
+    <div class="hero-tagline">Onzichtbaar voor de gast. Onmisbaar voor jou.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Het probleem</div>
+    <div class="section-title">Managers jongleren met systemen die nooit met elkaar praten</div>
+    <div class="section-sub">Mews voor reserveringen, Exact voor financiën, Shiftbase voor roosters, Revinate voor reviews. Elk systeem heeft zijn eigen dashboard. Het totaalplaatje maakt de manager zelf — elke dag opnieuw.</div>
+    <div class="card-grid">
+      <div class="card coral">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Gefragmenteerde data</div>
+        <div class="card-body">Bezetting staat in Mews, kosten in Exact, HK-kwaliteit nergens. Verbanden leggen doe je zelf.</div>
+      </div>
+      <div class="card amber">
+        <div class="card-icon">⏱️</div>
+        <div class="card-title">Reactief in plaats van proactief</div>
+        <div class="card-body">Je ontdekt problemen pas als ze al zichtbaar zijn in reviews of cijfers. Te laat.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">Belofte vs realiteit</div>
+        <div class="card-body">Het hotel belooft iets aan gasten. Maar wie houdt bij of de operatie die belofte waarmaakt?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">De oplossing</div>
+    <div class="section-title">Toby is de bestuurslaag bovenop alles wat je al hebt</div>
+    <div class="section-sub">Geen nieuw PMS, geen datamigratrie, geen IT-afdeling. Toby leest mee met je bestaande systemen en combineert de data tot één operationeel beeld.</div>
+    <div class="card-grid">
+      <div class="card teal">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Bezetting & revenue</div>
+        <div class="card-body">Live vanuit Mews. Bezettingsgraad, aankomsten, vertrekken, OTB revenue per dag.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-icon">💶</div>
+        <div class="card-title">GOP tot op de dag</div>
+        <div class="card-body">Vanuit Exact Online. Omzet, personeelskosten, GOP% — alles tot de grens waar de manager verantwoordelijk voor is.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-icon">🧹</div>
+        <div class="card-title">HK kwaliteitscontrole</div>
+        <div class="card-body">Meldingen, kamerinspecties, SLA-bewaking en trend per housekeeper. Bewijs bij contractgesprekken.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-icon">✅</div>
+        <div class="card-title">Compliance & installaties</div>
+        <div class="card-body">BHV-certificaten, keuringen, vervaldatums. Nooit meer verrast door een verlopen document.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-icon">⭐</div>
+        <div class="card-title">Reputatie & reviews</div>
+        <div class="card-body">Revinate en Google scores in één trend. SLA bewaking op reviewscore.</div>
+      </div>
+      <div class="card teal">
+        <div class="card-icon">📦</div>
+        <div class="card-title">Voorraad & inkoop</div>
+        <div class="card-body">AI telt de voorraad via foto. Besteladvies per leverancier. Voorraadwaarde vs bezetting.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Nieuw concept — Brand Standard Check</div>
+    <div class="section-title">Wat belooft het hotel? Maakt de operatie die belofte waar?</div>
+    <div class="section-sub">Geïnspireerd door een hotelreview van de CEO van Mews: een groot merk hotel dat £380 vraagt maar geen minibar heeft, 20 jaar niet gerenoveerd is en bordjes hangt met "we gaan upgraden". De manager wist het — maar had geen systeem dat de belofte aan de gast afzette tegen de operationele realiteit.</div>
+
+    <div class="quote">
+      "Shame on me for booking a big brand hotel with the expectation of acceptable quality."
+      <cite>— Matthijs Welle, CEO Mews · LinkedIn, juni 2026</cite>
+    </div>
+
+    <div class="bs-diagram">
+      <div class="bs-center-label">Belofte (OTA / sterren / brand standard) → Realiteit (Toby data)</div>
+      <div class="bs-row">
+        <div class="bs-belofte">⭐⭐⭐⭐ 4-ster hotel</div>
+        <div class="bs-arrow">→</div>
+        <div class="bs-realiteit-fail">8 openstaande HK meldingen deze maand</div>
+      </div>
+      <div style="margin-bottom:8px"></div>
+      <div class="bs-row">
+        <div class="bs-belofte">Minibar ✓ (op Booking.com)</div>
+        <div class="bs-arrow">→</div>
+        <div class="bs-realiteit-fail">Voorraad minibar: 0 — niet aangevuld in 14 dagen</div>
+      </div>
+      <div style="margin-bottom:8px"></div>
+      <div class="bs-row">
+        <div class="bs-belofte">Reviewscore 8.8 beloofd</div>
+        <div class="bs-arrow">→</div>
+        <div class="bs-realiteit-ok">Huidige score: 8.7 — binnen SLA ✓</div>
+      </div>
+      <div style="margin-bottom:8px"></div>
+      <div class="bs-row">
+        <div class="bs-belofte">Kamer prijs €220/nacht</div>
+        <div class="bs-arrow">→</div>
+        <div class="bs-realiteit-fail">Laatste renovatie: &gt; 15 jaar — 3 openstaande onderhoudsmeldingen</div>
+      </div>
+    </div>
+    <div class="card amber">
+      <div class="card-icon">🚧</div>
+      <div class="card-title">In ontwikkeling — Brand Standard Check</div>
+      <div class="card-body">Toby vergelijkt de belofte van het hotel (sterrenclassificatie, OTA-beschrijving, interne brand standards) met de operationele realiteit uit alle gekoppelde systemen. Een dagelijkse gap-analyse die de manager laat zien waar de belofte aan de gast onder druk staat — voordat de gast het merkt.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── VOOR WIE ── -->
+<div class="page" id="page-voor-wie">
+  <div class="hero">
+    <div class="hero-tag">Doelgroep</div>
+    <h1 class="hero-title">Drie rollen.<br><em>Één platform.</em></h1>
+    <p class="hero-sub">Toby is gebouwd voor de mensen die het hotel draaiende houden — niet voor eigenaren of financiële afdelingen.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Primaire gebruikers</div>
+    <div class="persona">
+      <div class="persona-icon">🏨</div>
+      <div>
+        <div class="persona-rol">Hotelmanager — onafhankelijk hotel, 15-80 kamers</div>
+        <div class="persona-haakje">"Jij speelt vijf rollen tegelijk. Toby neemt het geheugenwerk over."</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-icon">⚙️</div>
+      <div>
+        <div class="persona-rol">Operations Manager — kleine tot middelgrote keten</div>
+        <div class="persona-haakje">"Toby signaleert de verbanden tussen systemen die normaal nooit met elkaar praten."</div>
+      </div>
+    </div>
+    <div class="persona">
+      <div class="persona-icon">🗂️</div>
+      <div>
+        <div class="persona-rol">Cluster Manager — meerdere properties</div>
+        <div class="persona-haakje">"Eén dashboard voor al je hotels — zonder in te loggen bij elk systeem apart."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Positionering</div>
+    <div class="section-title">Niet voor gasten. Niet voor eigenaren. Voor managers.</div>
+    <div class="section-sub">Toby is de operationele rechterhand van de hotelmanager. Alles tot GOP-niveau — wat eronder zit (afschrijvingen, rente, belasting) is voor de CFO of eigenaar.</div>
+    <div class="gop-stack">
+      <div class="gop-rij in-scope"><span class="gop-label">Omzet per afdeling (kamers, F&B, overig)</span><span class="gop-badge">Toby scope</span></div>
+      <div class="gop-rij in-scope"><span class="gop-label">Personeelskosten % van omzet</span><span class="gop-badge">Toby scope</span></div>
+      <div class="gop-rij in-scope"><span class="gop-label">Inkoopkosten & OTA-commissie</span><span class="gop-badge">Toby scope</span></div>
+      <div class="gop-rij in-scope"><span class="gop-label">GOP — Gross Operating Profit</span><span class="gop-badge">Toby scope ▲ grens</span></div>
+      <div class="gop-rij out-scope"><span class="gop-label">Afschrijvingen & rente</span><span class="gop-badge">buiten scope</span></div>
+      <div class="gop-rij out-scope"><span class="gop-label">Belasting & EBITDA</span><span class="gop-badge">buiten scope</span></div>
+      <div class="gop-rij out-scope"><span class="gop-label">Netto resultaat</span><span class="gop-badge">buiten scope</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FINANCIEEL ── -->
+<div class="page" id="page-financieel">
+  <div class="hero">
+    <div class="hero-tag">Business model</div>
+    <h1 class="hero-title">SaaS abonnement.<br><em>Per hotel.</em></h1>
+    <p class="hero-sub">Geen implementatiekosten, geen IT-projecten, geen jaarcontracten in de pilotfase. Maandelijks opzegbaar.</p>
+  </div>
+  <div class="section">
+    <div class="section-label">Prijsindicatie</div>
+    <div class="card-grid">
+      <div class="card purple">
+        <div class="card-icon">🌱</div>
+        <div class="card-title">Starter</div>
+        <div class="card-body">Tot 30 kamers · €99/maand<br>Hub, compliance, HK kwaliteit, Mews sync</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🏨</div>
+        <div class="card-title">Professional</div>
+        <div class="card-body">Tot 80 kamers · €199/maand<br>Alles + Exact sync, voorraad, reputatie</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🗂️</div>
+        <div class="card-title">Cluster</div>
+        <div class="card-body">Meerdere properties · €149/hotel/maand<br>Alles + cluster overzicht, portfolio</div>
+      </div>
+    </div>
+    <div class="card amber" style="margin-top:12px">
+      <div class="card-icon">🔬</div>
+      <div class="card-title">Pilotfase — nu</div>
+      <div class="card-body">Eerste 5 hotels: gratis in ruil voor feedback. Doel: product valideren, referenties opbouwen, eerste betalende klanten werven.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ROADMAP ── -->
+<div class="page" id="page-roadmap">
+  <div class="hero">
+    <div class="hero-tag">Wat staat er en wat komt er</div>
+    <h1 class="hero-title">Live, in bouw,<br><em>op de lijst.</em></h1>
+  </div>
+  <div class="section">
+    <div class="section-label">Live</div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">📊</span><span class="roadmap-naam">Centrale Hub — operationeel dashboard</span><span class="roadmap-status status-live">live</span></div>
+      <div class="roadmap-body">Bezetting, compliance, financiën, reputatie, open acties — alles in één overzicht. Mews sync actief.</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">🧹</span><span class="roadmap-naam">HK Kwaliteitscontrole & Inspectie</span><span class="roadmap-status status-live">live</span></div>
+      <div class="roadmap-body">Meldingen, foto-analyse via AI, SLA bewaking, kamerinspectie met checklist upload, trend per housekeeper.</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">📦</span><span class="roadmap-naam">Voorraad & Inkoop</span><span class="roadmap-status status-live">live</span></div>
+      <div class="roadmap-body">AI Vision telt voorraad via foto, leveranciersbeheer, minimumvoorraad, besteladvies, voorraadwaarde vs bezetting.</div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">In ontwikkeling</div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">🌙</span><span class="roadmap-naam">Nachtrapport generator</span><span class="roadmap-status status-bouw">bouw</span></div>
+      <div class="roadmap-body">Toby schrijft elke ochtend automatisch een dagrapport op basis van alle gekoppelde data. Manager leest in 30 seconden wat er de nacht is gebeurd.</div>
+      <div class="roadmap-vereist">Vereist: Mews sync · Exact sync</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">📸</span><span class="roadmap-naam">Schadeformulier via foto</span><span class="roadmap-status status-bouw">bouw</span></div>
+      <div class="roadmap-body">Foto van kamerschade → Toby herkent het type schade, documenteert en koppelt aan de Mews reservering. Bewijs voor verzekering of borg inhouding direct beschikbaar.</div>
+      <div class="roadmap-vereist">Vereist: Mews sync · Claude Vision (al aanwezig)</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">🏅</span><span class="roadmap-naam">Brand Standard Check</span><span class="roadmap-status status-concept">concept</span></div>
+      <div class="roadmap-body">Toby vergelijkt de belofte van het hotel — sterrenclassificatie, OTA-beschrijving, interne brand standards — met de operationele realiteit uit alle gekoppelde systemen. Een dagelijkse gap-analyse: waar staat de belofte aan de gast onder druk? Geïnspireerd door de hotelreview van de CEO van Mews.</div>
+      <div class="roadmap-vereist">Vereist: alle modules actief · OTA-koppeling (nieuw)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function goTab(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
