@@ -94,6 +94,25 @@ body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:v
     <button class="upload-btn" onclick="toggleUpload()">+ Upload</button>
   </div>
 
+  <!-- Google Drive koppeling -->
+  <div id="drive-banner" style="background:var(--gbg);border:0.5px solid var(--gbo);border-radius:12px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:24px;flex-shrink:0">📂</span>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:2px">Google Drive koppelen</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.5">Wijs een Drive map aan — documenten blijven in jouw Drive. Toby leest alleen mee.</div>
+    </div>
+    <button onclick="koppelDrive()" id="drive-btn" style="background:var(--green);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Koppelen →</button>
+  </div>
+  <div id="drive-status" style="display:none;background:var(--gbg);border:0.5px solid var(--gbo);border-radius:12px;padding:14px 16px;margin-bottom:12px;display:none;align-items:center;gap:12px">
+    <span style="font-size:20px">✅</span>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:600;color:var(--green)">Google Drive gekoppeld</div>
+      <div style="font-size:12px;color:var(--text2)" id="drive-map-naam">Map geladen</div>
+    </div>
+    <button onclick="herlaadDrive()" style="background:none;border:0.5px solid var(--gbo);border-radius:8px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--green)">↻ Verversen</button>
+    <button onclick="ontkoppelDrive()" style="background:none;border:none;font-size:11px;color:var(--text3);cursor:pointer;font-family:inherit">Loskoppelen</button>
+  </div>
+
   <!-- Upload sectie -->
   <div class="card" id="upload-sectie" style="display:none">
     <div class="ch"><span class="ct">📤 Document uploaden</span><button onclick="toggleUpload()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px">×</button></div>
@@ -374,6 +393,151 @@ async function handleUpload(input) {
     status.innerHTML = '<div style="font-size:12px;color:var(--green);padding:8px 0">✅ Opgeslagen (geen AI analyse — API key niet ingesteld)</div>';
     await laadDocs();
   }
+}
+
+// ── GOOGLE DRIVE ──
+var GOOGLE_CLIENT_ID = '68557899970-lsruepl7fdjsj55t28bf8t2k1bcd40jv.apps.googleusercontent.com';
+var DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
+var driveToken = localStorage.getItem('toby_drive_token');
+var driveMapId = localStorage.getItem('toby_drive_map_id');
+var driveMapNaam = localStorage.getItem('toby_drive_map_naam');
+
+// Laad Google Identity Services
+var gisScript = document.createElement('script');
+gisScript.src = 'https://accounts.google.com/gsi/client';
+document.head.appendChild(gisScript);
+
+if (driveToken && driveMapId) {
+  toonDriveStatus();
+}
+
+function koppelDrive() {
+  var btn = document.getElementById('drive-btn');
+  btn.textContent = 'Bezig...';
+  btn.disabled = true;
+  google.accounts.oauth2.initTokenClient({
+    client_id: GOOGLE_CLIENT_ID,
+    scope: DRIVE_SCOPE,
+    callback: function(response) {
+      if (response.error) {
+        btn.textContent = 'Koppelen →';
+        btn.disabled = false;
+        alert('Fout: ' + response.error);
+        return;
+      }
+      driveToken = response.access_token;
+      localStorage.setItem('toby_drive_token', driveToken);
+      kiesMapInDrive();
+    }
+  }).requestAccessToken();
+}
+
+async function kiesMapInDrive() {
+  try {
+    // Haal root mappen op
+    var res = await fetch(
+      "https://www.googleapis.com/drive/v3/files?q=mimeType%3D'application%2Fvnd.google-apps.folder'+and+trashed%3Dfalse&fields=files(id%2Cname)&pageSize=20",
+      { headers: { 'Authorization': 'Bearer ' + driveToken } }
+    );
+    var data = await res.json();
+    var mappen = data.files || [];
+
+    if (mappen.length === 0) {
+      alert('Geen mappen gevonden in je Drive. Maak eerst een map aan.');
+      return;
+    }
+
+    // Toon mapkeuze
+    var keuze = '<div style="padding:16px"><div style="font-size:14px;font-weight:600;margin-bottom:12px">Kies een map om te koppelen</div>';
+    mappen.forEach(function(m) {
+      keuze += '<div onclick="selecteerDriveMap('' + m.id + '','' + m.name.replace(/'/g,"\'") + '')" style="padding:10px 12px;border-radius:8px;border:0.5px solid var(--border2);margin-bottom:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;background:var(--bg)" onmouseover="this.style.background='var(--pbg)'" onmouseout="this.style.background='var(--bg)'"><span>📁</span><span>' + m.name + '</span></div>';
+    });
+    keuze += '<button onclick="document.getElementById('drive-picker').remove()" style="width:100%;margin-top:8px;background:none;border:0.5px solid var(--border2);border-radius:8px;padding:9px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text3)">Annuleren</button></div>';
+
+    var picker = document.createElement('div');
+    picker.id = 'drive-picker';
+    picker.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:center;justify-content:center';
+    picker.innerHTML = '<div style="background:var(--card);border-radius:16px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">' + keuze + '</div>';
+    document.body.appendChild(picker);
+  } catch(e) {
+    alert('Fout bij ophalen mappen: ' + e.message);
+    document.getElementById('drive-btn').textContent = 'Koppelen →';
+    document.getElementById('drive-btn').disabled = false;
+  }
+}
+
+async function selecteerDriveMap(mapId, mapNaam) {
+  document.getElementById('drive-picker')?.remove();
+  driveMapId = mapId;
+  driveMapNaam = mapNaam;
+  localStorage.setItem('toby_drive_map_id', mapId);
+  localStorage.setItem('toby_drive_map_naam', mapNaam);
+  toonDriveStatus();
+  await laadDriveDocumenten();
+}
+
+function toonDriveStatus() {
+  document.getElementById('drive-banner').style.display = 'none';
+  var status = document.getElementById('drive-status');
+  status.style.display = 'flex';
+  document.getElementById('drive-map-naam').textContent = '📁 ' + (driveMapNaam || 'Gekoppelde map');
+}
+
+async function laadDriveDocumenten() {
+  if (!driveToken || !driveMapId) return;
+  try {
+    var res = await fetch(
+      "https://www.googleapis.com/drive/v3/files?q='" + driveMapId + "'+in+parents+and+trashed%3Dfalse&fields=files(id%2Cname%2CmimeType%2Csize%2CmodifiedTime%2CwebViewLink)&pageSize=50",
+      { headers: { 'Authorization': 'Bearer ' + driveToken } }
+    );
+    var data = await res.json();
+    if (data.error) {
+      if (data.error.code === 401) { ontkoppelDrive(); return; }
+      throw new Error(data.error.message);
+    }
+    var bestanden = data.files || [];
+
+    // Sla op in Supabase als hotel_docs
+    for (var i = 0; i < bestanden.length; i++) {
+      var f = bestanden[i];
+      var ext = f.name.split('.').pop().toLowerCase();
+      var type = ['pdf','doc','docx','txt','xlsx','csv'].includes(ext) ? ext : 'bestand';
+      var grootte = f.size ? Math.round(parseInt(f.size)/1024) + ' KB' : '—';
+      var datum = f.modifiedTime ? f.modifiedTime.substring(0,10) : new Date().toISOString().substring(0,10);
+
+      // Check of al bestaat
+      var bestaatRes = await sb.from('hotel_docs').select('id').eq('hotel_id', HOTEL_ID).eq('naam', f.name).maybeSingle();
+      if (bestaatRes.data) continue; // al aanwezig
+
+      await sb.from('hotel_docs').insert({
+        hotel_id: HOTEL_ID,
+        mapnaam: driveMapNaam || 'Google Drive',
+        naam: f.name,
+        type: type,
+        grootte: grootte,
+        datum: datum,
+        inhoud: 'Opgeslagen in Google Drive. Link: ' + (f.webViewLink || '—'),
+        tags: ['drive']
+      });
+    }
+    await laadDocs();
+    alert('✅ ' + bestanden.length + ' bestanden geladen vanuit Google Drive');
+  } catch(e) {
+    alert('Fout bij laden Drive: ' + e.message);
+  }
+}
+
+function herlaadDrive() { laadDriveDocumenten(); }
+
+function ontkoppelDrive() {
+  driveToken = null; driveMapId = null; driveMapNaam = null;
+  localStorage.removeItem('toby_drive_token');
+  localStorage.removeItem('toby_drive_map_id');
+  localStorage.removeItem('toby_drive_map_naam');
+  document.getElementById('drive-banner').style.display = 'flex';
+  document.getElementById('drive-status').style.display = 'none';
+  document.getElementById('drive-btn').textContent = 'Koppelen →';
+  document.getElementById('drive-btn').disabled = false;
 }
 </script>
 </body>
