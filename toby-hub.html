@@ -779,35 +779,44 @@ function weerOmschr(code) {
 
 // ── NIEUWS ──
 async function laadNieuws() {
-  try {
-    // RSS via rss2json API — gratis
-    var feed = 'https://www.hospitalitynet.org/rss/news.xml';
-    var res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed) + '&count=3');
-    var data = await res.json();
-    if (data.status !== 'ok' || !data.items.length) throw new Error('Geen items');
-    document.getElementById('nieuws-inhoud').innerHTML = data.items.slice(0, 3).map(function(item) {
-      var d = new Date(item.pubDate);
-      var t = d.toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
-      return '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
-        '<a href="' + item.link + '" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500;line-height:1.4;display:block">' + item.title.substring(0, 60) + (item.title.length > 60 ? '...' : '') + '</a>' +
-        '<div style="font-size:10px;color:var(--text3);margin-top:2px">' + t + '</div>' +
-        '</div>';
-    }).join('') + '<div style="padding:6px 0;font-size:11px;color:var(--text3)">Bron: Hospitalitynet</div>';
-  } catch(e) {
-    // Fallback: statische nieuws items
-    document.getElementById('nieuws-inhoud').innerHTML =
-      '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
-        '<div style="font-size:12px;font-weight:500">Mews lanceert AI voice assistant voor hotels</div>' +
-        '<div style="font-size:10px;color:var(--text3);margin-top:2px">Jun 2026</div>' +
-      '</div>' +
-      '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
-        '<div style="font-size:12px;font-weight:500">RevPAR stijgt 4.2% in Nederland Q2 2026</div>' +
-        '<div style="font-size:10px;color:var(--text3);margin-top:2px">Jun 2026</div>' +
-      '</div>' +
-      '<div style="padding:6px 0">' +
-        '<a href="toby-nieuws.html" style="font-size:11px;color:var(--purple)">Meer hotelsector nieuws →</a>' +
-      '</div>';
+  // Probeer meerdere RSS bronnen via rss2json
+  var feeds = [
+    'https://www.hospitalitynet.org/rss/news.xml',
+    'https://feeds.feedburner.com/hospitalitynet',
+    'https://www.hotelschool.nl/rss'
+  ];
+  var el = document.getElementById('nieuws-inhoud');
+  
+  for (var i = 0; i < feeds.length; i++) {
+    try {
+      var res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feeds[i]) + '&count=3&api_key=');
+      var data = await res.json();
+      if (data.status === 'ok' && data.items && data.items.length > 0) {
+        el.innerHTML = data.items.slice(0, 3).map(function(item) {
+          var d = new Date(item.pubDate);
+          var t = d.toLocaleDateString('nl-NL', {day:'numeric', month:'short'});
+          var titel = (item.title || '').substring(0, 65) + (item.title && item.title.length > 65 ? '...' : '');
+          return '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
+            '<a href="' + item.link + '" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500;line-height:1.4;display:block">' + titel + '</a>' +
+            '<div style="font-size:10px;color:var(--text3);margin-top:2px">' + t + '</div>' +
+            '</div>';
+        }).join('') + '<div style="padding:4px 0"><a href="toby-nieuws.html" style="font-size:11px;color:var(--purple)">Meer nieuws →</a></div>';
+        return;
+      }
+    } catch(e) {}
   }
+  
+  // Altijd werkende fallback
+  el.innerHTML =
+    '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
+      '<a href="https://www.hospitalitynet.org" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500">Hospitalitynet — Laatste hotelsector nieuws</a>' +
+      '<div style="font-size:10px;color:var(--text3);margin-top:2px">Klik voor actueel nieuws</div>' +
+    '</div>' +
+    '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
+      '<a href="https://www.khn.nl/nieuws" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500">KHN — Koninklijke Horeca Nederland</a>' +
+      '<div style="font-size:10px;color:var(--text3);margin-top:2px">Branchenieuws Nederland</div>' +
+    '</div>' +
+    '<div style="padding:4px 0"><a href="toby-nieuws.html" style="font-size:11px;color:var(--purple)">Meer nieuws →</a></div>';
 }
 
 laadWeer();
