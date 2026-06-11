@@ -355,6 +355,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="toby-ai-antwoord" id="vera-antwoord"></div>
   </div>
 
+  <div class="hub-card" style="margin-bottom:12px">
+    <div class="hub-card-header">
+      <div class="hub-card-title">👥 Losse leveranciers & vaste gezichten</div>
+      <a href="toby-installaties.html" class="hub-card-link">Beheren →</a>
+    </div>
+    <div id="losse-lev-lijst">
+      <div class="hub-row" id="losse-lev-inhoud">
+        <div class="hub-row-naam" style="color:var(--text3);font-size:11px">Laden...</div>
+      </div>
+    </div>
+    <button onclick="toggleLosseLev()" style="width:100%;background:none;border:none;border-top:0.5px solid var(--border);padding:10px 16px;font-size:12px;color:var(--purple);cursor:pointer;font-family:inherit;text-align:left" id="btn-losse-lev-add">+ Snel toevoegen</button>
+    <div id="losse-lev-form" style="display:none;padding:10px 16px;border-top:0.5px solid var(--border)">
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <input type="text" id="ll-naam" placeholder="Naam" style="flex:1;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;color:var(--text);outline:none">
+        <input type="text" id="ll-rol" placeholder="Rol (bijv. klusser)" style="flex:1;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;color:var(--text);outline:none">
+      </div>
+      <div style="display:flex;gap:8px">
+        <input type="tel" id="ll-tel" placeholder="Telefoonnummer" style="flex:1;background:var(--bg);border:0.5px solid var(--border2);border-radius:6px;padding:7px 10px;font-size:12px;font-family:inherit;color:var(--text);outline:none">
+        <button onclick="voegLosLevToe()" style="background:var(--purple);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">Toevoegen</button>
+      </div>
+    </div>
+  </div>
+
   <div class="section-label">Modules</div>
   <div class="module-nav">
     <a href="toby-compliance.html" class="mod-btn live">
@@ -680,6 +703,45 @@ function renderHkHub() {
 renderHkHub();
 init();
 </script>
-<script src="toby-auth.js"></script>
+<script src="toby-auth.js">
+// ── LOSSE LEVERANCIERS ──
+var losseLevs = JSON.parse(localStorage.getItem('toby_losse_levs') || '[]');
+
+function renderLosseLevs() {
+  var el = document.getElementById('losse-lev-inhoud');
+  if (!el) return;
+  if (losseLevs.length === 0) {
+    el.innerHTML = '<div class="hub-row"><div class="hub-row-naam" style="color:var(--text3);font-size:11px">Nog geen losse leveranciers — voeg er een toe</div></div>';
+    return;
+  }
+  el.innerHTML = losseLevs.slice(0, 5).map(function(l) {
+    return '<div class="hub-row" style="cursor:pointer" onclick="belLev('' + (l.tel || '') + '')">' +
+      '<div class="hub-row-naam">' + l.naam + '<span style="font-size:11px;color:var(--text3);margin-left:6px">' + (l.rol || '') + '</span></div>' +
+      (l.tel ? '<div style="font-size:11px;color:var(--purple);font-family:monospace">📞 ' + l.tel + '</div>' : '') +
+      '</div>';
+  }).join('') + (losseLevs.length > 5 ? '<div style="font-size:11px;color:var(--text3);padding:6px 16px">+' + (losseLevs.length - 5) + ' meer</div>' : '');
+}
+
+function belLev(tel) { if (tel) window.location.href = 'tel:' + tel; }
+
+function toggleLosseLev() {
+  var form = document.getElementById('losse-lev-form');
+  form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+function voegLosLevToe() {
+  var naam = document.getElementById('ll-naam').value.trim();
+  if (!naam) return;
+  losseLevs.unshift({naam: naam, rol: document.getElementById('ll-rol').value.trim(), tel: document.getElementById('ll-tel').value.trim(), toegevoegd: new Date().toISOString()});
+  localStorage.setItem('toby_losse_levs', JSON.stringify(losseLevs));
+  document.getElementById('ll-naam').value = '';
+  document.getElementById('ll-rol').value = '';
+  document.getElementById('ll-tel').value = '';
+  document.getElementById('losse-lev-form').style.display = 'none';
+  renderLosseLevs();
+}
+
+renderLosseLevs();
+</script>
 </body>
 </html>
