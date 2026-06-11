@@ -252,24 +252,19 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 
   <!-- Weer + Nieuws banner -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-    <!-- Weer -->
-    <div class="hub-card" style="margin-bottom:0">
-      <div class="hub-card-header">
-        <div class="hub-card-title" id="weer-stad">🌤️ Weer</div>
-      </div>
-      <div style="padding:12px 16px" id="weer-inhoud">
-        <div style="font-size:11px;color:var(--text3)">Laden...</div>
-      </div>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;margin-bottom:12px;align-items:center">
+    <!-- Weer compact -->
+    <div class="hub-card" style="margin-bottom:0;padding:10px 16px;display:flex;align-items:center;gap:10px;white-space:nowrap">
+      <span style="font-size:13px;font-weight:700;color:var(--purple);font-family:monospace" id="weer-temp">—</span>
+      <span style="font-size:12px;color:var(--text2)" id="weer-omschr">Laden...</span>
+      <span style="font-size:11px;color:var(--text3)" id="weer-wind"></span>
     </div>
-    <!-- Nieuws -->
-    <div class="hub-card" style="margin-bottom:0">
-      <div class="hub-card-header">
-        <div class="hub-card-title">📰 Hotelsector top nieuws</div>
-        <a href="toby-nieuws.html" class="hub-card-link">Meer →</a>
-      </div>
-      <div style="padding:8px 16px" id="nieuws-inhoud">
-        <div style="font-size:11px;color:var(--text3)">Laden...</div>
+    <!-- Nieuws 1 regel -->
+    <div class="hub-card" style="margin-bottom:0;cursor:pointer" onclick="window.location.href='toby-nieuws.html'">
+      <div style="padding:10px 16px;display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;color:var(--text3);flex-shrink:0">📰</span>
+        <div id="nieuws-inhoud" style="font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1">Laden...</div>
+        <span style="font-size:11px;color:var(--purple);flex-shrink:0">→</span>
       </div>
     </div>
   </div>
@@ -875,11 +870,9 @@ async function laadWeer() {
     var data = await res.json();
     var w = data.weer;
     if (w.error) throw new Error(w.error);
-    document.getElementById('weer-stad').textContent = w.emoji + ' ' + w.stad;
-    document.getElementById('weer-inhoud').innerHTML =
-      '<div style="font-size:28px;font-weight:700;font-family:monospace;color:var(--purple)">' + w.temp + '°C</div>' +
-      '<div style="font-size:11px;color:var(--text2);margin-top:2px">' + w.omschrijving + '</div>' +
-      '<div style="font-size:11px;color:var(--text3);margin-top:2px">💨 ' + w.wind + ' km/u</div>';
+    document.getElementById('weer-temp').textContent = w.emoji + ' ' + w.temp + '°C';
+    document.getElementById('weer-omschr').textContent = w.omschrijving;
+    document.getElementById('weer-wind').textContent = '💨 ' + w.wind + ' km/u';
   } catch(e) {
     document.getElementById('weer-inhoud').innerHTML = '<div style="font-size:11px;color:var(--text3)">Niet beschikbaar</div>';
   }
@@ -892,23 +885,12 @@ async function laadNieuws() {
     var data = await res.json();
     var items = data.nieuws;
     if (!Array.isArray(items) || items.length === 0) throw new Error('Geen items');
-    document.getElementById('nieuws-inhoud').innerHTML = items.map(function(item) {
-      var d = item.datum ? new Date(item.datum).toLocaleDateString('nl-NL', {day:'numeric',month:'short'}) : '';
-      var titel = (item.titel || '').substring(0, 65) + (item.titel && item.titel.length > 65 ? '...' : '');
-      return '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
-        '<a href="' + item.link + '" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500;line-height:1.4;display:block">' + titel + '</a>' +
-        (d ? '<div style="font-size:10px;color:var(--text3);margin-top:2px">' + d + '</div>' : '') +
-        '</div>';
-    }).join('') + '<div style="padding:4px 0"><a href="toby-nieuws.html" style="font-size:11px;color:var(--purple)">Meer nieuws →</a></div>';
+    var first = items[0];
+    if (first) {
+      document.getElementById('nieuws-inhoud').textContent = (first.titel || '').substring(0, 80) + (first.titel && first.titel.length > 80 ? '...' : '');
+    }
   } catch(e) {
-    document.getElementById('nieuws-inhoud').innerHTML =
-      '<div style="padding:6px 0;border-bottom:0.5px solid var(--border)">' +
-        '<a href="https://www.hospitalitynet.org" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500">Hospitalitynet — Hotelsector nieuws</a>' +
-      '</div>' +
-      '<div style="padding:6px 0">' +
-        '<a href="https://www.khn.nl/nieuws" target="_blank" style="font-size:12px;color:var(--text);text-decoration:none;font-weight:500">KHN — Horeca Nederland</a>' +
-      '</div>' +
-      '<div style="padding:4px 0"><a href="toby-nieuws.html" style="font-size:11px;color:var(--purple)">Meer nieuws →</a></div>';
+    document.getElementById('nieuws-inhoud').textContent = 'Klik voor het laatste hotelsector nieuws';
   }
 }
 
