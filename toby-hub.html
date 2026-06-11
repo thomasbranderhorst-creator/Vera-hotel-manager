@@ -947,15 +947,15 @@ function renderLosseLevs() {
     el.innerHTML = '<div class="hub-row"><div class="hub-row-naam" style="color:var(--text3);font-size:11px">Nog geen losse leveranciers — voeg er een toe</div></div>';
     return;
   }
-  el.innerHTML = losseLevs.slice(0, 5).map(function(l) {
-    return '<div class="hub-row" style="cursor:pointer" onclick="if(this.dataset.tel)window.location.href='tel:'+this.dataset.tel" data-tel="'+( l.tel||'')+'">' +
+  el.innerHTML = losseLevs.slice(0, 5).map(function(l, i) {
+    return '<div class="hub-row" style="cursor:pointer" onclick="belLev(' + i + ')">' +
       '<div class="hub-row-naam">' + l.naam + '<span style="font-size:11px;color:var(--text3);margin-left:6px">' + (l.rol || '') + '</span></div>' +
-      (l.tel ? '<div style="font-size:11px;color:var(--purple);font-family:monospace">📞 ' + l.tel + '</div>' : '') +
+      (l.tel ? '<div style="font-size:11px;color:var(--purple);font-family:monospace">\u260e ' + l.tel + '</div>' : '') +
       '</div>';
   }).join('') + (losseLevs.length > 5 ? '<div style="font-size:11px;color:var(--text3);padding:6px 16px">+' + (losseLevs.length - 5) + ' meer</div>' : '');
 }
 
-function belLev(tel) { if (tel) window.location.href = 'tel:' + tel; }
+function belLev(i) { var l = losseLevs[i]; if (l && l.tel) window.location.href = 'tel:' + l.tel; }
 
 function toggleLosseLev() {
   var form = document.getElementById('losse-lev-form');
