@@ -3,612 +3,846 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Toby — Housekeeping kwaliteit</title>
+<title>Toby — HK Kwaliteitscontrole</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #f4f1ec; --bg2: #eceae4; --card: #ffffff;
-  --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.14);
-  --text: #1a1814; --text2: #5a5650; --text3: #8a8680;
-  --purple: #6355e0; --purple-bg: rgba(99,85,224,0.08); --purple-border: rgba(99,85,224,0.25);
-  --green: #1a8c5a; --green-bg: rgba(26,140,90,0.08); --green-border: rgba(26,140,90,0.25);
-  --amber: #c47c0a; --amber-bg: rgba(196,124,10,0.08); --amber-border: rgba(196,124,10,0.25);
-  --coral: #d84a30; --coral-bg: rgba(216,74,48,0.08); --coral-border: rgba(216,74,48,0.25);
-  --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
-  --radius: 12px;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--bg2:#eceae4;--card:#fff;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --text:#1a1814;--text2:#5a5650;--text3:#8a8680;
+  --purple:#6355e0;--pbg:rgba(99,85,224,0.08);--pbo:rgba(99,85,224,0.25);
+  --green:#1a8c5a;--gbg:rgba(26,140,90,0.08);--gbo:rgba(26,140,90,0.25);
+  --amber:#c47c0a;--abg:rgba(196,124,10,0.08);--abo:rgba(196,124,10,0.25);
+  --coral:#d84a30;--cbg:rgba(216,74,48,0.08);--cbo:rgba(216,74,48,0.25);
+  --sh:0 1px 4px rgba(0,0,0,0.08),0 0 0 0.5px rgba(0,0,0,0.06);
 }
-body { background: var(--bg); font-family: 'DM Sans', -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:var(--text);min-height:100vh;padding-bottom:60px}
+.hdr{padding:14px 20px;display:flex;align-items:center;gap:10px;background:var(--card);border-bottom:0.5px solid var(--border2);position:sticky;top:0;z-index:100}
+.hdr a{font-size:13px;color:var(--purple);text-decoration:none}
+.hdr-title{font-size:15px;font-weight:600;flex:1}
+.sla-badge{font-size:11px;font-family:'DM Mono',monospace;padding:3px 10px;border-radius:20px}
+.sla-ok{background:var(--gbg);color:var(--green);border:0.5px solid var(--gbo)}
+.sla-warn{background:var(--abg);color:var(--amber);border:0.5px solid var(--abo)}
+.sla-fail{background:var(--cbg);color:var(--coral);border:0.5px solid var(--cbo)}
 
-.header { padding: 14px 20px; display: flex; align-items: center; gap: 10px; background: var(--card); border-bottom: 0.5px solid var(--border2); position: sticky; top: 0; z-index: 100; }
-.header-back { font-size: 13px; color: var(--purple); text-decoration: none; white-space: nowrap; }
-.header-title { font-size: 15px; font-weight: 600; flex: 1; }
-.header-sla { font-size: 11px; font-family: 'DM Mono', monospace; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
-.sla-ok { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
-.sla-warn { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-border); }
-.sla-fail { background: var(--coral-bg); color: var(--coral); border: 0.5px solid var(--coral-border); }
+.tabs{display:flex;background:var(--card);border-bottom:0.5px solid var(--border2);padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:10px 12px;font-size:12px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;white-space:nowrap;user-select:none;flex-shrink:0}
+.tab.on{color:var(--purple);border-bottom-color:var(--purple);font-weight:500}
 
-.tabs { display: flex; background: var(--card); border-bottom: 0.5px solid var(--border2); padding: 0 16px; }
-.tab { padding: 10px 14px; font-size: 13px; cursor: pointer; color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -0.5px; white-space: nowrap; }
-.tab.active { color: var(--purple); border-bottom-color: var(--purple); font-weight: 500; }
+.main{padding:12px;max-width:600px;margin:0 auto}
+.card{background:var(--card);border-radius:12px;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.ch{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ct{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.cb{padding:14px 16px}
 
-.main { padding: 14px 14px 0; max-width: 600px; margin: 0 auto; }
+label{font-size:12px;font-weight:500;color:var(--text2);display:block;margin-bottom:5px;margin-top:10px}
+label:first-child{margin-top:0}
+input,select,textarea{width:100%;background:var(--bg);border:0.5px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+textarea{min-height:80px;resize:vertical}
 
-.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 12px; overflow: hidden; }
-.card-header { padding: 12px 16px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-.card-title { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
-.card-body { padding: 14px 16px; }
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;width:100%;margin-top:8px}
+.btn-p{background:var(--purple);color:#fff}
+.btn-g{background:var(--green);color:#fff}
+.btn-s{background:var(--bg2);color:var(--text);border:0.5px solid var(--border2);width:auto;padding:8px 14px;margin-top:0}
+.btn-c{background:var(--cbg);color:var(--coral);border:0.5px solid var(--cbo);width:auto;padding:6px 12px;margin-top:0}
 
-/* Score dashboard */
-.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
-.score-card { background: var(--bg); border-radius: 10px; padding: 14px 12px; text-align: center; border: 0.5px solid var(--border2); }
-.score-val { font-size: 26px; font-weight: 700; font-family: 'DM Mono', monospace; }
-.score-lbl { font-size: 10px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-.score-delta { font-size: 10px; font-family: 'DM Mono', monospace; margin-top: 4px; }
-.delta-up { color: var(--green); }
-.delta-down { color: var(--coral); }
-.delta-flat { color: var(--text3); }
+/* Dashboard stats */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--bg);border-radius:10px;padding:14px;text-align:center;border:0.5px solid var(--border2)}
+.stat-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace}
+.stat-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.sla-bar-track{height:6px;background:var(--border2);border-radius:3px;overflow:hidden;margin:8px 0}
+.sla-bar-fill{height:100%;border-radius:3px;transition:width .5s}
 
-.sla-bar { background: var(--bg); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-.sla-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; }
-.sla-bar-label { font-weight: 500; }
-.sla-bar-val { font-family: 'DM Mono', monospace; color: var(--purple); }
-.bar-track { height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 3px; transition: width .5s; }
+/* Meldingen */
+.sev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.sev-btn{padding:10px 8px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--border2);background:var(--bg);font-family:inherit;text-align:center;transition:all .12s}
+.sev-btn.sel-minor{background:var(--abg);border-color:var(--abo);color:var(--amber)}
+.sev-btn.sel-major{background:var(--cbg);border-color:var(--cbo);color:var(--coral)}
+.sev-btn.sel-critical{background:var(--coral);color:#fff;border-color:var(--coral)}
+.dz{border:1.5px dashed var(--border2);border-radius:10px;padding:20px;text-align:center;cursor:pointer;background:var(--bg);position:relative;transition:all .15s;margin-bottom:10px}
+.dz:hover{border-color:var(--purple);background:var(--pbg)}
+.dz input{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}
+.foto-preview{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.foto-thumb{width:70px;height:70px;border-radius:8px;object-fit:cover;border:0.5px solid var(--border2);cursor:pointer}
+.ai-box{background:var(--pbg);border:0.5px solid var(--pbo);border-radius:8px;padding:12px;margin-bottom:10px;font-size:12px;color:var(--text2);line-height:1.7}
+.ai-box-hdr{font-size:11px;font-weight:600;color:var(--purple);margin-bottom:6px}
 
-/* Melding formulier */
-.form-row { margin-bottom: 12px; }
-.form-label { font-size: 12px; font-weight: 500; margin-bottom: 6px; display: block; color: var(--text2); }
-.form-input { width: 100%; background: var(--bg); border: 0.5px solid var(--border2); border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; color: var(--text); outline: none; }
-.form-input:focus { border-color: var(--purple); background: white; }
-textarea.form-input { min-height: 80px; resize: vertical; }
-select.form-input { cursor: pointer; }
+/* Log */
+.log-item{border-bottom:0.5px solid var(--border);padding:12px 0}
+.log-item:last-child{border:none}
+.log-hdr{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.sev-badge{font-size:10px;padding:2px 8px;border-radius:12px;font-weight:500}
+.sev-minor{background:var(--abg);color:var(--amber)}
+.sev-major{background:var(--cbg);color:var(--coral)}
+.sev-critical{background:var(--coral);color:#fff}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.filter-btn{font-size:11px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;font-family:inherit;color:var(--text2)}
+.filter-btn.on{background:var(--pbg);border-color:var(--pbo);color:var(--purple)}
 
-.severity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.sev-btn { padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 0.5px solid var(--border2); background: var(--bg); font-family: inherit; text-align: center; transition: all .12s; }
-.sev-btn.active-minor { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber); }
-.sev-btn.active-major { background: var(--coral-bg); border-color: var(--coral-border); color: var(--coral); }
-.sev-btn.active-critical { background: var(--coral-bg); border-color: var(--coral); color: var(--coral); font-weight: 700; }
+/* Inspectie */
+.insp-flow{display:flex;flex-direction:column;gap:12px}
+.progress-info{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px}
+.progress-bar{height:4px;background:var(--border2);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.progress-fill{height:100%;background:var(--purple);border-radius:2px;transition:width .4s}
+.punt-card{background:var(--card);border-radius:12px;box-shadow:var(--sh);padding:20px}
+.punt-cat{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--purple);font-weight:600;margin-bottom:6px}
+.punt-naam{font-size:18px;font-weight:600;margin-bottom:4px;line-height:1.3}
+.punt-hint{font-size:12px;color:var(--text3);margin-bottom:18px;line-height:1.5}
+.score-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:14px}
+.score-btn{aspect-ratio:1;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg);font-family:'DM Mono',monospace;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:all .1s}
+.score-btn:hover{transform:scale(1.05)}
+.s1,.s2{border-color:var(--cbo)}
+.s3,.s4,.s5{border-color:var(--abo)}
+.s8,.s9,.s10{border-color:var(--gbo)}
+.sel1,.sel2{background:var(--coral);color:#fff;border-color:var(--coral)}
+.sel3,.sel4,.sel5{background:var(--amber);color:#fff;border-color:var(--amber)}
+.sel6,.sel7{background:#8a7a10;color:#fff}
+.sel8,.sel9,.sel10{background:var(--green);color:#fff;border-color:var(--green)}
+.nav-btns{display:flex;gap:8px}
+.nav-prev{flex:0;background:var(--bg2);border:0.5px solid var(--border2);border-radius:10px;padding:13px 20px;font-size:18px;cursor:pointer;margin-top:0}
+.nav-next{flex:1;background:var(--purple);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:0}
+.nav-next:disabled{opacity:.4;cursor:not-allowed}
+.opm-row{display:flex;gap:8px;margin-bottom:12px;align-items:flex-start}
+.opm-input{flex:1;background:var(--bg);border:0.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:12px;font-family:inherit;color:var(--text);outline:none}
+.opm-input:focus{border-color:var(--purple)}
+.foto-mini{background:var(--bg2);border:0.5px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:20px;cursor:pointer;position:relative;flex-shrink:0;margin-top:0}
+.foto-mini input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 
-.upload-zone { border: 1.5px dashed var(--border2); border-radius: 8px; padding: 20px; text-align: center; cursor: pointer; background: var(--bg); position: relative; margin-bottom: 12px; }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
-.upload-zone:hover { border-color: var(--purple); }
-.photo-preview { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-.photo-thumb { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; border: 0.5px solid var(--border2); }
-.photo-thumb-del { position: relative; }
-.photo-del-btn { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; border-radius: 50%; background: var(--coral); border: none; color: white; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+/* Afronden */
+.done-score{font-size:52px;font-weight:700;font-family:'DM Mono',monospace;text-align:center;margin:16px 0 4px}
+.done-meta{text-align:center;font-size:12px;color:var(--text3);margin-bottom:20px}
+.done-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border-radius:6px;font-size:12px;margin-bottom:4px}
 
-.ai-analyse { background: var(--purple-bg); border: 0.5px solid var(--purple-border); border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: var(--text2); line-height: 1.7; }
-.ai-analyse-header { font-size: 11px; font-weight: 600; color: var(--purple); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+/* Trend */
+.trend-item{margin-bottom:16px}
+.trend-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:13px;font-weight:500}
+.trend-bars{display:flex;gap:4px;align-items:flex-end;height:48px}
+.trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.trend-bar{width:100%;border-radius:3px 3px 0 0;min-height:4px}
+.trend-week{font-size:9px;color:var(--text3);font-family:'DM Mono',monospace}
 
-.submit-btn { width: 100%; background: var(--purple); color: white; border: none; border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
-.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+/* Performance */
+.perf-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border);font-size:13px}
+.perf-row:last-child{border:none}
 
-/* Log lijst */
-.log-item { border-bottom: 0.5px solid var(--border); padding: 12px 0; }
-.log-item:last-child { border: none; }
-.log-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.log-kamer { font-size: 13px; font-weight: 600; }
-.log-tijd { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; margin-left: auto; }
-.log-hk { font-size: 11px; padding: 2px 8px; border-radius: 12px; background: var(--bg2); color: var(--text2); }
-.sev-badge { font-size: 10px; padding: 2px 8px; border-radius: 12px; font-weight: 500; }
-.sev-minor { background: var(--amber-bg); color: var(--amber); }
-.sev-major { background: var(--coral-bg); color: var(--coral); }
-.sev-critical { background: var(--coral); color: white; }
-.log-tekst { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 6px; }
-.log-ai { font-size: 11px; color: var(--purple); font-style: italic; }
-.log-fotos { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-.log-foto { width: 56px; height: 56px; border-radius: 6px; object-fit: cover; border: 0.5px solid var(--border2); cursor: pointer; }
-
-/* HK performance tabel */
-.perf-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
-.perf-row:last-child { border: none; }
-.perf-naam { font-size: 13px; font-weight: 500; flex: 1; }
-.perf-meldingen { font-size: 12px; color: var(--text3); text-align: center; width: 60px; }
-.perf-score { font-size: 13px; font-weight: 600; font-family: 'DM Mono', monospace; width: 48px; text-align: right; }
-.perf-trend { font-size: 18px; width: 24px; text-align: center; }
-
-/* Filters */
-.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
-.filter-btn { font-size: 11px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--border2); background: var(--bg); cursor: pointer; font-family: inherit; color: var(--text2); }
-.filter-btn.active { background: var(--purple-bg); border-color: var(--purple-border); color: var(--purple); }
-
-/* Spinner */
-.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -2px; margin-right: 6px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.empty-state { text-align: center; padding: 24px; color: var(--text3); font-size: 13px; }
+.spin{display:inline-block;width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--purple);border-radius:50%;animation:sp .7s linear infinite;vertical-align:-4px;margin-right:6px}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:24px;color:var(--text3);font-size:13px}
 
 /* Lightbox */
-#lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; align-items: center; justify-content: center; }
-#lightbox.open { display: flex; }
-#lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; }
-#lightbox-close { position: absolute; top: 16px; right: 20px; color: white; font-size: 28px; cursor: pointer; background: none; border: none; }
+#lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center}
+#lb.on{display:flex}
+#lb img{max-width:90vw;max-height:90vh;border-radius:8px}
+#lb-close{position:absolute;top:16px;right:20px;color:#fff;font-size:28px;cursor:pointer;background:none;border:none}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <a href="toby-hub.html" class="header-back">← Hub</a>
-  <div class="header-title">HK Kwaliteitscontrole</div>
-  <span class="header-sla" id="sla-badge">SLA laden...</span>
+<div class="hdr">
+  <a href="toby-hub.html">← Hub</a>
+  <div class="hdr-title">HK Kwaliteitscontrole</div>
+  <span class="sla-badge sla-ok" id="sla-badge">SLA laden...</span>
 </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('dashboard',this)">Dashboard</div>
-  <div class="tab" onclick="switchTab('melding',this)">+ Melding</div>
-  <div class="tab" onclick="switchTab('log',this)">Log</div>
-  <div class="tab" onclick="switchTab('performance',this)">Performance</div>
-  <div class="tab" onclick="location.href='toby-hk-inspectie.html'">🔍 Inspectie</div>
+<div class="tabs" id="tabs">
+  <div class="tab on" data-tab="dashboard">📊 Dashboard</div>
+  <div class="tab" data-tab="inspectie">🔍 Inspectie</div>
+  <div class="tab" data-tab="meldingen">⚠️ Meldingen</div>
+  <div class="tab" data-tab="trend">📈 Trend</div>
+  <div class="tab" data-tab="instellingen">⚙️ Instellingen</div>
 </div>
 
 <div class="main">
 
-  <!-- ── TAB: DASHBOARD ── -->
-  <div id="tab-dashboard">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">📊 Scores & SLA</div>
-        <span style="font-size:11px;color:var(--text3)" id="periode-label">Deze maand</span>
+<!-- ── DASHBOARD ── -->
+<div id="p-dashboard">
+  <div class="card">
+    <div class="ch"><span class="ct">📊 Scores & SLA</span><span style="font-size:11px;color:var(--text3)" id="periode-lbl">Deze maand</span></div>
+    <div class="cb">
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-val" id="d-score" style="color:var(--green)">—</div><div class="stat-lbl">Revinate gem.</div></div>
+        <div class="stat"><div class="stat-val" id="d-sla">9.0</div><div class="stat-lbl">SLA minimum</div></div>
+        <div class="stat"><div class="stat-val" id="d-inspecties" style="color:var(--purple)">—</div><div class="stat-lbl">Inspecties</div></div>
       </div>
-      <div class="card-body">
-        <div class="score-grid">
-          <div class="score-card">
-            <div class="score-val" id="score-revinate" style="color:var(--green)">—</div>
-            <div class="score-lbl">Revinate gem.</div>
-            <div class="score-delta" id="delta-revinate">laden...</div>
-          </div>
-          <div class="score-card">
-            <div class="score-val" id="score-sla">9.0</div>
-            <div class="score-lbl">SLA minimum</div>
-            <div class="score-delta" style="color:var(--text3)">contractnorm</div>
-          </div>
-          <div class="score-card">
-            <div class="score-val" id="score-meldingen" style="color:var(--coral)">—</div>
-            <div class="score-lbl">Meldingen</div>
-            <div class="score-delta" id="delta-meldingen">laden...</div>
-          </div>
-        </div>
-
-        <div class="sla-bar">
-          <div class="sla-bar-header">
-            <span class="sla-bar-label">SLA voortgang</span>
-            <span class="sla-bar-val" id="sla-progress-val">—</span>
-          </div>
-          <div class="bar-track">
-            <div class="bar-fill" id="sla-bar-fill" style="width:0%;background:var(--green)"></div>
-          </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div style="background:var(--bg);border-radius:8px;padding:12px;border:0.5px solid var(--border2)">
-            <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Kritiek deze week</div>
-            <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--coral)" id="count-critical">—</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">meldingen</div>
-          </div>
-          <div style="background:var(--bg);border-radius:8px;padding:12px;border:0.5px solid var(--border2)">
-            <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Kamers in log</div>
-            <div style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--amber)" id="count-kamers">—</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">unieke kamers</div>
-          </div>
-        </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;display:flex;justify-content:space-between">
+        <span>SLA voortgang</span>
+        <span style="font-family:monospace;color:var(--purple)" id="sla-prog-val">—</span>
       </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">⚠️ Recente kritieke meldingen</div>
-        <span style="font-size:12px;color:var(--purple);cursor:pointer" onclick="switchTabByName('log')">Alle →</span>
-      </div>
-      <div class="card-body" style="padding:0 16px">
-        <div id="recent-critical-list">
-          <div class="empty-state">Geen kritieke meldingen — goed bezig!</div>
+      <div class="sla-bar-track"><div class="sla-bar-fill" id="sla-bar" style="width:0%"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+        <div style="background:var(--bg);border-radius:8px;padding:12px;border:0.5px solid var(--border2)">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Gem. inspectiescore</div>
+          <div style="font-size:22px;font-weight:700;font-family:monospace" id="d-insp-score">—</div>
+        </div>
+        <div style="background:var(--cbg);border-radius:8px;padding:12px;border:0.5px solid var(--cbo)">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Kritieke meldingen</div>
+          <div style="font-size:22px;font-weight:700;font-family:monospace;color:var(--coral)" id="d-kritiek">—</div>
         </div>
       </div>
     </div>
   </div>
+  <div class="card">
+    <div class="ch"><span class="ct">⚠️ Recente kritieke meldingen</span><span style="font-size:12px;color:var(--purple);cursor:pointer" onclick="goTab('meldingen')">Alle →</span></div>
+    <div class="cb" style="padding:0 16px"><div id="d-kritiek-lijst"><div class="empty">Geen kritieke meldingen 🎉</div></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">🔍 Laatste inspecties</span><span style="font-size:12px;color:var(--purple);cursor:pointer" onclick="goTab('inspectie')">Nieuwe inspectie →</span></div>
+    <div class="cb" style="padding:0 16px"><div id="d-insp-lijst"><div class="empty">Nog geen inspecties</div></div></div>
+  </div>
+</div>
 
-  <!-- ── TAB: MELDING ── -->
-  <div id="tab-melding" style="display:none">
+<!-- ── INSPECTIE ── -->
+<div id="p-inspectie" style="display:none">
+
+  <!-- Start -->
+  <div id="insp-start">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">📷 Nieuwe kwaliteitsmelding</div>
-      </div>
-      <div class="card-body">
-
-        <div class="form-row">
-          <label class="form-label">Kamernummer *</label>
-          <input type="text" class="form-input" id="f-kamer" placeholder="bijv. 12 of 204">
+      <div class="ch"><span class="ct">🔍 Kamerinspectie starten</span></div>
+      <div class="cb">
+        <div id="geen-checklist-warn" style="display:none;background:var(--abg);border:0.5px solid var(--abo);border-radius:8px;padding:12px;margin-bottom:12px;font-size:12px;color:var(--amber)">
+          ⚠ Geen checklist geladen — upload er een via Instellingen
         </div>
-
-        <div class="form-row">
-          <label class="form-label">Housekeeper</label>
-          <select class="form-input" id="f-hk">
-            <option value="">— Onbekend / Toby bepaalt via Mews —</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label class="form-label">Ernst van de bevinding</label>
-          <div class="severity-grid">
-            <button class="sev-btn" data-sev="minor" onclick="selectSev(this,'minor')">⚠️ Minor<br><span style="font-size:10px;font-weight:400">Schoon maar onnauwkeurig</span></button>
-            <button class="sev-btn" data-sev="major" onclick="selectSev(this,'major')">🔴 Major<br><span style="font-size:10px;font-weight:400">Hygiëne of veiligheid</span></button>
-            <button class="sev-btn" data-sev="critical" onclick="selectSev(this,'critical')">🚨 Kritiek<br><span style="font-size:10px;font-weight:400">Kamer niet te verhuren</span></button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+          <div>
+            <label>Kamernummer *</label>
+            <input type="text" id="s-kamer" placeholder="bijv. 12">
+          </div>
+          <div>
+            <label>Housekeeper</label>
+            <select id="s-hk"><option value="">Onbekend</option></select>
           </div>
         </div>
-
-        <div class="form-row">
-          <label class="form-label">Categorie</label>
-          <select class="form-input" id="f-cat">
-            <option value="badkamer">🚿 Badkamer</option>
-            <option value="beddengoed">🛏️ Beddengoed & linnengoed</option>
-            <option value="vloer">🧹 Vloer & tapijt</option>
-            <option value="ramen">🪟 Ramen & spiegels</option>
-            <option value="minibar">🧃 Minibar & supplies</option>
-            <option value="schade">⚒️ Schade aan inventaris</option>
-            <option value="geur">👃 Geur / ventilatie</option>
-            <option value="overig">📋 Overig</option>
-          </select>
+        <label>Jouw naam (inspector) *</label>
+        <input type="text" id="s-inspector" placeholder="bijv. Jan de Vries" oninput="localStorage.setItem('toby_inspector_naam',this.value)">
+        <div style="background:var(--bg);border:0.5px solid var(--border2);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:12px;color:var(--text2);display:flex;justify-content:space-between">
+          <span>📅 Datum & tijd</span>
+          <span style="font-family:monospace;color:var(--text)" id="s-datum"></span>
         </div>
-
-        <div class="form-row">
-          <label class="form-label">Omschrijving</label>
-          <textarea class="form-input" id="f-omschrijving" placeholder="Wat is er precies niet in orde? Wees specifiek."></textarea>
-        </div>
-
-        <div class="form-row">
-          <label class="form-label">Foto's (max 4)</label>
-          <div class="upload-zone" id="upload-zone">
-            <input type="file" id="foto-input" accept="image/*" multiple onchange="handleFotos(this)">
-            <div style="font-size:24px;margin-bottom:6px">📸</div>
-            <div style="font-size:13px;font-weight:500">Foto's toevoegen</div>
-            <div style="font-size:11px;color:var(--text3);margin-top:2px">Camera of galerij</div>
-          </div>
-          <div class="photo-preview" id="photo-preview"></div>
-        </div>
-
-        <div id="ai-analyse-box" style="display:none" class="ai-analyse">
-          <div class="ai-analyse-header">Toby analyse</div>
-          <div id="ai-analyse-tekst"></div>
-        </div>
-
-        <button class="submit-btn" id="submit-btn" onclick="submitMelding()">Melding opslaan</button>
+        <button class="btn btn-p" id="btn-start-insp" onclick="startInspectie()" style="margin-top:12px">🔍 Inspectie starten</button>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: LOG ── -->
-  <div id="tab-log" style="display:none">
-    <div class="filter-row" id="filter-row">
-      <button class="filter-btn active" data-filter="all" onclick="filterLog(this,'all')">Alles</button>
-      <button class="filter-btn" data-filter="critical" onclick="filterLog(this,'critical')">🚨 Kritiek</button>
-      <button class="filter-btn" data-filter="major" onclick="filterLog(this,'major')">🔴 Major</button>
-      <button class="filter-btn" data-filter="minor" onclick="filterLog(this,'minor')">⚠️ Minor</button>
+  <!-- Lopende inspectie -->
+  <div id="insp-running" style="display:none">
+    <div class="progress-info">
+      <span id="punt-teller">1 / 0</span>
+      <span id="punt-cat-top" style="color:var(--purple)"></span>
     </div>
-    <div class="card">
-      <div class="card-body" style="padding:0 16px">
-        <div id="log-list">
-          <div class="empty-state">Nog geen meldingen — maak een eerste melding via + Melding</div>
-        </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="punt-card">
+      <div class="punt-cat" id="punt-cat"></div>
+      <div class="punt-naam" id="punt-naam"></div>
+      <div class="punt-hint" id="punt-hint"></div>
+      <div class="score-grid" id="score-grid"></div>
+      <div class="opm-row">
+        <textarea class="opm-input" id="punt-opm" placeholder="Opmerking (optioneel)..." rows="2"></textarea>
+        <button class="foto-mini">📷<input type="file" accept="image/*" capture="environment" onchange="handlePuntFoto(this)"></button>
+      </div>
+      <div id="punt-foto-prev" style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap"></div>
+      <div class="nav-btns">
+        <button class="nav-prev" id="nav-prev" onclick="vorigPunt()">←</button>
+        <button class="nav-next" id="nav-next" onclick="volgendePunt()" disabled>Volgende →</button>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: PERFORMANCE ── -->
-  <div id="tab-performance" style="display:none">
+  <!-- Afgerond -->
+  <div id="insp-done" style="display:none">
     <div class="card">
-      <div class="card-header">
-        <div class="card-title">👥 Housekeeper overzicht</div>
-      </div>
-      <div class="card-body" style="padding:0 16px">
-        <div id="perf-list">
-          <div class="empty-state">Voeg housekeepers toe via het formulier om performance bij te houden</div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">⚙️ Instellingen</div>
-      </div>
-      <div class="card-body">
-        <div class="form-row">
-          <label class="form-label">SLA minimum score (Revinate/Google)</label>
-          <input type="number" class="form-input" id="sla-input" value="9.0" min="1" max="10" step="0.1" onchange="saveSla()">
-        </div>
-        <div class="form-row">
-          <label class="form-label">HK bedrijfsnaam</label>
-          <input type="text" class="form-input" id="hk-bedrijf" placeholder="bijv. CleanPro BV" onchange="saveSettings()">
-        </div>
-        <div class="form-row">
-          <label class="form-label">Housekeepers (één per regel)</label>
-          <textarea class="form-input" id="hk-namen" placeholder="Anna de Vries&#10;Mohammed El Amin&#10;Sarah Jansen" onchange="saveSettings()"></textarea>
-        </div>
-        <button class="submit-btn" onclick="saveSettings();renderAll()">Opslaan</button>
+      <div class="cb">
+        <div class="done-score" id="done-score"></div>
+        <div class="done-meta" id="done-meta"></div>
+        <div id="done-breakdown" style="margin-bottom:16px"></div>
+        <button class="btn btn-g" onclick="slaInspectieOp()">💾 Opslaan in log</button>
+        <button class="btn btn-s" style="width:100%;margin-top:8px" onclick="nieuweInspectie()">Nieuwe inspectie</button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- ── MELDINGEN ── -->
+<div id="p-meldingen" style="display:none">
+  <div class="card">
+    <div class="ch"><span class="ct">📷 Nieuwe melding</span></div>
+    <div class="cb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div><label>Kamernummer *</label><input type="text" id="m-kamer" placeholder="bijv. 12"></div>
+        <div><label>Housekeeper</label><select id="m-hk"><option value="">Onbekend</option></select></div>
+      </div>
+      <label>Ernst</label>
+      <div class="sev-grid">
+        <button class="sev-btn" data-sev="minor" onclick="selectSev(this,'minor')">⚠️ Minor<br><span style="font-size:10px;font-weight:400">Onnauwkeurig</span></button>
+        <button class="sev-btn" data-sev="major" onclick="selectSev(this,'major')">🔴 Major<br><span style="font-size:10px;font-weight:400">Hygiëne / veiligheid</span></button>
+        <button class="sev-btn" data-sev="critical" onclick="selectSev(this,'critical')">🚨 Kritiek<br><span style="font-size:10px;font-weight:400">Niet te verhuren</span></button>
+      </div>
+      <label>Categorie</label>
+      <select id="m-cat">
+        <option value="badkamer">🚿 Badkamer</option>
+        <option value="beddengoed">🛏️ Beddengoed & linnengoed</option>
+        <option value="vloer">🧹 Vloer & tapijt</option>
+        <option value="ramen">🪟 Ramen & spiegels</option>
+        <option value="minibar">🧃 Minibar & supplies</option>
+        <option value="schade">⚒️ Schade aan inventaris</option>
+        <option value="overig">📋 Overig</option>
+      </select>
+      <label>Omschrijving</label>
+      <textarea id="m-omschr" placeholder="Wat is er precies niet in orde?"></textarea>
+      <label>Foto's</label>
+      <div class="dz" id="m-dz">
+        <input type="file" id="m-fotos" accept="image/*" multiple onchange="handleMeldingFotos(this)">
+        <div style="font-size:22px;margin-bottom:6px">📸</div>
+        <div style="font-size:13px;font-weight:500">Foto's toevoegen</div>
+        <div style="font-size:11px;color:var(--text3)">Camera of galerij</div>
+      </div>
+      <div class="foto-preview" id="m-foto-prev"></div>
+      <div class="ai-box" id="m-ai-box" style="display:none">
+        <div class="ai-box-hdr">✨ Toby analyse</div>
+        <div id="m-ai-tekst"></div>
+      </div>
+      <button class="btn btn-p" onclick="submitMelding()">Melding opslaan</button>
+    </div>
+  </div>
+
+  <div class="filter-row" id="filter-row">
+    <button class="filter-btn on" data-f="all" onclick="setFilter(this,'all')">Alles</button>
+    <button class="filter-btn" data-f="critical" onclick="setFilter(this,'critical')">🚨 Kritiek</button>
+    <button class="filter-btn" data-f="major" onclick="setFilter(this,'major')">🔴 Major</button>
+    <button class="filter-btn" data-f="minor" onclick="setFilter(this,'minor')">⚠️ Minor</button>
+  </div>
+  <div class="card">
+    <div class="cb" style="padding:0 16px"><div id="meld-log"></div></div>
+  </div>
+</div>
+
+<!-- ── TREND ── -->
+<div id="p-trend" style="display:none">
+  <div class="card">
+    <div class="ch"><span class="ct">📈 Scores per checkpunt</span><span style="font-size:11px;color:var(--text3)">Laatste 6 weken</span></div>
+    <div class="cb"><div id="trend-inhoud"><div class="empty">Voer inspecties uit om trends te zien</div></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">📋 Recente inspecties</span></div>
+    <div class="cb" style="padding:0 16px"><div id="trend-insp-lijst"></div></div>
+  </div>
+</div>
+
+<!-- ── INSTELLINGEN ── -->
+<div id="p-instellingen" style="display:none">
+  <div class="card">
+    <div class="ch"><span class="ct">📄 Checklist uploaden</span></div>
+    <div class="cb">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.7">Upload je HK checklist als PDF, Word of .txt. Toby leest hem uit en maakt er een digitaal inspectieformulier van.</p>
+      <div class="dz">
+        <input type="file" id="cl-file" accept=".pdf,.doc,.docx,.txt" onchange="handleChecklistUpload(this)">
+        <div style="font-size:24px;margin-bottom:6px">📄</div>
+        <div style="font-size:13px;font-weight:500">Checklist uploaden</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">PDF, Word of .txt</div>
+      </div>
+      <div id="cl-load" style="display:none;text-align:center;padding:14px">
+        <span class="spin"></span>Toby leest de checklist uit...
+      </div>
+      <div id="cl-res" style="display:none">
+        <div style="background:var(--gbg);border:0.5px solid var(--gbo);border-radius:8px;padding:12px;margin-bottom:10px">
+          <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:6px">✅ <span id="cl-count">0</span> checkpunten herkend</div>
+          <div id="cl-prev" style="font-size:11px;color:var(--text2);max-height:160px;overflow-y:auto"></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-s" onclick="resetChecklist()">Annuleren</button>
+          <button class="btn btn-p" onclick="slaChecklistOp()">✓ Checklist opslaan</button>
+        </div>
+      </div>
+      <div id="cl-handmatig" style="margin-top:12px">
+        <div style="font-size:12px;color:var(--text3);text-align:center;margin-bottom:8px">— of handmatig —</div>
+        <textarea id="cl-input" rows="5" placeholder="Voer checkpunten in, één per regel:&#10;Badkamer - toilet schoon&#10;Bed - lakens strak opgemaakt&#10;Vloer - gestofzuigd"></textarea>
+        <button class="btn btn-p" onclick="parseHandmatig()">Verwerken</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="active-cl-card" style="display:none">
+    <div class="ch"><span class="ct">✅ Actieve checklist</span><span style="font-size:11px;color:var(--text3)" id="active-cl-naam"></span></div>
+    <div class="cb" style="padding:0 16px"><div id="active-cl-lijst"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span class="ct">⚙️ SLA & Housekeepers</span></div>
+    <div class="cb">
+      <label>SLA minimum score</label>
+      <input type="number" id="cfg-sla" value="9.0" min="1" max="10" step="0.1">
+      <label>Revinate score (huidige maand)</label>
+      <input type="number" id="cfg-revinate" step="0.1" min="0" max="10" placeholder="bijv. 8.7">
+      <label>HK bedrijfsnaam</label>
+      <input type="text" id="cfg-bedrijf" placeholder="bijv. CleanPro BV">
+      <label>Housekeepers (één per regel)</label>
+      <textarea id="cfg-namen" rows="4" placeholder="Anna de Vries&#10;Mohammed El Amin&#10;Sarah Jansen"></textarea>
+      <button class="btn btn-p" onclick="saveSettings()">Opslaan</button>
+    </div>
+  </div>
+</div>
 
 </div>
 
 <!-- Lightbox -->
-<div id="lightbox" onclick="closeLightbox()">
-  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
+<div id="lb"><button id="lb-close" onclick="document.getElementById('lb').classList.remove('on')">✕</button><img id="lb-img" src="" alt=""></div>
 
 <script src="toby-widget.js"></script>
 <script>
-const HOTEL_ID = '6a0ba674-4bfc-44d8-bfcf-0b598d05e097';
-
-// State
+// ── STATE ──
 var meldingen = JSON.parse(localStorage.getItem('toby_hk_meldingen') || '[]');
-var settings = JSON.parse(localStorage.getItem('toby_hk_settings') || '{"sla":9.0,"bedrijf":"","namen":"","revinateScore":8.7,"revinateVorige":8.5}');
-var fotos = []; // base64 array
+var inspecties = JSON.parse(localStorage.getItem('toby_hk_inspecties') || '[]');
+var checklist = JSON.parse(localStorage.getItem('toby_hk_checklist') || 'null');
+var settings = JSON.parse(localStorage.getItem('toby_hk_settings') || '{"sla":9.0,"bedrijf":"","namen":"","revinateScore":0}');
+
 var selectedSev = null;
+var meldingFotos = [];
 var activeFilter = 'all';
+var parsedChecklist = null;
 
-function getApiKey() { return localStorage.getItem('toby_anthropic_key') || ''; }
+// Inspectie state
+var inspKamer = '';
+var inspHK = '';
+var inspInspector = '';
+var inspPuntIdx = 0;
+var inspAntwoorden = [];
 
-function switchTab(name, btn) {
-  ['dashboard','melding','log','performance'].forEach(t => {
-    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+function getKey() {
+  var k = localStorage.getItem('toby_anthropic_key');
+  if (!k) { k = prompt('Voer je Anthropic API sleutel in:'); if (k) localStorage.setItem('toby_anthropic_key', k.trim()); }
+  return k ? k.trim() : null;
+}
+
+// ── TABS ──
+document.getElementById('tabs').addEventListener('click', function(e) {
+  var t = e.target.closest('[data-tab]');
+  if (!t) return;
+  goTab(t.dataset.tab);
+});
+
+function goTab(name) {
+  ['dashboard','inspectie','meldingen','trend','instellingen'].forEach(function(n) {
+    document.getElementById('p-' + n).style.display = n === name ? 'block' : 'none';
   });
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  if (name === 'log') renderLog();
-  if (name === 'performance') renderPerf();
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.toggle('on', t.dataset.tab === name); });
   if (name === 'dashboard') renderDashboard();
-}
-function switchTabByName(name) {
-  var tabs = document.querySelectorAll('.tab');
-  var map = {log:2, performance:3, melding:1, dashboard:0};
-  switchTab(name, tabs[map[name]]);
+  if (name === 'inspectie') initInspectie();
+  if (name === 'meldingen') renderMeldingen();
+  if (name === 'trend') renderTrend();
+  if (name === 'instellingen') loadSettings();
 }
 
-function selectSev(btn, sev) {
-  document.querySelectorAll('.sev-btn').forEach(b => {
-    b.classList.remove('active-minor','active-major','active-critical');
+// ── DASHBOARD ──
+function renderDashboard() {
+  var sla = settings.sla || 9.0;
+  var score = settings.revinateScore || 0;
+  var week = new Date(); week.setDate(week.getDate() - 7);
+  var kritiek = meldingen.filter(function(m) { return m.ernst === 'critical'; });
+  var dezeWeek = meldingen.filter(function(m) { return new Date(m.tijdstip) >= week; });
+  var gemInsp = inspecties.length ? (inspecties.reduce(function(s, i) { return s + (i.totaal_score || 0); }, 0) / inspecties.length).toFixed(1) : '—';
+  var inspKleur = gemInsp !== '—' ? (parseFloat(gemInsp) >= sla ? 'var(--green)' : 'var(--coral)') : 'var(--text3)';
+
+  if (score > 0) {
+    document.getElementById('d-score').textContent = score.toFixed(1);
+    document.getElementById('d-score').style.color = score >= sla ? 'var(--green)' : 'var(--coral)';
+  } else {
+    document.getElementById('d-score').textContent = '—';
+  }
+  document.getElementById('d-sla').textContent = sla.toFixed(1);
+  document.getElementById('d-inspecties').textContent = inspecties.length;
+  document.getElementById('d-insp-score').textContent = gemInsp;
+  document.getElementById('d-insp-score').style.color = inspKleur;
+  document.getElementById('d-kritiek').textContent = kritiek.length;
+
+  var pct = score > 0 ? Math.min(100, Math.round((score / sla) * 100)) : 0;
+  var bar = document.getElementById('sla-bar');
+  bar.style.width = pct + '%';
+  bar.style.background = score >= sla ? 'var(--green)' : score >= sla - 0.5 ? 'var(--amber)' : 'var(--coral)';
+  document.getElementById('sla-prog-val').textContent = score > 0 ? score.toFixed(1) + ' / ' + sla.toFixed(1) : '— / ' + sla.toFixed(1);
+
+  var badge = document.getElementById('sla-badge');
+  if (score === 0) { badge.textContent = 'SLA —'; badge.className = 'sla-badge sla-warn'; }
+  else if (score >= sla) { badge.textContent = 'SLA ✓'; badge.className = 'sla-badge sla-ok'; }
+  else if (score >= sla - 0.3) { badge.textContent = 'SLA ⚠'; badge.className = 'sla-badge sla-warn'; }
+  else { badge.textContent = 'SLA ✗'; badge.className = 'sla-badge sla-fail'; }
+
+  var kl = document.getElementById('d-kritiek-lijst');
+  var recent = kritiek.slice(0, 3);
+  kl.innerHTML = recent.length === 0 ? '<div class="empty" style="padding:16px">Geen kritieke meldingen 🎉</div>' :
+    recent.map(function(m) {
+      var d = new Date(m.tijdstip).toLocaleDateString('nl-NL', {day:'numeric',month:'short'});
+      return '<div class="log-item"><div class="log-hdr"><span style="font-size:13px;font-weight:600">Kamer ' + m.kamer + '</span><span class="sev-badge sev-critical">🚨 Kritiek</span><span style="font-size:11px;color:var(--text3);margin-left:auto">' + d + '</span></div><div style="font-size:12px;color:var(--text2)">' + (m.omschrijving || '—') + '</div></div>';
+    }).join('');
+
+  var il = document.getElementById('d-insp-lijst');
+  il.innerHTML = inspecties.length === 0 ? '<div class="empty">Nog geen inspecties</div>' :
+    inspecties.slice(0, 4).map(function(insp) {
+      var d = new Date(insp.geteld_op).toLocaleDateString('nl-NL', {day:'numeric',month:'short'});
+      var kleur = insp.totaal_score >= 8 ? 'var(--green)' : insp.totaal_score >= 6 ? 'var(--amber)' : 'var(--coral)';
+      return '<div style="display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:0.5px solid var(--border);font-size:13px"><span style="flex:1">Kamer ' + insp.kamer + '</span>' +
+        (insp.housekeeper !== 'Onbekend' ? '<span style="font-size:11px;color:var(--text3)">' + insp.housekeeper + '</span>' : '') +
+        '<span style="font-weight:700;font-family:monospace;color:' + kleur + '">' + insp.totaal_score.toFixed(1) + '</span>' +
+        '<span style="font-size:11px;color:var(--text3)">' + d + '</span></div>';
+    }).join('');
+}
+
+// ── INSPECTIE ──
+function initInspectie() {
+  var namen = (settings.namen || '').split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  var sel = document.getElementById('s-hk');
+  sel.innerHTML = '<option value="">Onbekend</option>' + namen.map(function(n) { return '<option>' + n + '</option>'; }).join('');
+  var nu = new Date();
+  var datStr = nu.toLocaleDateString('nl-NL', {weekday:'long',day:'numeric',month:'long'}) + ' · ' + nu.toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('s-datum').textContent = datStr;
+  var savedNaam = localStorage.getItem('toby_inspector_naam') || '';
+  if (savedNaam && !document.getElementById('s-inspector').value) document.getElementById('s-inspector').value = savedNaam;
+  var warn = document.getElementById('geen-checklist-warn');
+  var btn = document.getElementById('btn-start-insp');
+  warn.style.display = !checklist ? 'block' : 'none';
+  btn.disabled = !checklist;
+  document.getElementById('insp-start').style.display = 'block';
+  document.getElementById('insp-running').style.display = 'none';
+  document.getElementById('insp-done').style.display = 'none';
+}
+
+function startInspectie() {
+  var kamer = document.getElementById('s-kamer').value.trim();
+  var inspector = document.getElementById('s-inspector').value.trim();
+  if (!kamer) { alert('Vul een kamernummer in'); return; }
+  if (!inspector) { alert('Vul jouw naam in'); return; }
+  if (!checklist) { alert('Laad eerst een checklist via Instellingen'); return; }
+  inspKamer = kamer;
+  inspHK = document.getElementById('s-hk').value;
+  inspInspector = inspector;
+  inspPuntIdx = 0;
+  inspAntwoorden = checklist.punten.map(function() { return {score: null, opmerking: '', foto: null}; });
+  bouwScorePicker();
+  document.getElementById('insp-start').style.display = 'none';
+  document.getElementById('insp-running').style.display = 'block';
+  toonPunt(0);
+}
+
+function bouwScorePicker() {
+  var html = '';
+  for (var i = 1; i <= 10; i++) {
+    html += '<button class="score-btn s' + i + '" data-score="' + i + '" onclick="selectScore(' + i + ')">' + i + '</button>';
+  }
+  document.getElementById('score-grid').innerHTML = html;
+}
+
+function toonPunt(idx) {
+  var punten = checklist.punten;
+  var punt = punten[idx];
+  var pct = Math.round(((idx + 1) / punten.length) * 100);
+  document.getElementById('punt-teller').textContent = (idx + 1) + ' / ' + punten.length;
+  document.getElementById('punt-cat-top').textContent = punt.categorie;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('punt-cat').textContent = punt.categorie;
+  document.getElementById('punt-naam').textContent = punt.naam;
+  document.getElementById('punt-hint').textContent = punt.hint || '';
+  var ant = inspAntwoorden[idx];
+  document.getElementById('punt-opm').value = ant.opmerking || '';
+  document.getElementById('punt-foto-prev').innerHTML = ant.foto ? '<img src="data:image/jpeg;base64,' + ant.foto + '" style="width:60px;height:60px;border-radius:6px;object-fit:cover">' : '';
+  document.querySelectorAll('.score-btn').forEach(function(b) {
+    var s = parseInt(b.dataset.score);
+    b.className = 'score-btn s' + s;
+    if (ant.score === s) b.classList.add('sel' + s);
   });
-  btn.classList.add('active-' + sev);
+  document.getElementById('nav-next').disabled = ant.score === null;
+  document.getElementById('nav-prev').style.visibility = idx === 0 ? 'hidden' : 'visible';
+  document.getElementById('nav-next').textContent = idx === punten.length - 1 ? 'Afronden ✓' : 'Volgende →';
+}
+
+function selectScore(score) {
+  inspAntwoorden[inspPuntIdx].score = score;
+  document.querySelectorAll('.score-btn').forEach(function(b) {
+    var s = parseInt(b.dataset.score);
+    b.className = 'score-btn s' + s;
+    if (s === score) b.classList.add('sel' + s);
+  });
+  document.getElementById('nav-next').disabled = false;
+}
+
+function handlePuntFoto(input) {
+  var file = input.files[0]; if (!file) return;
+  var r = new FileReader();
+  r.onload = function(e) {
+    inspAntwoorden[inspPuntIdx].foto = e.target.result.split(',')[1];
+    document.getElementById('punt-foto-prev').innerHTML = '<img src="' + e.target.result + '" style="width:60px;height:60px;border-radius:6px;object-fit:cover">';
+  };
+  r.readAsDataURL(file);
+}
+
+function volgendePunt() {
+  inspAntwoorden[inspPuntIdx].opmerking = document.getElementById('punt-opm').value;
+  if (inspPuntIdx === checklist.punten.length - 1) { toonAfronden(); }
+  else { inspPuntIdx++; toonPunt(inspPuntIdx); }
+}
+
+function vorigPunt() {
+  inspAntwoorden[inspPuntIdx].opmerking = document.getElementById('punt-opm').value;
+  if (inspPuntIdx > 0) { inspPuntIdx--; toonPunt(inspPuntIdx); }
+}
+
+function toonAfronden() {
+  var scores = inspAntwoorden.map(function(a) { return a.score; }).filter(Boolean);
+  var totaal = scores.length ? (scores.reduce(function(a, b) { return a + b; }, 0) / scores.length).toFixed(1) : '—';
+  var kleur = parseFloat(totaal) >= 8 ? 'var(--green)' : parseFloat(totaal) >= 6 ? 'var(--amber)' : 'var(--coral)';
+  document.getElementById('insp-running').style.display = 'none';
+  document.getElementById('insp-done').style.display = 'block';
+  document.getElementById('done-score').textContent = totaal;
+  document.getElementById('done-score').style.color = kleur;
+  var nu = new Date();
+  document.getElementById('done-meta').textContent = nu.toLocaleDateString('nl-NL', {weekday:'long',day:'numeric',month:'long'}) + ' · ' + inspInspector + ' · Kamer ' + inspKamer;
+  document.getElementById('done-breakdown').innerHTML = checklist.punten.map(function(p, i) {
+    var s = inspAntwoorden[i].score;
+    var kl = s !== null ? (s >= 8 ? 'var(--green)' : s >= 6 ? 'var(--amber)' : 'var(--coral)') : 'var(--text3)';
+    return '<div class="done-row"><span style="flex:1">' + p.naam + '</span><span style="font-weight:700;font-family:monospace;color:' + kl + '">' + (s !== null ? s : '—') + '</span></div>';
+  }).join('');
+}
+
+function slaInspectieOp() {
+  var scores = inspAntwoorden.map(function(a) { return a.score; }).filter(Boolean);
+  var totaal = scores.length ? parseFloat((scores.reduce(function(a, b) { return a + b; }, 0) / scores.length).toFixed(1)) : 0;
+  var inspectie = {
+    id: Date.now(), kamer: inspKamer, housekeeper: inspHK || 'Onbekend', inspector: inspInspector,
+    geteld_op: new Date().toISOString(), totaal_score: totaal,
+    scores: checklist.punten.map(function(p, i) { return {punt_id: p.id, naam: p.naam, categorie: p.categorie, score: inspAntwoorden[i].score, opmerking: inspAntwoorden[i].opmerking}; }),
+    checklist_naam: checklist.naam
+  };
+  inspecties.unshift(inspectie);
+  if (inspecties.length > 200) inspecties = inspecties.slice(0, 200);
+  localStorage.setItem('toby_hk_inspecties', JSON.stringify(inspecties));
+  alert('✅ Inspectie opgeslagen');
+  goTab('trend');
+}
+
+function nieuweInspectie() {
+  document.getElementById('s-kamer').value = '';
+  initInspectie();
+}
+
+// ── MELDINGEN ──
+function selectSev(btn, sev) {
+  document.querySelectorAll('.sev-btn').forEach(function(b) { b.className = 'sev-btn'; });
+  btn.className = 'sev-btn sel-' + sev;
   selectedSev = sev;
 }
 
-function handleFotos(input) {
+function handleMeldingFotos(input) {
   var files = Array.from(input.files).slice(0, 4);
-  fotos = [];
-  var preview = document.getElementById('photo-preview');
-  preview.innerHTML = '';
+  meldingFotos = [];
+  var prev = document.getElementById('m-foto-prev');
+  prev.innerHTML = '';
   files.forEach(function(file, i) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      fotos.push(e.target.result.split(',')[1]);
-      var wrap = document.createElement('div');
-      wrap.className = 'photo-thumb-del';
+    var r = new FileReader();
+    r.onload = function(e) {
+      meldingFotos.push(e.target.result.split(',')[1]);
       var img = document.createElement('img');
-      img.className = 'photo-thumb';
+      img.className = 'foto-thumb';
       img.src = e.target.result;
-      var del = document.createElement('button');
-      del.className = 'photo-del-btn';
-      del.textContent = '×';
-      del.onclick = function() { fotos.splice(i,1); wrap.remove(); };
-      wrap.appendChild(img);
-      wrap.appendChild(del);
-      preview.appendChild(wrap);
-      // Auto-analyseer na eerste foto
-      if (fotos.length === 1) analysePhotoAI(e.target.result.split(',')[1]);
+      img.onclick = function() { document.getElementById('lb-img').src = e.target.result; document.getElementById('lb').classList.add('on'); };
+      prev.appendChild(img);
+      if (meldingFotos.length === 1) analyseeMeldingFoto(e.target.result.split(',')[1]);
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(file);
   });
 }
 
-async function analysePhotoAI(base64) {
-  var key = getApiKey();
-  if (!key) return;
-  var box = document.getElementById('ai-analyse-box');
-  var tekst = document.getElementById('ai-analyse-tekst');
+async function analyseeMeldingFoto(b64) {
+  var k = getKey(); if (!k) return;
+  var box = document.getElementById('m-ai-box');
+  var tekst = document.getElementById('m-ai-tekst');
   box.style.display = 'block';
-  tekst.textContent = 'Toby analyseert de foto...';
-  var cat = document.getElementById('f-cat').value;
+  tekst.innerHTML = '<span class="spin"></span>Toby analyseert...';
+  var cat = document.getElementById('m-cat').value;
   try {
     var res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': key,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64 } },
-            { type: 'text', text: 'Dit is een foto van een hotelkamer (categorie: ' + cat + '). Beoordeel de reinheid en kwaliteit van het housekeeping werk. Geef een korte professionele analyse in 2-3 zinnen: wat is er niet in orde, hoe ernstig is het, en wat moet er gedaan worden. Spreek Nederlands.' }
-          ]
-        }]
-      })
+      headers: {'Content-Type': 'application/json', 'x-api-key': k, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'},
+      body: JSON.stringify({model: 'claude-sonnet-4-20250514', max_tokens: 300, messages: [{role: 'user', content: [{type: 'image', source: {type: 'base64', media_type: 'image/jpeg', data: b64}}, {type: 'text', text: 'Dit is een foto van een hotelkamer (categorie: ' + cat + '). Beoordeel de reinheid en kwaliteit. Geef een professionele analyse in 2-3 zinnen: wat is er niet in orde, hoe ernstig, wat moet gedaan worden. Nederlands.'}]}]})
     });
     var data = await res.json();
     tekst.textContent = data.content[0].text;
-    // Auto-invullen omschrijving als die leeg is
-    var omschr = document.getElementById('f-omschrijving');
-    if (!omschr.value) omschr.value = data.content[0].text;
-  } catch(e) {
-    tekst.textContent = 'Analyse niet beschikbaar — vul handmatig in.';
-  }
+    if (!document.getElementById('m-omschr').value) document.getElementById('m-omschr').value = data.content[0].text;
+  } catch(e) { tekst.textContent = 'Analyse niet beschikbaar.'; }
 }
 
 function submitMelding() {
-  var kamer = document.getElementById('f-kamer').value.trim();
+  var kamer = document.getElementById('m-kamer').value.trim();
   if (!kamer) { alert('Vul een kamernummer in'); return; }
   if (!selectedSev) { alert('Kies een ernst'); return; }
-
-  var hkSelect = document.getElementById('f-hk');
-  var melding = {
-    id: Date.now(),
-    kamer: kamer,
-    housekeeper: hkSelect.value || 'Onbekend',
-    ernst: selectedSev,
-    categorie: document.getElementById('f-cat').value,
-    omschrijving: document.getElementById('f-omschrijving').value,
-    ai_analyse: document.getElementById('ai-analyse-tekst').textContent || null,
-    fotos: [...fotos],
-    tijdstip: new Date().toISOString()
-  };
-
+  var melding = {id: Date.now(), kamer: kamer, housekeeper: document.getElementById('m-hk').value || 'Onbekend', ernst: selectedSev, categorie: document.getElementById('m-cat').value, omschrijving: document.getElementById('m-omschr').value, ai_analyse: document.getElementById('m-ai-tekst').textContent || null, fotos: [...meldingFotos], tijdstip: new Date().toISOString()};
   meldingen.unshift(melding);
   localStorage.setItem('toby_hk_meldingen', JSON.stringify(meldingen));
-
-  // Reset form
-  document.getElementById('f-kamer').value = '';
-  document.getElementById('f-omschrijving').value = '';
-  document.getElementById('f-hk').value = '';
-  document.getElementById('photo-preview').innerHTML = '';
-  document.getElementById('ai-analyse-box').style.display = 'none';
-  document.querySelectorAll('.sev-btn').forEach(b => b.classList.remove('active-minor','active-major','active-critical'));
-  fotos = [];
+  document.getElementById('m-kamer').value = '';
+  document.getElementById('m-omschr').value = '';
+  document.getElementById('m-foto-prev').innerHTML = '';
+  document.getElementById('m-ai-box').style.display = 'none';
+  document.querySelectorAll('.sev-btn').forEach(function(b) { b.className = 'sev-btn'; });
+  meldingFotos = [];
   selectedSev = null;
-
   alert('✅ Melding opgeslagen');
-  switchTabByName('log');
+  renderMeldingen();
 }
 
-function filterLog(btn, filter) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeFilter = filter;
-  renderLog();
+function setFilter(btn, f) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  activeFilter = f;
+  renderMeldingen();
 }
 
-function renderLog() {
-  var list = document.getElementById('log-list');
-  var items = activeFilter === 'all' ? meldingen : meldingen.filter(m => m.ernst === activeFilter);
-  if (items.length === 0) {
-    list.innerHTML = '<div class="empty-state">Geen meldingen gevonden</div>';
-    return;
-  }
-  list.innerHTML = items.map(function(m) {
+function renderMeldingen() {
+  var namen = (settings.namen || '').split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+  var sel = document.getElementById('m-hk');
+  sel.innerHTML = '<option value="">Onbekend</option>' + namen.map(function(n) { return '<option>' + n + '</option>'; }).join('');
+  var items = activeFilter === 'all' ? meldingen : meldingen.filter(function(m) { return m.ernst === activeFilter; });
+  var el = document.getElementById('meld-log');
+  if (items.length === 0) { el.innerHTML = '<div class="empty">Geen meldingen</div>'; return; }
+  el.innerHTML = items.map(function(m) {
     var d = new Date(m.tijdstip);
-    var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit'});
-    var sevLabel = m.ernst === 'critical' ? '🚨 Kritiek' : m.ernst === 'major' ? '🔴 Major' : '⚠️ Minor';
-    var fotosHtml = m.fotos && m.fotos.length ? '<div class="log-fotos">' + m.fotos.map(function(f) {
-      return '<img class="log-foto" src="data:image/jpeg;base64,' + f + '" onclick="openLightbox(\'data:image/jpeg;base64,' + f + '\')">';
-    }).join('') + '</div>' : '';
-    return '<div class="log-item">' +
-      '<div class="log-header">' +
-      '<span class="log-kamer">Kamer ' + m.kamer + '</span>' +
-      '<span class="sev-badge sev-' + m.ernst + '">' + sevLabel + '</span>' +
-      (m.housekeeper !== 'Onbekend' ? '<span class="log-hk">👤 ' + m.housekeeper + '</span>' : '') +
-      '<span class="log-tijd">' + tijd + '</span>' +
-      '</div>' +
-      '<div class="log-tekst">' + (m.omschrijving || '—') + '</div>' +
-      (m.ai_analyse ? '<div class="log-ai">✨ ' + m.ai_analyse + '</div>' : '') +
-      fotosHtml +
-      '</div>';
+    var t = d.toLocaleDateString('nl-NL', {day:'numeric',month:'short'}) + ' ' + d.toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit'});
+    var fotos = m.fotos && m.fotos.length ? '<div style="display:flex;gap:6px;margin-top:6px">' + m.fotos.map(function(f) { return '<img class="foto-thumb" src="data:image/jpeg;base64,' + f + '" onclick="openLb(\'data:image/jpeg;base64,' + f + '\')">'; }).join('') + '</div>' : '';
+    return '<div class="log-item"><div class="log-hdr"><span style="font-size:13px;font-weight:600">Kamer ' + m.kamer + '</span><span class="sev-badge sev-' + m.ernst + '">' + (m.ernst === 'critical' ? '🚨 Kritiek' : m.ernst === 'major' ? '🔴 Major' : '⚠️ Minor') + '</span>' + (m.housekeeper !== 'Onbekend' ? '<span style="font-size:11px;padding:2px 8px;border-radius:12px;background:var(--bg2)">👤 ' + m.housekeeper + '</span>' : '') + '<span style="font-size:11px;color:var(--text3);margin-left:auto">' + t + '</span></div><div style="font-size:12px;color:var(--text2)">' + (m.omschrijving || '—') + '</div>' + (m.ai_analyse ? '<div style="font-size:11px;color:var(--purple);font-style:italic;margin-top:4px">✨ ' + m.ai_analyse + '</div>' : '') + fotos + '</div>';
   }).join('');
 }
 
-function renderPerf() {
-  var namen = (settings.namen || '').split('\n').map(s => s.trim()).filter(Boolean);
-  if (namen.length === 0) {
-    document.getElementById('perf-list').innerHTML = '<div class="empty-state">Voeg housekeepers toe via Instellingen</div>';
-    return;
+function openLb(src) { document.getElementById('lb-img').src = src; document.getElementById('lb').classList.add('on'); }
+
+// ── TREND ──
+function renderTrend() {
+  var el = document.getElementById('trend-inhoud');
+  if (!checklist || inspecties.length === 0) { el.innerHTML = '<div class="empty">Voer inspecties uit om trends te zien</div>'; return; }
+  var nu = new Date();
+  var weken = [];
+  for (var w = 5; w >= 0; w--) {
+    var start = new Date(nu); start.setDate(nu.getDate() - (w + 1) * 7);
+    var end = new Date(nu); end.setDate(nu.getDate() - w * 7);
+    weken.push({label: w === 0 ? 'Nu' : 'W-' + w, start: start, end: end});
   }
-  document.getElementById('hk-bedrijf').value = settings.bedrijf || '';
-  document.getElementById('hk-namen').value = settings.namen || '';
-  document.getElementById('sla-input').value = settings.sla || 9.0;
-
-  // Bouw HK dropdown
-  var sel = document.getElementById('f-hk');
-  sel.innerHTML = '<option value="">— Onbekend / Toby bepaalt via Mews —</option>';
-  namen.forEach(function(n) { sel.innerHTML += '<option value="' + n + '">' + n + '</option>'; });
-
-  var html = namen.map(function(naam) {
-    var eigen = meldingen.filter(m => m.housekeeper === naam);
-    var critical = eigen.filter(m => m.ernst === 'critical').length;
-    var major = eigen.filter(m => m.ernst === 'major').length;
-    var score = eigen.length === 0 ? '—' : Math.max(0, 10 - critical * 2 - major * 0.5).toFixed(1);
-    var trend = eigen.length === 0 ? '—' : critical > 2 ? '📉' : critical === 0 ? '📈' : '➡️';
-    return '<div class="perf-row">' +
-      '<div class="perf-naam">' + naam + '</div>' +
-      '<div class="perf-meldingen">' + eigen.length + ' meldingen</div>' +
-      '<div class="perf-trend">' + trend + '</div>' +
-      '<div class="perf-score" style="color:' + (score === '—' ? 'var(--text3)' : parseFloat(score) >= settings.sla ? 'var(--green)' : 'var(--coral)') + '">' + score + '</div>' +
-      '</div>';
-  }).join('');
-  document.getElementById('perf-list').innerHTML = html;
-}
-
-function renderDashboard() {
-  var score = settings.revinateScore || 8.7;
-  var vorige = settings.revinateVorige || 8.5;
-  var sla = settings.sla || 9.0;
-  var delta = (score - vorige).toFixed(1);
-
-  document.getElementById('score-revinate').textContent = score.toFixed(1);
-  document.getElementById('score-revinate').style.color = score >= sla ? 'var(--green)' : 'var(--coral)';
-  document.getElementById('delta-revinate').textContent = (delta >= 0 ? '▲ +' : '▼ ') + delta + ' vs vorige maand';
-  document.getElementById('delta-revinate').className = 'score-delta ' + (delta >= 0 ? 'delta-up' : 'delta-down');
-  document.getElementById('score-sla').textContent = sla.toFixed(1);
-
-  var week = new Date(); week.setDate(week.getDate() - 7);
-  var dezeWeek = meldingen.filter(m => new Date(m.tijdstip) >= week);
-  var critical = dezeWeek.filter(m => m.ernst === 'critical').length;
-  var kamers = new Set(meldingen.map(m => m.kamer)).size;
-
-  document.getElementById('score-meldingen').textContent = meldingen.length;
-  document.getElementById('count-critical').textContent = critical;
-  document.getElementById('count-kamers').textContent = kamers;
-  document.getElementById('delta-meldingen').textContent = dezeWeek.length + ' deze week';
-
-  // SLA bar
-  var pct = Math.min(100, Math.round((score / sla) * 100));
-  document.getElementById('sla-bar-fill').style.width = pct + '%';
-  document.getElementById('sla-bar-fill').style.background = score >= sla ? 'var(--green)' : score >= sla - 0.5 ? 'var(--amber)' : 'var(--coral)';
-  document.getElementById('sla-progress-val').textContent = score.toFixed(1) + ' / ' + sla.toFixed(1);
-
-  // SLA badge in header
-  var badge = document.getElementById('sla-badge');
-  if (score >= sla) { badge.textContent = 'SLA ✓'; badge.className = 'header-sla sla-ok'; }
-  else if (score >= sla - 0.3) { badge.textContent = 'SLA ⚠'; badge.className = 'header-sla sla-warn'; }
-  else { badge.textContent = 'SLA ✗'; badge.className = 'header-sla sla-fail'; }
-
-  // Kritieke meldingen
-  var kritiek = meldingen.filter(m => m.ernst === 'critical').slice(0, 3);
-  var rcl = document.getElementById('recent-critical-list');
-  if (kritiek.length === 0) {
-    rcl.innerHTML = '<div class="empty-state" style="padding:16px">Geen kritieke meldingen — goed bezig! 🎉</div>';
-  } else {
-    rcl.innerHTML = kritiek.map(function(m) {
-      var d = new Date(m.tijdstip);
-      var tijd = d.toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
-      return '<div class="log-item"><div class="log-header"><span class="log-kamer">Kamer ' + m.kamer + '</span><span class="sev-badge sev-critical">🚨 Kritiek</span><span class="log-tijd">' + tijd + '</span></div><div class="log-tekst">' + (m.omschrijving || '—') + '</div></div>';
+  var html = checklist.punten.map(function(punt) {
+    var weekScores = weken.map(function(week) {
+      var ss = [];
+      inspecties.forEach(function(insp) {
+        var d = new Date(insp.geteld_op);
+        if (d >= week.start && d < week.end) {
+          var s = (insp.scores || []).find(function(sc) { return sc.punt_id === punt.id; });
+          if (s && s.score !== null) ss.push(s.score);
+        }
+      });
+      return ss.length ? (ss.reduce(function(a, b) { return a + b; }, 0) / ss.length) : null;
+    });
+    var geldig = weekScores.filter(function(s) { return s !== null; });
+    if (geldig.length === 0) return '';
+    var gem = (geldig.reduce(function(a, b) { return a + b; }, 0) / geldig.length).toFixed(1);
+    var kl = parseFloat(gem) >= 8 ? 'var(--green)' : parseFloat(gem) >= 6 ? 'var(--amber)' : 'var(--coral)';
+    var bars = weekScores.map(function(score, i) {
+      var h = score !== null ? Math.max(4, (score / 10) * 44) : 2;
+      var c = score !== null ? (score >= 8 ? 'var(--green)' : score >= 6 ? 'var(--amber)' : 'var(--coral)') : 'var(--border2)';
+      return '<div class="trend-bar-wrap"><div class="trend-bar" style="height:' + h + 'px;background:' + c + '"></div><div class="trend-week">' + weken[i].label + '</div></div>';
     }).join('');
+    return '<div class="trend-item"><div class="trend-hdr"><span>' + punt.naam + '</span><span style="font-weight:700;font-family:monospace;color:' + kl + '">' + gem + '</span></div><div class="trend-bars">' + bars + '</div></div>';
+  }).filter(Boolean).join('');
+  el.innerHTML = html || '<div class="empty">Nog niet genoeg data</div>';
+  var il = document.getElementById('trend-insp-lijst');
+  il.innerHTML = inspecties.slice(0, 10).map(function(insp) {
+    var d = new Date(insp.geteld_op).toLocaleDateString('nl-NL', {day:'numeric',month:'short'});
+    var kl = insp.totaal_score >= 8 ? 'var(--green)' : insp.totaal_score >= 6 ? 'var(--amber)' : 'var(--coral)';
+    return '<div style="display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:0.5px solid var(--border);font-size:12px"><span style="flex:1;font-weight:500">Kamer ' + insp.kamer + '</span>' + (insp.housekeeper !== 'Onbekend' ? '<span style="color:var(--text3)">' + insp.housekeeper + '</span>' : '') + '<span style="font-weight:700;font-family:monospace;color:' + kl + '">' + insp.totaal_score.toFixed(1) + '</span><span style="color:var(--text3)">' + d + '</span></div>';
+  }).join('');
+}
+
+// ── INSTELLINGEN ──
+function loadSettings() {
+  document.getElementById('cfg-sla').value = settings.sla || 9.0;
+  document.getElementById('cfg-revinate').value = settings.revinateScore || '';
+  document.getElementById('cfg-bedrijf').value = settings.bedrijf || '';
+  document.getElementById('cfg-namen').value = settings.namen || '';
+  renderActiveChecklist();
+}
+
+function saveSettings() {
+  settings.sla = parseFloat(document.getElementById('cfg-sla').value) || 9.0;
+  settings.revinateScore = parseFloat(document.getElementById('cfg-revinate').value) || 0;
+  settings.bedrijf = document.getElementById('cfg-bedrijf').value;
+  settings.namen = document.getElementById('cfg-namen').value;
+  localStorage.setItem('toby_hk_settings', JSON.stringify(settings));
+  alert('✅ Instellingen opgeslagen');
+}
+
+// ── CHECKLIST ──
+async function handleChecklistUpload(input) {
+  var file = input.files[0]; if (!file) return;
+  var k = getKey(); if (!k) return;
+  document.getElementById('cl-load').style.display = 'block';
+  document.getElementById('cl-handmatig').style.display = 'none';
+  var tekst = ''; try { tekst = await file.text(); } catch(e) { tekst = file.name; }
+  await parseChecklistTekst(tekst, k);
+}
+
+async function parseHandmatig() {
+  var tekst = document.getElementById('cl-input').value.trim(); if (!tekst) return;
+  var k = getKey(); if (!k) return;
+  document.getElementById('cl-load').style.display = 'block';
+  await parseChecklistTekst(tekst, k);
+}
+
+async function parseChecklistTekst(tekst, k) {
+  try {
+    var res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'x-api-key': k, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true'},
+      body: JSON.stringify({model: 'claude-sonnet-4-20250514', max_tokens: 2000, messages: [{role: 'user', content: 'HK checklist:\n\n' + tekst + '\n\nExtraheer alle checkpunten. Geef ALLEEN JSON: {"naam":"checklist naam","punten":[{"id":1,"categorie":"Badkamer","naam":"Toilet schoon","hint":"Controleer onder de rand"}]} Groepeer per categorie. Puur JSON.'}]})
+    });
+    var data = await res.json();
+    var m = data.content[0].text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('Geen JSON');
+    parsedChecklist = JSON.parse(m[0]);
+    document.getElementById('cl-load').style.display = 'none';
+    document.getElementById('cl-count').textContent = parsedChecklist.punten.length;
+    document.getElementById('cl-prev').innerHTML = parsedChecklist.punten.map(function(p) {
+      return '<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:0.5px solid var(--border);font-size:11px"><span style="color:var(--text3);width:20px;font-family:monospace">' + p.id + '</span><span style="flex:1">' + p.naam + '</span><span style="background:var(--pbg);color:var(--purple);padding:1px 6px;border-radius:8px;font-size:10px">' + p.categorie + '</span></div>';
+    }).join('');
+    document.getElementById('cl-res').style.display = 'block';
+  } catch(e) {
+    document.getElementById('cl-load').style.display = 'none';
+    document.getElementById('cl-handmatig').style.display = 'block';
+    alert('Fout: ' + e.message);
   }
 }
 
-function saveSla() {
-  settings.sla = parseFloat(document.getElementById('sla-input').value) || 9.0;
-  localStorage.setItem('toby_hk_settings', JSON.stringify(settings));
+function slaChecklistOp() {
+  if (!parsedChecklist) return;
+  checklist = parsedChecklist;
+  localStorage.setItem('toby_hk_checklist', JSON.stringify(checklist));
+  document.getElementById('cl-res').style.display = 'none';
+  document.getElementById('cl-handmatig').style.display = 'block';
+  renderActiveChecklist();
+  alert('✅ Checklist opgeslagen — ' + checklist.punten.length + ' punten');
 }
-function saveSettings() {
-  settings.bedrijf = document.getElementById('hk-bedrijf').value;
-  settings.namen = document.getElementById('hk-namen').value;
-  settings.sla = parseFloat(document.getElementById('sla-input').value) || 9.0;
-  localStorage.setItem('toby_hk_settings', JSON.stringify(settings));
-}
-function renderAll() { renderDashboard(); renderPerf(); renderLog(); }
 
-function openLightbox(src) {
-  document.getElementById('lightbox-img').src = src;
-  document.getElementById('lightbox').classList.add('open');
+function resetChecklist() {
+  document.getElementById('cl-res').style.display = 'none';
+  document.getElementById('cl-handmatig').style.display = 'block';
+  document.getElementById('cl-file').value = '';
+  parsedChecklist = null;
 }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+function renderActiveChecklist() {
+  var card = document.getElementById('active-cl-card');
+  if (!checklist) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  document.getElementById('active-cl-naam').textContent = checklist.naam + ' · ' + checklist.punten.length + ' punten';
+  document.getElementById('active-cl-lijst').innerHTML = checklist.punten.map(function(p) {
+    return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--border);font-size:12px"><span style="font-size:10px;color:var(--text3);font-family:monospace;width:20px">' + p.id + '</span><span style="flex:1">' + p.naam + '</span><span style="background:var(--pbg);color:var(--purple);padding:1px 6px;border-radius:8px;font-size:10px">' + p.categorie + '</span></div>';
+  }).join('');
+}
 
 // Init
 renderDashboard();
 </script>
-<script src="toby-auth.js"></script>
 </body>
 </html>
