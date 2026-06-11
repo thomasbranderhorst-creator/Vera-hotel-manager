@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Toby — Inbox</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--bg2:#eceae4;--card:#fff;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+  --text:#1a1814;--text2:#5a5650;--text3:#8a8680;
+  --purple:#6355e0;--pbg:rgba(99,85,224,0.08);--pbo:rgba(99,85,224,0.25);
+  --green:#1a8c5a;--gbg:rgba(26,140,90,0.08);--gbo:rgba(26,140,90,0.25);
+  --amber:#c47c0a;--abg:rgba(196,124,10,0.08);--abo:rgba(196,124,10,0.25);
+  --coral:#d84a30;--cbg:rgba(216,74,48,0.08);--cbo:rgba(216,74,48,0.25);
+  --sh:0 1px 4px rgba(0,0,0,0.08),0 0 0 0.5px rgba(0,0,0,0.06);
+}
+body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:var(--text);min-height:100vh;padding-bottom:60px}
+.hdr{padding:14px 20px;display:flex;align-items:center;gap:10px;background:var(--card);border-bottom:0.5px solid var(--border2);position:sticky;top:0;z-index:100}
+.hdr a{font-size:13px;color:var(--purple);text-decoration:none}
+.hdr-title{font-size:15px;font-weight:600;flex:1}
+.badge{font-size:10px;font-family:'DM Mono',monospace;background:var(--pbg);color:var(--purple);border:0.5px solid var(--pbo);padding:2px 8px;border-radius:20px}
+
+.tabs{display:flex;background:var(--card);border-bottom:0.5px solid var(--border2);padding:0 8px;overflow-x:auto}
+.tab{padding:10px 12px;font-size:12px;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;white-space:nowrap;user-select:none}
+.tab.on{color:var(--purple);border-bottom-color:var(--purple);font-weight:500}
+
+.main{padding:12px;max-width:600px;margin:0 auto}
+.card{background:var(--card);border-radius:12px;box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.ch{padding:12px 16px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ct{font-size:13px;font-weight:600}
+
+/* Email lijst */
+.email-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background .1s}
+.email-row:hover{background:var(--bg)}
+.email-row:last-child{border:none}
+.email-row.ongelezen{background:var(--pbg)}
+.email-row.ongelezen .email-afz{font-weight:600;color:var(--text)}
+.email-row.ongelezen .email-onderwerp{font-weight:600}
+.email-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:#fff;flex-shrink:0;margin-top:2px}
+.email-body{flex:1;min-width:0}
+.email-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.email-afz{font-size:13px;color:var(--text2)}
+.email-tijd{font-size:11px;color:var(--text3);font-family:monospace;white-space:nowrap}
+.email-onderwerp{font-size:13px;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.email-preview{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.email-tags{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap}
+.tag{font-size:10px;padding:1px 7px;border-radius:10px}
+.tag-lev{background:var(--abg);color:var(--amber)}
+.tag-gast{background:var(--pbg);color:var(--purple)}
+.tag-finance{background:var(--gbg);color:var(--green)}
+.tag-urgent{background:var(--cbg);color:var(--coral)}
+.tag-hr{background:var(--bg2);color:var(--text3)}
+.ongelezen-dot{width:8px;height:8px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:6px}
+
+/* Email detail */
+.email-detail{display:none;padding:0}
+.detail-hdr{padding:16px 20px;border-bottom:0.5px solid var(--border)}
+.detail-onderwerp{font-size:16px;font-weight:600;margin-bottom:10px;line-height:1.4}
+.detail-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.detail-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.detail-afz-info{flex:1}
+.detail-afz-naam{font-size:13px;font-weight:500}
+.detail-afz-email{font-size:11px;color:var(--text3)}
+.detail-datum{font-size:11px;color:var(--text3);font-family:monospace}
+.detail-body{padding:20px;font-size:13px;line-height:1.8;color:var(--text2);white-space:pre-wrap}
+.detail-ai{margin:12px 16px;background:var(--pbg);border:0.5px solid var(--pbo);border-radius:10px;padding:14px}
+.detail-ai-hdr{font-size:11px;font-weight:600;color:var(--purple);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.detail-ai-body{font-size:12px;color:var(--text2);line-height:1.7}
+.detail-acties{padding:12px 16px;border-top:0.5px solid var(--border);display:flex;gap:8px;flex-wrap:wrap}
+.act-btn{font-size:12px;padding:7px 14px;border-radius:8px;border:0.5px solid var(--border2);background:var(--bg);cursor:pointer;font-family:inherit;color:var(--text2)}
+.act-btn-p{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+/* Filter */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.filter-btn{font-size:11px;padding:5px 12px;border-radius:20px;border:0.5px solid var(--border2);background:var(--card);cursor:pointer;font-family:inherit;color:var(--text2)}
+.filter-btn.on{background:var(--pbg);border-color:var(--pbo);color:var(--purple)}
+
+.empty{text-align:center;padding:24px;color:var(--text3);font-size:13px}
+.terug-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--purple);font-size:13px;cursor:pointer;font-family:inherit;padding:0;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <a href="toby-hub.html">← Hub</a>
+  <div class="hdr-title">Inbox</div>
+  <span class="badge" id="ongelezen-badge">0 ongelezen</span>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab on" data-tab="inbox">📥 Inbox</div>
+  <div class="tab" data-tab="leveranciers">🏭 Leveranciers</div>
+  <div class="tab" data-tab="gasten">👤 Gasten</div>
+  <div class="tab" data-tab="finance">💶 Finance</div>
+</div>
+
+<div class="main">
+  <div id="p-inbox">
+    <div class="filter-bar">
+      <button class="filter-btn on" data-f="all" onclick="setFilter(this,'all')">Alles</button>
+      <button class="filter-btn" data-f="ongelezen" onclick="setFilter(this,'ongelezen')">Ongelezen</button>
+      <button class="filter-btn" data-f="urgent" onclick="setFilter(this,'urgent')">🔴 Urgent</button>
+    </div>
+    <div class="card" id="email-lijst-card">
+      <div id="email-lijst"></div>
+    </div>
+  </div>
+  <div id="p-leveranciers" style="display:none">
+    <div class="card"><div id="lev-lijst"></div></div>
+  </div>
+  <div id="p-gasten" style="display:none">
+    <div class="card"><div id="gast-lijst"></div></div>
+  </div>
+  <div id="p-finance" style="display:none">
+    <div class="card"><div id="finance-lijst"></div></div>
+  </div>
+</div>
+
+<script src="toby-widget.js"></script>
+<script>
+var emails = [
+  {
+    id:1, ongelezen:true, tag:'urgent',
+    afz:'Bidfood Nederland', email:'bestelling@bidfood.nl', avatar:'BF', kleur:'#e07c30',
+    onderwerp:'⚠️ Levering morgen vertraagd — alternatief beschikbaar',
+    tijd:'09:14', datum:'Vandaag',
+    preview:'Door drukte bij de distributie is uw levering van morgen vertraagd...',
+    body:'Geachte relatie,\n\nDoor onverwachte drukte bij ons distributiecentrum is uw geplande levering van morgen, 12 juni, helaas vertraagd.\n\nUw bestelling wordt nu geleverd op vrijdag 13 juni vóór 12:00 uur.\n\nWe bieden u twee alternatieven aan:\n1. Levering op donderdag 12 juni na 16:00 uur (spoedtoeslag €35)\n2. Levering vrijdag 13 juni voor 12:00 uur (geen meerkosten)\n\nKun u uiterlijk vandaag 14:00 uur laten weten wat uw voorkeur heeft?\n\nMet vriendelijke groet,\nKlantenservice Bidfood Nederland\nTel: 088-2433663',
+    ai:'Bidfood meldt een leveringsvertraging voor morgen. Twee opties: spoedlevering donderdag (€35 extra) of normale levering vrijdag voor 12:00. Actie vereist vóór 14:00 vandaag. Controleer of de voorraad dit overbrugt.',
+    acties:['Vrijdag levering bevestigen','Bel Bidfood','Doorsturen']
+  },
+  {
+    id:2, ongelezen:true, tag:'gast',
+    afz:'J. Vermeer', email:'j.vermeer@gmail.com', avatar:'JV', kleur:'#6355e0',
+    onderwerp:'Vraag over vroeg inchecken op 15 juni',
+    tijd:'08:31', datum:'Vandaag',
+    preview:'Wij arriveren al rond 10:00 uur en vroegen ons af...',
+    body:'Goedemorgen,\n\nWij hebben een reservering voor 15 juni (boekingsnummer MX-2847-JV) voor twee nachten in een superiorkamer.\n\nWij arriveren echter al rond 10:00 uur vanwege een vroege vlucht. Is het mogelijk om eerder in te checken, of in ieder geval onze koffers al achter te laten?\n\nAlvast bedankt voor uw reactie.\n\nMet vriendelijke groet,\nJan en Lisa Vermeer',
+    ai:'Gast met boeking MX-2847-JV vraagt om vroeg inchecken op 15 juni (aankomst 10:00). Standaard check-in is 15:00. Controleer beschikbaarheid kamer die nacht ervoor — als die vrij is, kan vroeg inchecken worden aangeboden (evt. tegen meerprijs).',
+    acties:['Beantwoorden','Controleer boeking','Doorsturen naar receptie']
+  },
+  {
+    id:3, ongelezen:false, tag:'finance',
+    afz:'Exact Online', email:'noreply@exactonline.com', avatar:'EX', kleur:'#1a8c5a',
+    onderwerp:'Factuur #2026-0847 — Sligro — €1.243,80',
+    tijd:'07:00', datum:'Vandaag',
+    preview:'Nieuwe factuur ontvangen van Sligro voor goedkeuring...',
+    body:'Beste gebruiker,\n\nU heeft een nieuwe factuur ontvangen die wachtet op uw goedkeuring:\n\nLeverancier: Sligro Food Group\nFactuurnummer: SLI-2026-0847\nDatum: 10 juni 2026\nBedrag: €1.243,80 (incl. BTW)\nOmschrijving: Wekelijkse levering drank & droge waren\nBetalingstermijn: 30 dagen\n\nLog in op Exact Online om de factuur te beoordelen en goed te keuren.\n\nMet vriendelijke groet,\nExact Online',
+    ai:'Inkomende factuur van Sligro €1.243,80 voor wekelijkse levering drank & droge waren. Betalingstermijn 30 dagen. Vergelijk met vorige week om af te wijkingen te signaleren.',
+    acties:['Openen in Exact','Archiveren']
+  },
+  {
+    id:4, ongelezen:false, tag:'leverancier',
+    afz:'CleanPro BV', email:'planning@cleanpro.nl', avatar:'CP', kleur:'#8880cc',
+    onderwerp:'Rooster week 25 — 3 medewerkers ingepland',
+    tijd:'Gisteren', datum:'Gisteren',
+    preview:'Hierbij het rooster voor aanstaande week. Anna, Mohammed en Sarah...',
+    body:'Beste hotelmanager,\n\nHierbij het HK-rooster voor week 25 (16-22 juni):\n\nMaandag 16/6: Anna de Vries (08:00-14:00)\nDinsdag 17/6: Mohammed El Amin (08:00-14:00)\nWoensdag 18/6: Anna de Vries (08:00-14:00)\nDonderdag 19/6: Sarah Jansen (08:00-14:00)\nVrijdag 20/6: Mohammed El Amin (08:00-14:00)\nZaterdag 21/6: Anna de Vries (09:00-15:00)\nZondag 22/6: Sarah Jansen (09:00-15:00)\n\nWijzigingen graag uiterlijk vrijdag 14 juni doorgeven.\n\nMet vriendelijke groet,\nPlanning CleanPro BV',
+    ai:'HK-rooster week 25 ontvangen van CleanPro. 3 medewerkers ingepland voor 7 dagen. Vergelijk met verwachte bezetting — bij hoge bezetting wellicht extra capaciteit nodig. Wijzigingen doorgeven vóór vrijdag 14 juni.',
+    acties:['Bevestigen','Controleer bezetting','Archiveren']
+  },
+  {
+    id:5, ongelezen:false, tag:'gast',
+    afz:'Booking.com', email:'partner@booking.com', avatar:'BK', kleur:'#003580',
+    onderwerp:'Nieuwe review ontvangen — 7/10 — "Goede ligging, kamer matig"',
+    tijd:'Gisteren', datum:'Gisteren',
+    preview:'U heeft een nieuwe gastbeoordeling ontvangen op Booking.com...',
+    body:'Beste partner,\n\nU heeft een nieuwe gastbeoordeling ontvangen:\n\nScore: 7.0 / 10\nGast: Familie De Boer\nVerblijf: 7-9 juni 2026\n\nPositief:\n"Centrale ligging, vriendelijk personeel aan de receptie, heerlijk ontbijt."\n\nNegatief:\n"De badkamer was niet helemaal schoon bij aankomst, er lagen nog haren op de vloer. De airco maakte een storend geluid."\n\nAntwoorden op deze review via uw Extranet.\n\nMet vriendelijke groet,\nBooking.com Partner Services',
+    ai:'Review 7/10 van Familie De Boer. Klacht over badkamer niet schoon bij aankomst (haren op vloer) en geluidsoverlast airco. Dit zijn directe HK- en onderhoudspunten. Overweeg een HK melding aan te maken en de airco te laten nakijken op kamer 7-9 juni.',
+    acties:['HK melding aanmaken','Onderhoud melden','Antwoorden op Booking']
+  },
+  {
+    id:6, ongelezen:false, tag:'finance',
+    afz:'KHN — Horeca Nederland', email:'info@khn.nl', avatar:'KH', kleur:'#c47c0a',
+    onderwerp:'Ledenmededeling: nieuwe CAO Horeca per 1 juli 2026',
+    tijd:'Ma 9 jun', datum:'Ma 9 jun',
+    preview:'De nieuwe CAO Horeca is vastgesteld. Per 1 juli gelden nieuwe loonschalen...',
+    body:'Beste KHN-lid,\n\nDe nieuwe CAO Horeca 2026-2027 is officieel vastgesteld. De belangrijkste wijzigingen per 1 juli 2026:\n\n• Loonsverhoging: 3,5% voor alle functies\n• Minimum uurloon schaal 1: €14,20 (was €13,73)\n• Vakantietoeslag: ongewijzigd 8%\n• Toeslagen onregelmatige diensten: lichte verhoging nachttoeslag naar 40%\n\nZorg dat uw salarisadministratie tijdig is aangepast.\n\nVolledig CAO-document beschikbaar via khn.nl/cao\n\nMet vriendelijke groet,\nKHN Ledenservice',
+    ai:'Nieuwe CAO Horeca per 1 juli 2026. Loonsverhoging 3,5%, minimum uurloon schaal 1 naar €14,20, nachttoeslag naar 40%. Actie vereist: salarisadministratie aanpassen vóór 1 juli. Impact op personeelskosten berekenen.',
+    acties:['Doorsturen naar boekhouder','Archiveren','Meer info KHN']
+  }
+];
+
+var huidigeFilter = 'all';
+var huidigTab = 'inbox';
+var gelezen = JSON.parse(localStorage.getItem('toby_email_gelezen') || '[]');
+
+// Mark als gelezen
+emails.forEach(function(e) { if (gelezen.includes(e.id)) e.ongelezen = false; });
+
+function getKey() {
+  var k = localStorage.getItem('toby_anthropic_key');
+  if (!k) { k = prompt('Voer je Anthropic API sleutel in:'); if (k) localStorage.setItem('toby_anthropic_key', k.trim()); }
+  return k ? k.trim() : null;
+}
+
+// Tabs
+document.getElementById('tabs').addEventListener('click', function(e) {
+  var t = e.target.closest('[data-tab]');
+  if (!t) return;
+  huidigTab = t.dataset.tab;
+  ['inbox','leveranciers','gasten','finance'].forEach(function(n) {
+    document.getElementById('p-' + n).style.display = n === huidigTab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(tb) { tb.classList.toggle('on', tb.dataset.tab === huidigTab); });
+  renderTabLijst(huidigTab);
+});
+
+function renderTabLijst(tab) {
+  var tagMap = {leveranciers:'leverancier', gasten:'gast', finance:'finance'};
+  var tag = tagMap[tab];
+  if (!tag) return;
+  var gefilterd = emails.filter(function(e) { return e.tag === tag; });
+  var el = document.getElementById(tab === 'leveranciers' ? 'lev-lijst' : tab === 'gasten' ? 'gast-lijst' : 'finance-lijst');
+  if (gefilterd.length === 0) { el.innerHTML = '<div class="empty">Geen emails in deze categorie</div>'; return; }
+  el.innerHTML = gefilterd.map(function(e) { return emailRowHtml(e); }).join('');
+  el.querySelectorAll('.email-row').forEach(function(row) {
+    row.addEventListener('click', function() { openEmail(parseInt(row.dataset.id)); });
+  });
+}
+
+function setFilter(btn, f) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  huidigeFilter = f;
+  renderInbox();
+}
+
+function emailRowHtml(e) {
+  var tagLabels = {leverancier:'Leverancier', gast:'Gast', finance:'Finance', urgent:'Urgent', hr:'HR'};
+  var tagClass = {leverancier:'tag-lev', gast:'tag-gast', finance:'tag-finance', urgent:'tag-urgent', hr:'tag-hr'};
+  return '<div class="email-row' + (e.ongelezen ? ' ongelezen' : '') + '" data-id="' + e.id + '">' +
+    (e.ongelezen ? '<div class="ongelezen-dot"></div>' : '<div style="width:8px;flex-shrink:0"></div>') +
+    '<div class="email-avatar" style="background:' + e.kleur + '">' + e.avatar + '</div>' +
+    '<div class="email-body">' +
+      '<div class="email-hdr"><span class="email-afz">' + e.afz + '</span><span class="email-tijd">' + e.tijd + '</span></div>' +
+      '<div class="email-onderwerp">' + e.onderwerp + '</div>' +
+      '<div class="email-preview">' + e.preview + '</div>' +
+      '<div class="email-tags"><span class="tag ' + (tagClass[e.tag] || 'tag-hr') + '">' + (tagLabels[e.tag] || e.tag) + '</span>' + (e.tag === 'urgent' || e.ongelezen ? '<span class="tag tag-urgent">Actie vereist</span>' : '') + '</div>' +
+    '</div>' +
+    '</div>';
+}
+
+function renderInbox() {
+  var gefilterd = emails.filter(function(e) {
+    if (huidigeFilter === 'ongelezen') return e.ongelezen;
+    if (huidigeFilter === 'urgent') return e.tag === 'urgent';
+    return true;
+  });
+  var el = document.getElementById('email-lijst');
+  if (gefilterd.length === 0) { el.innerHTML = '<div class="empty">Geen emails</div>'; return; }
+  el.innerHTML = gefilterd.map(function(e) { return emailRowHtml(e); }).join('');
+  el.querySelectorAll('.email-row').forEach(function(row) {
+    row.addEventListener('click', function() { openEmail(parseInt(row.dataset.id)); });
+  });
+  var ongelezen = emails.filter(function(e) { return e.ongelezen; }).length;
+  document.getElementById('ongelezen-badge').textContent = ongelezen + ' ongelezen';
+}
+
+function openEmail(id) {
+  var email = emails.find(function(e) { return e.id === id; });
+  if (!email) return;
+  // Markeer als gelezen
+  email.ongelezen = false;
+  if (!gelezen.includes(id)) { gelezen.push(id); localStorage.setItem('toby_email_gelezen', JSON.stringify(gelezen)); }
+
+  var card = document.getElementById('email-lijst-card');
+  card.innerHTML =
+    '<div style="padding:12px 16px;border-bottom:0.5px solid var(--border)">' +
+      '<button class="terug-btn" onclick="terugNaarLijst()">← Terug naar inbox</button>' +
+      '<div class="detail-onderwerp">' + email.onderwerp + '</div>' +
+      '<div class="detail-meta">' +
+        '<div class="detail-avatar" style="background:' + email.kleur + '">' + email.avatar + '</div>' +
+        '<div class="detail-afz-info">' +
+          '<div class="detail-afz-naam">' + email.afz + '</div>' +
+          '<div class="detail-afz-email">' + email.email + '</div>' +
+        '</div>' +
+        '<div class="detail-datum">' + email.datum + ' · ' + email.tijd + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="detail-ai">' +
+      '<div class="detail-ai-hdr">✨ Toby samenvatting & actie</div>' +
+      '<div class="detail-ai-body">' + email.ai + '</div>' +
+    '</div>' +
+    '<div class="detail-body">' + email.body + '</div>' +
+    '<div class="detail-acties">' +
+      email.acties.map(function(a) {
+        return '<button class="act-btn" onclick="alert(\'Actie: ' + a + '\')">' + a + '</button>';
+      }).join('') +
+    '</div>';
+
+  renderInbox();
+}
+
+function terugNaarLijst() {
+  var card = document.getElementById('email-lijst-card');
+  card.innerHTML = '<div id="email-lijst"></div>';
+  renderInbox();
+}
+
+// Init
+renderInbox();
+</script>
+</body>
+</html>
