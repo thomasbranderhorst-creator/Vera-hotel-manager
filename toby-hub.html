@@ -813,6 +813,29 @@ async function laadNieuws() {
 laadWeer();
 laadNieuws();
 
+// ── AUTO SYNC ──
+async function autoSync() {
+  try {
+    var { data } = await sb.from('mews_sync_log')
+      .select('created_at')
+      .eq('hotel_id', HOTEL_ID)
+      .eq('status', 'ok')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+    var nu = new Date();
+    var laatste = data ? new Date(data.created_at) : null;
+    var ouderDan30Min = !laatste || (nu - laatste) > 30 * 60 * 1000;
+    if (ouderDan30Min) {
+      console.log('Toby: stille achtergrond sync...');
+      fetch(SUPABASE_URL + '/functions/v1/mews-sync?type=all', {
+        headers: { 'apikey': SUPABASE_KEY }
+      });
+    }
+  } catch(e) {}
+}
+autoSync();
+
 // ── LOSSE LEVERANCIERS ──
 var losseLevs = JSON.parse(localStorage.getItem('toby_losse_levs') || '[]');
 
