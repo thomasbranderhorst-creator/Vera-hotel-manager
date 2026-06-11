@@ -279,7 +279,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <span style="font-size:28px;flex-shrink:0">🚀</span>
     <div style="flex:1">
       <div style="font-size:14px;font-weight:600;color:var(--purple);margin-bottom:3px">Welkom bij Toby — start de onboarding</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.6">Upload je contracten, checklist en leverancierslijsten. Toby leest alles uit en vult het dashboard automatisch.</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6">Koppel je documenten, upload je HK checklist en sync je systemen. Toby vult het dashboard automatisch.</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
       <button onclick="startOnboarding()" style="background:var(--purple);color:#fff;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Start onboarding →</button>
@@ -308,13 +308,19 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <!-- Stap 1: Contracten -->
       <div id="ob-stap-1" style="padding:16px">
         <div style="font-size:20px;margin-bottom:8px">📋</div>
-        <div style="font-size:15px;font-weight:600;margin-bottom:6px">Contracten & documenten</div>
-        <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">Upload een map of bestanden met contracten, facturen, certificaten en andere documenten. Toby leest ze uit en organiseert ze automatisch per categorie.</div>
-        <div style="border:1.5px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:var(--bg);position:relative;margin-bottom:12px" id="ob-dz-1">
-          <input type="file" id="ob-file-1" accept=".pdf,.doc,.docx,.txt" multiple style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer" onchange="handleObUpload(this,1)">
-          <div style="font-size:28px;margin-bottom:6px">📁</div>
-          <div style="font-size:13px;font-weight:500">Documenten uploaden</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:2px">PDF, Word of .txt — meerdere bestanden tegelijk</div>
+        <div style="font-size:15px;font-weight:600;margin-bottom:6px">Documenten koppelen</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">Koppel een Google Drive map of SharePoint met je contracten, facturen en certificaten. Documenten blijven bij jou — Toby leest alleen mee.</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+          <a href="toby-docs.html" style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--gbg);border:0.5px solid var(--gbo);border-radius:10px;text-decoration:none">
+            <span style="font-size:24px">📂</span>
+            <div><div style="font-size:13px;font-weight:600;color:var(--green)">Google Drive koppelen</div><div style="font-size:11px;color:var(--text2)">Wijs een map aan — bestanden blijven in Drive</div></div>
+            <span style="margin-left:auto;color:var(--green);font-size:14px">→</span>
+          </a>
+          <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg);border:0.5px solid var(--border2);border-radius:10px;opacity:0.6">
+            <span style="font-size:24px">🗂️</span>
+            <div><div style="font-size:13px;font-weight:600">SharePoint / OneDrive</div><div style="font-size:11px;color:var(--text3)">Binnenkort beschikbaar</div></div>
+            <span style="margin-left:auto;font-size:10px;font-family:monospace;background:var(--abg);color:var(--amber);padding:2px 8px;border-radius:10px">binnenkort</span>
+          </div>
         </div>
         <div id="ob-status-1" style="display:none"></div>
         <div style="display:flex;gap:8px">
@@ -346,7 +352,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       <div id="ob-stap-3" style="padding:16px;display:none">
         <div style="font-size:20px;margin-bottom:8px">💶</div>
         <div style="font-size:15px;font-weight:600;margin-bottom:6px">Prijslijsten leveranciers</div>
-        <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">Upload prijslijsten van je leveranciers (Bidfood, Sligro etc.). Toby leest producten en inkoopprijzen uit en vult de voorraadcatalogus automatisch in.</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">Upload prijslijsten van je leveranciers (Bidfood, Sligro etc.). Geen persoonsgegevens — Toby leest producten en inkoopprijzen uit en vult de voorraadcatalogus automatisch in.</div>
         <div style="border:1.5px dashed var(--border2);border-radius:10px;padding:24px;text-align:center;cursor:pointer;background:var(--bg);position:relative;margin-bottom:12px">
           <input type="file" id="ob-file-3" accept=".pdf,.doc,.docx,.txt,.csv,.xlsx" multiple style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer" onchange="handleObUpload(this,3)">
           <div style="font-size:28px;margin-bottom:6px">💶</div>
