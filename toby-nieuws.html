@@ -33,7 +33,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .back-link{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);text-decoration:none;transition:all .15s}
 .back-link:hover{border-color:var(--border2);color:var(--text2)}
 
-.main{max-width:600px;margin:0 auto;padding:20px 16px 80px}
+.main{max-width:960px;margin:0 auto;padding:28px 24px 80px}
 .page-hero{margin-bottom:20px}
 .page-title{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-0.5px;margin-bottom:6px}
 .page-sub{font-size:13px;color:var(--text2);line-height:1.6;max-width:640px}
@@ -165,10 +165,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     <div class="cat-tab" id="tab-hospitalitynet" data-feed="hospitality hotel industry news trends international">&#127757; Hospitalitynet</div>
     <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
     <div class="cat-tab" id="tab-lokaal" data-feed="hotel horeca Amsterdam nieuws">&#127968; Amsterdam</div>
-  </div>
-    <div class="cat-tab" id="tab-hospitalitynet" data-feed="hospitality hotel industry news trends international">&#127757; Hospitalitynet</div>
-    <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
-    <div class="cat-tab" id="tab-lokaal" data-feed="hotel horeca Amsterdam nieuws lokaal">&#127968; Amsterdam</div>
   </div>
     <div class="cat-tab" id="tab-jouw-bron" onclick="openJouwBron()" style="border:1px dashed rgba(99,85,224,0.4);color:var(--purple)">&#43; Jouw nieuwsbron</div>
     <div class="cat-tab" data-feed="horeca wetgeving nederland hotel">Wetgeving</div>
@@ -614,32 +610,6 @@ init();
 </div>
 
 <script src="toby-widget.js"></script>
-<script src="toby-auth.js">
-// Artikel parameter detectie
-(function() {
-  var params = new URLSearchParams(window.location.search);
-  var artikelUrl = params.get('artikel');
-  var artikelTitel = params.get('titel');
-  if (!artikelUrl) return;
-  
-  // Toon highlighted artikel bovenaan
-  var container = document.querySelector('.main') || document.body;
-  var banner = document.createElement('div');
-  banner.style.cssText = 'background:var(--pbg,rgba(99,85,224,0.08));border:1px solid var(--pbo,rgba(99,85,224,0.25));border-radius:12px;padding:14px 16px;margin-bottom:12px;cursor:pointer';
-  banner.innerHTML = '<div style="font-size:10px;font-weight:600;color:var(--purple,#6355e0);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">📌 Geselecteerd artikel</div>' +
-    '<div style="font-size:13px;font-weight:500;margin-bottom:8px;line-height:1.5">' + (artikelTitel || 'Artikel') + '</div>' +
-    '<a href="' + artikelUrl + '" target="_blank" style="font-size:12px;color:var(--purple,#6355e0);text-decoration:none">Lees het volledige artikel op de bron →</a>';
-  banner.onclick = function(e) { if (e.target.tagName !== 'A') window.open(artikelUrl, '_blank'); };
-  
-  // Voeg toe bovenaan de pagina inhoud
-  var firstCard = container.querySelector('.card, .hub-card, [class*="card"]');
-  if (firstCard) {
-    firstCard.parentNode.insertBefore(banner, firstCard);
-  } else {
-    container.insertBefore(banner, container.firstChild);
-  }
-  banner.scrollIntoView({behavior:'smooth', block:'start'});
-})();
-</script>
+<script src="toby-auth.js"></script>
 </body>
 </html>
