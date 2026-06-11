@@ -330,6 +330,11 @@ body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:v
   <div class="section">
     <div class="section-label">Final boss</div>
     <div class="roadmap-item">
+      <div class="roadmap-header"><span class="roadmap-icon">🖥️</span><span class="roadmap-naam">Toby Box — lokale hotelserver</span><span class="roadmap-status status-concept">concept</span></div>
+      <div class="roadmap-body">Een mini PC (Raspberry Pi of NUC, EUR 150-300) die lokaal in het hotel draait. Leest mappen van het hotelnetwerk, koppelt met lokale systemen, slaat gevoelige documenten lokaal op. Stuurt alleen samenvattingen naar de cloud. GDPR-proof by design. Als je een document in Toby uploadt, sla je het op op de Box — niet in de cloud.</div>
+      <div class="roadmap-vereist">Vereist: stabiele cloud versie · hardware partner · installatie flow</div>
+    </div>
+    <div class="roadmap-item">
       <div class="roadmap-header"><span class="roadmap-icon">🤖</span><span class="roadmap-naam">Agentic AI</span><span class="roadmap-status status-concept">concept</span></div>
       <div class="roadmap-body">Toby handelt niet alleen — Toby handelt. Een agent die zelfstandig besteladvies omzet in een bestelling, een compliance item omzet in een agenda-afspraak, een dalende reviewscore omzet in een actieplan. De manager keurt goed. Toby voert uit.</div>
       <div class="roadmap-vereist">Vereist: alle modules stabiel · vertrouwen van de gebruiker opgebouwd</div>
@@ -391,6 +396,55 @@ body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:v
         <div class="card-body">Als een hotel via Toby overstapt naar een nieuw systeem (bijv. een revenue manager of channel manager), ontvangt Toby een eenmalige of doorlopende vergoeding van de aanbieder.</div>
       </div>
     </div>
+  <div class="section">
+    <div class="section-label">Hardware revenue stream</div>
+    <div class="section-title">Toby Box</div>
+    <div class="section-sub">Een kleine lokale server die je in het hotel installeert. Documenten blijven op locatie. Toby leest mee — zonder dat gevoelige data de cloud in gaat.</div>
+    <div class="card-grid">
+      <div class="card purple">
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Hardware + software</div>
+        <div class="card-body">Mini PC (Raspberry Pi of NUC) in het hotel. Moeilijker te kopiëren dan alleen software. Fysieke aanwezigheid versterkt de klantrelatie en creëert extra lock-in.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">GDPR by design</div>
+        <div class="card-body">Arbeidscontracten, loonstroken, persoonsgegevens — die blijven lokaal op de Toby Box. Toby stuurt alleen samenvattingen en metadata naar de cloud. Nooit originele documenten.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">📁</div>
+        <div class="card-title">Lokale mappen</div>
+        <div class="card-body">De manager wijst een map aan op het hotelnetwerk. Toby organiseert automatisch, maakt submappen en verwerkt alles in het dashboard. Upload = opslaan op de Box.</div>
+      </div>
+      <div class="card purple">
+        <div class="card-icon">🔌</div>
+        <div class="card-title">Lokale koppelingen</div>
+        <div class="card-body">Directe integratie met lokale systemen zonder API-omwegen. Werkt ook als het internet uitvalt. Camera's, access control, energiemeter — alles wat fysiek aanwezig is.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border-radius:12px;padding:20px 24px;border:0.5px solid var(--border2);margin-top:8px">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;text-align:center">
+        <div>
+          <div style="font-size:22px;font-weight:700;font-family:monospace;color:var(--purple)">EUR 199</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">Eenmalig hardware</div>
+        </div>
+        <div>
+          <div style="font-size:22px;font-weight:700;font-family:monospace;color:var(--purple)">EUR 19</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">Per maand beheer</div>
+        </div>
+        <div>
+          <div style="font-size:22px;font-weight:700;font-family:monospace;color:var(--purple)">Of lease</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">EUR 29/maand alles in</div>
+        </div>
+      </div>
+    </div>
+    <div class="card amber" style="margin-top:12px">
+      <div class="card-icon">💻</div>
+      <div class="card-title">Zonder Box ook volledig functioneel</div>
+      <div class="card-body">Geen Box? Geen probleem. Toby werkt via een desktop app die lokale mappen leest, of via Google Drive / SharePoint koppeling. De Box is een premium optie voor hotels die maximale privacy en lokale integraties willen.</div>
+    </div>
+  </div>
+
   </div>
 </div>
 
