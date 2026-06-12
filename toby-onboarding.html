@@ -54,6 +54,22 @@ body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:v
     <p>Zet je hotel op in een paar stappen. Je kunt stappen overslaan en later terugkomen.</p>
   </div>
 
+  <!-- Stap 0: Hotel instellen -->
+  <div class="stap" style="cursor:default" id="hotel-setup">
+    <div class="stap-inner">
+      <div class="stap-icon">🏨</div>
+      <div class="stap-body" style="width:100%">
+        <div class="stap-titel">Hotelgegevens</div>
+        <div class="stap-sub" style="margin-bottom:10px">Naam en adres — voor het weer, lokaal nieuws en op het dashboard.</div>
+        <input id="h-naam" type="text" placeholder="Hotelnaam" style="width:100%;margin-bottom:6px;padding:9px 12px;border-radius:8px;border:0.5px solid var(--border2);font-family:inherit;font-size:13px;background:var(--bg)">
+        <input id="h-adres" type="text" placeholder="Adres (straat + huisnr)" style="width:100%;margin-bottom:6px;padding:9px 12px;border-radius:8px;border:0.5px solid var(--border2);font-family:inherit;font-size:13px;background:var(--bg)">
+        <input id="h-postcode" type="text" placeholder="Postcode + plaats" style="width:100%;margin-bottom:8px;padding:9px 12px;border-radius:8px;border:0.5px solid var(--border2);font-family:inherit;font-size:13px;background:var(--bg)">
+        <button onclick="opslaanHotel()" style="background:var(--purple);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">Opslaan</button>
+        <span id="h-status" style="font-size:12px;color:var(--green);margin-left:10px"></span>
+      </div>
+    </div>
+  </div>
+
   <a class="stap" href="toby-docs.html?onboarding=1">
     <div class="stap-inner">
       <div class="stap-icon">📂</div>
@@ -101,5 +117,52 @@ body{background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:v
   <a class="skip" href="toby-hub.html">Overslaan — ik doe dit later</a>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const { createClient } = supabase;
+const sb = createClient('https://nznsimwgjwkdvudcdmup.supabase.co','sb_publishable_yOUd6ZQRGxfUr-Yc9dDoDg_Rzwx1muZ');
+let HOTEL_ID = localStorage.getItem('toby_hotel_id') || 'b1f2e3a4-1234-4abc-8def-9a8b7c6d5e4f';
+if (!localStorage.getItem('toby_hotel_id')) localStorage.setItem('toby_hotel_id', HOTEL_ID);
+
+// Laad bestaande hotelgegevens
+(async function() {
+  var res = await sb.from('hotels').select('naam,adres,postcode,stad').eq('id', HOTEL_ID).maybeSingle();
+  if (res.data) {
+    if (res.data.naam) document.getElementById('h-naam').value = res.data.naam;
+    if (res.data.adres) document.getElementById('h-adres').value = res.data.adres;
+    if (res.data.postcode) document.getElementById('h-postcode').value = res.data.postcode + (res.data.stad ? ' ' + res.data.stad : '');
+  }
+})();
+
+async function opslaanHotel() {
+  var naam = document.getElementById('h-naam').value.trim();
+  var adres = document.getElementById('h-adres').value.trim();
+  var postcodeStad = document.getElementById('h-postcode').value.trim();
+  var status = document.getElementById('h-status');
+  status.textContent = 'Opslaan...';
+
+  // Splits postcode en stad
+  var parts = postcodeStad.split(/\s+/);
+  var postcode = parts.slice(0,2).join(' ');
+  var stad = parts.slice(2).join(' ');
+
+  var lat = null, lon = null;
+  // Geocode via Nominatim (gratis)
+  if (adres || postcodeStad) {
+    try {
+      var query = encodeURIComponent((adres + ' ' + postcodeStad + ' Nederland').trim());
+      var geoRes = await fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json&limit=1', {headers:{'Accept-Language':'nl'}});
+      var geoData = await geoRes.json();
+      if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon); }
+    } catch(e) {}
+  }
+
+  var update = { naam: naam, adres: adres, postcode: postcode, stad: stad };
+  if (lat) { update.lat = lat; update.lon = lon; }
+
+  await sb.from('hotels').update(update).eq('id', HOTEL_ID);
+  status.textContent = '✅ Opgeslagen' + (lat ? ' (locatie gevonden)' : '');
+}
+</script>
 </body>
 </html>
