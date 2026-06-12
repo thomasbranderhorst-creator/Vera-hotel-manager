@@ -469,7 +469,8 @@ async function kiesMapInDrive() {
     // Toon mapkeuze
     var keuze = '<div style="padding:16px"><div style="font-size:14px;font-weight:600;margin-bottom:12px">Kies een map om te koppelen</div>';
     mappen.forEach(function(m) {
-      keuze += '<div onclick="selecteerDriveMap('' + m.id + '','' + m.name.replace(/'/g,"\'") + '')" style="padding:10px 12px;border-radius:8px;border:0.5px solid var(--border2);margin-bottom:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;background:var(--bg)" onmouseover="this.style.background='var(--pbg)'" onmouseout="this.style.background='var(--bg)'"><span>📁</span><span>' + m.name + '</span></div>';
+      keuze += '<div class="drive-map-opt" data-id="' + m.id + '" data-naam="' + m.name.replace(/"/g,'&quot;') + '" style="padding:10px 12px;border-radius:8px;border:0.5px solid var(--border2);margin-bottom:6px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;background:var(--bg)"><span>\ud83d\udcc1</span><span>' + m.name + '</span></div>';
+
     });
     keuze += '<button onclick="document.getElementById('drive-picker').remove()" style="width:100%;margin-top:8px;background:none;border:0.5px solid var(--border2);border-radius:8px;padding:9px;font-size:12px;cursor:pointer;font-family:inherit;color:var(--text3)">Annuleren</button></div>';
 
@@ -478,6 +479,11 @@ async function kiesMapInDrive() {
     picker.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:center;justify-content:center';
     picker.innerHTML = '<div style="background:var(--card);border-radius:16px;max-width:400px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">' + keuze + '</div>';
     document.body.appendChild(picker);
+    picker.querySelectorAll('.drive-map-opt').forEach(function(el) {
+      el.addEventListener('mouseover', function(){el.style.background='var(--pbg)';});
+      el.addEventListener('mouseout', function(){el.style.background='var(--bg)';});
+      el.addEventListener('click', function(){ selecteerDriveMap(el.dataset.id, el.dataset.naam); });
+    });
   } catch(e) {
     alert('Fout bij ophalen mappen: ' + e.message);
     document.getElementById('drive-btn').textContent = 'Koppelen →';
